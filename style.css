@@ -32,7 +32,7 @@ Primary use:	Showcase Portfolio
 ---------------------------------------------------*/
 
 	html,body{
-		font-family: 'Poppins', sans-serif;
+		font-family: 'Montserrat', sans-serif;
 		font-weight: 400;
 		font-size:16px;
 		height:100%;
@@ -928,7 +928,7 @@ html,body {
 	}
 	
 	.light-content .change-header i.arrow-icon::after, .dark-content .change-header i.arrow-icon::after {
-		background-colorcurrentColor;
+		background-color: currentColor;
 	}
 	
 	i.arrow-icon-down {
@@ -4164,9 +4164,75 @@ html,body {
 	}
 }
 
+/* Feature section (added for index) */
+.feature-section {
+	background-color: #efe9e1;
+	padding-top: 9vw;
+	padding-bottom: 5vw;
+	position: relative;
+	margin-top: 90px; /* add spacing so it doesn't overlap previous section */
+	clear: both;
+}
+.feature-section .big-title {
+	color: #163a33;
+	font-weight: 500;
+	letter-spacing: -0.2vw;
+}
+.feature-section .big-title span {
+	display: block;
+	color: #163a33;
+}
+.feature-section p {
+	color: #4b4b47;
+	max-width: 520px;
+	margin-top: 12px;
+}
+.feature-section h4.bigger {
+	color: #163a33;
+	font-weight: 500;
+	margin-bottom: 8px;
+}
+.feature-section .col-img-wrapper img {
+	width: 80%;
+	max-width: 560px;
+	border-radius: 6px;
+	box-shadow: 0 14px 30px rgba(0,0,0,0.12);
+	display: block;
+}
+.feature-section .clapat-button {
+	background: #163a33;
+	color: #f2eae3;
+	border-radius: 22px;
+	padding: 12px 36px;
+	text-decoration: none;
+	display: inline-block;
+}
+.feature-section .clapat-button .button-text { color: #f2eae3; }
+.feature-section .button-box { margin-top: 34px; }
+
+#Kasauli_house_in_woods_section {
+    background:
+        linear-gradient(rgba(242, 234, 227, 0.7), rgba(242, 234, 227, 0.7)),
+        url('images/The_Woods_Kasauli_Image_03.png');
+	background-color: #f2eae3;
+
+    background-size: cover, 600px;
+    background-position: center, 60% center;
+    background-repeat: no-repeat;
+}
+
+
 @media only screen and (max-width: 767px) and (orientation: landscape) {
     
 	#rotate-device {
 		display:block;
 	}
+}
+
+@media only screen and (max-width: 900px) {
+	.feature-section .big-title { font-size: calc(1rem + 6vw); line-height: 1; }
+	.feature-section .two_third, .feature-section .one_third { width: 100% !important; float: none !important; }
+	.feature-section .col-img-wrapper { margin-top: 24px; }
+	.feature-section .col-img-wrapper img { max-width: 100%; }
+	.feature-section { padding-top: 6vw; padding-bottom: 6vw; }
 }

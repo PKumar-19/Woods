@@ -908,6 +908,19 @@
 		height:60px;
 		color:#000;		
 	}
+
+	.clapat-button-wrap-cta {
+		display: flex;
+		position: relative;
+		justify-content: center;
+		align-items: center;
+		left:0;
+		right:0;
+		min-width:50px;
+		height:60px;
+		color:#000;
+		margin-top: 20px;	
+	}
 	
 	.light-content .clapat-button-wrap, .dark-section .clapat-button-wrap {
 		color:#fff;	

@@ -692,25 +692,28 @@ Function Scroll Effects
 		
 		
 		// New Hero Title
-		
+        
 		if( $('.new-hero-title').length > 0 ){
-				
+                
+			// add guard checks and support for '-woods' fallback classes
+			const heroTitle = document.querySelector(".hero-title") || document.querySelector(".hero-title-woods");
+			const heroCaption = document.querySelector('#hero #hero-caption') || document.querySelector('#hero .hero-caption-woods') || document.querySelector('.hero-caption-woods');
+			const heroCaptionInner = document.querySelector("#hero-caption .hero-title div") || document.querySelector("#hero-caption .hero-title-woods div") || document.querySelector(".hero-caption-woods .hero-title-woods div");
+			const heroPlaceholder = document.querySelector(".new-hero-title .hero-title-placeholder") || document.querySelector(".new-hero-title-woods .hero-title-placeholder-woods");
+			const heroNewTitle = document.querySelector(".new-hero-title") || document.querySelector(".new-hero-title-woods");
+
+			if (!heroTitle || !heroCaption || !heroCaptionInner || !heroPlaceholder) {
+				console.warn('Hero elements missing — skipping New Hero Title animations');
+			} else {
+
 			$('#main-page-content').addClass('no-overflow');
-			
-			const heroTitle = document.querySelector(".hero-title");
+            
 			const currentWidth = gsap.getProperty(heroTitle, "width");
 			const currentHeight = gsap.getProperty(heroTitle, "height");
 			gsap.set(heroTitle, {width: currentWidth, height: currentHeight});
-		
+        
 			// Flip Hero Title
-			const heroCaption = document.querySelector('#hero #hero-caption');
-			const heroCaptionInner = document.querySelector("#hero-caption .hero-title div");
-			const heroPlaceholder = document.querySelector(".new-hero-title .hero-title-placeholder");
-			const heroNewTitle = document.querySelector(".new-hero-title");
-				
-			
-			
-				
+                
 			const state = Flip.getState(heroCaptionInner);
 			heroPlaceholder.classList.add("align-start");
 			heroPlaceholder.appendChild(heroCaptionInner);
@@ -844,7 +847,9 @@ Function Scroll Effects
 					$(".hero-title-placeholder").addClass("disable");
 				},
 			});
-		
+            
+			}
+        
 		}
 		
 		
@@ -1612,6 +1617,7 @@ Function Scroll Effects
 			const parallaxWrappers = document.querySelectorAll('.parallax-image-wrapper');
 		
 			parallaxWrappers.forEach(wrapper => {
+				try {
 				// Select inner elements for each wrapper
 				const pinContent = wrapper.querySelector(".parallax-content-pin");
 				const contentWrapper = wrapper.querySelector(".parallax-content");
@@ -1756,25 +1762,36 @@ Function Scroll Effects
 				}				
 				
 				const backgroundVideo = wrapper.querySelector("video");
-				
+
 				if (backgroundVideo) {
-				  	backgroundVideo.play();
-				  
-				  	const parallaxVideoAnimation = gsap.fromTo(backgroundVideo, {
+					// Attempt to play; catch autoplay policy rejections
+					backgroundVideo.play().catch(err => {
+						console.warn('backgroundVideo.play() failed:', err);
+					});
+
+					const parallaxVideoAnimation = gsap.fromTo(backgroundVideo, {
 						objectPosition: `center ${5}%`,
-				  	}, {
+					}, {
 						objectPosition: `center ${95}%`,
 						duration: 1,
 						ease: Linear.easeNone,
-				  	});
-				  
-				  	ScrollTrigger.create({
-						trigger: wrapper,
-						start: "top 100%",
-						end: () => `+=${windowHeight * durationCaptions + windowHeight * 2}`,
-						animation: parallaxVideoAnimation,
-						scrub: true,
-				  	});
+					});
+
+					try {
+						ScrollTrigger.create({
+							trigger: wrapper,
+							start: "top 100%",
+							end: () => `+=${windowHeight * durationCaptions + windowHeight * 2}`,
+							animation: parallaxVideoAnimation,
+							scrub: true,
+						});
+					} catch (e) {
+						console.warn('ScrollTrigger.create for parallax video failed:', e);
+					}
+				}
+
+				} catch (e) {
+					console.warn('parallax wrapper init failed:', e);
 				}
 				
 			});

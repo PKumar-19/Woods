@@ -209,7 +209,10 @@
 	
 	
 	.landing-intro-wrapper {		
-		position:relative;		
+		position:relative;
+		/* Ensure the large hero title doesn't overlap the following rows */
+		z-index:1;
+		margin-bottom: calc((1rem + 14vw) / 2);		
 	}
 	
 	.landing-intro-content {
@@ -237,6 +240,49 @@
 		position: relative;
 		border-radius: 6px;
 		overflow: hidden;
+	}
+
+	/* Full-bleed video section - spans viewport width and adds subtle overlay */
+	.video-full-bleed {
+		position: relative;
+		width: 100vw;
+		margin-left: calc(50% - 50vw); /* full-bleed across viewport */
+		overflow: hidden;
+	}
+	.video-full-bleed__media {
+		width: 100%;
+		height: 60vh;
+		min-height: 320px;
+		object-fit: cover;
+		display:block;
+		position: relative;
+		z-index: 1;
+	}
+	.video-full-bleed__overlay {
+		position: absolute;
+		inset: 0;
+		/* Blend gradient from a subtle top tint into transparency to merge the gif above and the video */
+		background: linear-gradient(180deg, rgba(31,53,51,0.50) 0%, rgba(31,53,51,0.25) 30%, rgba(31,53,51,0.12) 60%, rgba(31,53,51,0.00) 100%);
+		z-index: 2;
+		pointer-events:none;
+		mix-blend-mode: multiply;
+		transition: background 0.25s ease;
+	}
+
+	/* Slightly reduce tint on small screens */
+	@media (max-width: 768px) {
+		.video-full-bleed__overlay {
+			background: linear-gradient(180deg, rgba(31,53,51,0.30) 0%, rgba(31,53,51,0.15) 30%, rgba(31,53,51,0.06) 60%, rgba(31,53,51,0.00) 100%);
+			mix-blend-mode: multiply;
+		}
+	}
+
+	/* Responsive tweak */
+	@media (max-width: 768px) {
+		.video-full-bleed__media {
+			height: 40vh;
+			min-height: 200px;
+		}
 	}
 	
 	.new-hero-title {
@@ -394,6 +440,43 @@
 	.hero-column .col-img-wrapper.large-img {
 		width: 25%;
 	}
+
+	/* Section-specific fixes */
+	/* Center call-to-action button inside the Kasauli section */
+	#Kasauli_house_in_woods_section .button-box {
+		/* Ensure the button clears floated columns and centers */
+		clear: both;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		margin-top: 24px;
+		text-align: center;
+	}
+
+	.bg-gif-woods {
+	  position: fixed;
+	  inset: 0;
+	  width: 100%;
+	  height: 100%;
+	  background-image: url("../gifs/nature-3507.gif");
+	  background-size: cover;
+	  background-position: center;
+	  background-repeat: no-repeat;
+	  z-index: -1;
+	  pointer-events: none;
+
+	  /* Visual tuning */
+	  filter: brightness(0.6) contrast(1.1) saturate(1.1);
+	}
+	.bg-overlay {
+	  position: fixed;
+	  inset: 0;
+	  background: rgba(0, 0, 0, 0.01);
+	  z-index: 0;
+	  pointer-events: none;
+	}
+
 	
 	.col-img-wrapper img {
 		width: 100%;
@@ -490,8 +573,10 @@
 	#hero.has-image #hero-caption {
 		align-items: center;
 		justify-content:center;
-		padding-top:280px;
-		padding-bottom:160px;
+		/* padding-top:280px;
+		padding-bottom:160px; */
+		padding-top:1px;
+		padding-bottom:1px;
 	}
 	
 	#hero.has-image #hero-caption .inner {
@@ -1484,8 +1569,10 @@
 @media only screen and (max-width: 1537px) {
 	
 	#hero.has-image #hero-caption {
-		padding-top:240px;
-		padding-bottom: 130px;
+		/* padding-top:240px;
+		padding-bottom: 130px; */
+		padding-top:1px;
+		padding-bottom: 1px;
 	}
 	
 	.hero-below-caption #next-project-caption {

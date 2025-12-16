@@ -513,7 +513,7 @@ Function Page Load
 			
 			var perfData = performance.getEntriesByType('navigation')[0] || performance.timing;
 			var EstimatedTime = -(perfData.loadEventEnd - perfData.startTime);
-			var time = Math.min(Math.max(((EstimatedTime / 100) % 50) * 1000, 5000), 20000);
+			var time = Math.min(Math.max(((EstimatedTime / 100) % 50) * 1000, 500), 20000);
 			var timeSeconds = time/1000 - 1.5
 			window.preloaderTimeout = time; 
 			
@@ -543,7 +543,7 @@ Function Page Load
 		
 			tl.play()
 			
-			gsap.to($(".percentage, .percentage-first"), {duration: 1.2, delay:timeSeconds, opacity: 0, y: - $('.percentage-wrapper').height(),  ease: 'expo.inOut' });
+			gsap.to($(".percentage, .percentage-first"), {duration: 0.5, delay:timeSeconds, opacity: 0, y: - $('.percentage-wrapper').height(),  ease: 'expo.inOut' });
 			gsap.to($(".percentage-last span"), {duration: 1.2, delay:timeSeconds, opacity: 1, y: 0,  ease: 'expo.inOut', onComplete: function() {
 				gsap.to($(".percentage-last"), {duration: 0.5, opacity: 0, y:-30});
 			}});

@@ -21,9 +21,11 @@
     <link rel="icon" type="image/ico" href="favicon.ico" />
     <link href="style.css" rel="stylesheet" />
     <link href="css/all.min.css" rel="stylesheet" />
+    <link href="css/why-kasauli.css" rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..900&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..900&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet"> -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
    
 </head>
 
@@ -144,18 +146,26 @@
                     <!-- Hero Section -->
                     <div id="hero">
                         <div id="hero-styles">
-                            <div id="hero-caption" class="content-full-width parallax-scroll-caption text-align-center hero-full-caption">
-                                <div class="inner">
+                            <div class="bg-gif-woods">
+                                <video autoplay muted loop playsinline class="bg-video-woods">
+                                    <source src="gifs/nature-3507.gif" type="image/gif">
+                                    Your browser does not support HTML5 video.
+                                </video>
+                            </div>
+                            <div class="bg-overlay"></div>
+
+                            <div id="hero-caption" style="size: 0;" class="content-full-width parallax-scroll-caption text-align-center hero-full-caption hero-caption-woods">
+                                <!-- <div class="inner">
                                 
-                                    <h1 class="hero-title caption-timeline" data-infoTextBefore="Welcome" data-infoTextAfter="Est. 2025">
-                                        <div><span>bennet</span></div>
-                                    </h1>
-                                    
-                                    <div class="hero-subtitle caption-timeline onload-shuffle">
-                                        <div><span>Bringing brands to life through</span></div> 
-                                        <div class="secondary-font"><span>creative web solutions</span></div>
-                                    </div>                                   
-                                </div>
+                                   
+
+                                    <video autoplay muted loop playsinline class="bg-video-woods">
+                                      <source src="videos/Video Project.mp4" type="video/mp4">
+                                      Your browser does not support HTML5 video.
+                                    </video>
+                                    // This is commented first in this div section <h1 class="hero-title caption-timeline" data-infoTextBefore="Welcome" data-infoTextAfter="Est. 2025">
+                                                                 
+                                </div> -->
                             </div>
                             <div id="hero-footer" class="has-border">
                             	<div class="hero-footer-left">
@@ -165,15 +175,15 @@
                                                 <i class="fa-solid fa-arrow-down"></i>
                                             </div>
                                         </div>
-                                        <div class="button-text sticky left"><span data-hover="Scroll to Explore">Scroll to Explore</span></div> 
+                                        <!-- <div class="button-text sticky left"><span data-hover="Scroll to Explore">Scroll to Explore</span></div>  -->
                                     </div>
                                 </div>
-                                <div class="hero-footer-right">
+                                <!-- <div class="hero-footer-right">
                     				<div id="info-text"><span>Featured Projects</span></div>
-                                </div>
+                                </div> -->
                             </div>                                                              
                         </div>
-                        <div id="hero-interaction">
+                        <!-- <div id="hero-interaction">
                         	<div class="hero-column col-left">
                             	<div class="col-img-wrapper small-img"><img src="images/01hero1.jpg" alt=""></div>
                                 <div class="col-img-wrapper large-img"><img src="images/01hero.jpg" alt=""></div>
@@ -182,7 +192,7 @@
                             	<div class="col-img-wrapper large-img"><img src="images/02hero.jpg" alt=""></div>
                                 <div class="col-img-wrapper small-img"><img src="images/02hero1.jpg" alt=""></div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>                      
                     <!--/Hero Section -->
                     
@@ -197,65 +207,119 @@
                                     
                                     
                                     <!-- Row -->
-                                    <div class="content-row full row_padding_top row_padding_left row_padding_right light-section fadeout-element" data-bgcolor="transparent">
-                                
-                                        <div class="landing-intro-wrapper">
-                                        
-                                            <h2 class="new-hero-title">
-                                                <span>We’re</span> 
-                                                <div class="hero-title-placeholder"></div> 
-                                                <span>a <span class="text-rotator-wrapper secondary-font">  
-                                                        <span class="text-rotator">
-                                                            <span>creative</span>
-                                                            <span>visionary</span>
-                                                            <span>digital</span>
-                                                        </span>
-                                                    </span>
-                                                </span>
-                                                <span>agency</span>
-                                            </h2>
-                                        
-                                        </div>
+                                    <div class="content-row full new-hero-title light-section fadeout-element" data-bgcolor="transparent">
                                         
                                     </div> 
-                                    <!--/Row -->
-                                    
+
+                                    <div class="content-row full light-section" >
+                                        <div class="video-full-bleed">
+                                            <video autoplay muted loop playsinline class="video-full-bleed__media">
+                                                <source src="videos/Video Project.mp4" type="video/mp4">
+                                                Your browser does not support HTML5 video.
+                                            </video>
+                                            <div class="video-full-bleed__overlay" aria-hidden="true"></div>
+                                        </div>
+                                    </div>
                                     
                                     <!-- Row -->
-                                    <div class="content-row full light-section row_padding_left row_padding_right row_padding_bottom fadeout-element" data-bgcolor="transparent"> 
+                                    <div id="Kasauli_house_in_woods_section" class="content-row full light-section row_padding_top row_padding_left row_padding_right" data-bgcolor="#f5ede3">
+                                    
+                                        <div class="two_third">
+                                            <h3 class="three_fourth content-title has-animation">
+                                                <span>Exclusive Luxury</span><br>
+                                                <span>Villas</span><br>
+                                                <span>In the Heart of Kasauli</span>
+                                            </h3>
+                                                                                        
+                                            <p class="five_sixth has-animation">
+                                                High in the Himachal hills, where pine forests meet the sky, The Woods Kasauli stands as a testament to refined living. Ten villas. Nothing more. 
+                                                Each one designed for those who understand that true luxury isn't about excess, it's about space, silence, and the legacy you leave behind. 
+                                            </p>
+                                        </div>
                                         
-                                        <hr>
-                                        
-                                        <div class="three_fourth"></div>
-                                        
-                                        <div class="one_fourth last vertical-parallax" data-startparallax="0" data-endparallax="0">
-                                        	
-                                            <div class="landing-video content-timeline">
-                                            	<div class="content-video-wrapper">
-                                                    <video loop muted playsinline class="bgvid">
-                                                        <source src="images/intro.mp4" type="video/mp4">
-                                                    </video>
-                                                </div>
+                                        <div class="one_third last">
+                                            <div class="img-wrapper has-animation">
+                                                <img src="images/The_Woods_Kasauli_Image_02.png" alt="Featured Project" class="item-image-woods">
                                             </div>
-                                            
-                                            <hr><hr><hr>
-                                            
-                                        	<p class="has-opacity">Crafting exceptional websites tailored to your vision, we blend creativity with functionality to deliver stunning digital experiences.</p>
-                                                                                    
-                                            <div class="button-wrap right button-link has-animation">
-                                                <div class="icon-wrap parallax-wrap">
-                                                    <div class="button-icon parallax-element">
-                                                        <i class="fa-solid fa-arrow-right"></i>
-                                                    </div>
-                                                </div>
-                                                <a class="ajax-link" data-type="page-transition" href="about.html"><div class="button-text sticky right"><span data-hover="Read More">Read More</span></div></a>
-                                            </div>
+                                        </div>
                                         
-                                        </div>                                         
-                                        
-                                    </div> 
+                                    </div>
                                     <!--/Row -->
                                     
+                                    <!-- Row -->
+                                    <div class="content-row full light-section row_padding_top row_padding_left row_padding_right row_padding_bottom" data-bgcolor="#f5ede3">
+                                    
+                                        <div class="one_third has-animation">
+                                            <h3 class="content-title small"><span>Design-Driven</span></h3>
+                                            <p>
+                                                Architecture that doesn't follow trends, it sets them. Every villa built with materials that age well, layouts that make sense, and details that reward a second look.
+                                            </p>
+                                        </div>
+                                        
+                                        <div class="one_third has-animation" data-delay="100">
+                                            <h3 class="content-title small"><span>Ten Villas</span></h3>
+                                            <p>
+                                                Limited by design, not accident. Just ten spacious 4BHK villas in a private enclave where exclusivity isn't a marketing term, it's just mathematics. No crowds, no compromises.
+                                            </p>
+                                        </div>
+                                        
+                                        <div class="one_third last has-animation" data-delay="200">
+                                            <h3 class="content-title small"><span>Premium Amenities</span></h3>
+                                            <p>
+                                                Be it a Fully-equipped gymnasium or landscaped gardens maintained to perfection. Every amenity reflects the same commitment to quality that defines these villas.
+                                            </p>
+                                        </div>
+                                        
+                                        <br>
+                                        
+                                        <div class="">             
+                                            <div class="clapat-button-wrap parallax-wrap hide-ball">
+                                                <a href="#" class="clapat-button parallax-element" style="display: flex; align-items: center; background-color: #1f3533; width: fit-content; color: #f2eae3; font-size: x-large; border-radius: 10px; padding: 5px 10px 5px 10px; height: 40px; justify-content: center;">
+                                                    Invest in Kasauli&apos;s
+                                                </a>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <!--/Row -->
+
+                                    <!-- Row -->
+                                     <div class="tourism-hero-section ">
+                                        <div class="tourism-main-container">
+                                            <div class="tourism-white-card-box">
+                                                <div class="tourism-grid-wrapper">
+                                                    <div class="tourism-info-card">
+                                                        <h3 class="tourism-card-title">12 Month Tourism</h3>
+                                                        <p class="tourism-card-description">
+                                                            Kasauli welcomes visitors year-round, from summer escapees to winter wanderers. Unlike seasonal destinations, 
+                                                            this hill station maintains steady footfall across all months, ensuring consistent rental demand and occupancy for your investment property.
+                                                        </p>
+                                                    </div>
+
+                                                    <div class="tourism-info-card">
+                                                        <h3 class="tourism-card-title">Hospitality Benefits</h3>
+                                                        <p class="tourism-card-description">
+                                                            Stay when you want, earn when you don't. 
+                                                            Your villa can generate premium rental income as a luxury holiday home during peak seasons while remaining your personal retreat whenever you choose. Dual-purpose ownership that pays for itself.
+                                                        </p>
+                                                    </div>
+
+                                                    <div class="tourism-info-card">
+                                                        <h3 class="tourism-card-title">Property Appreciation</h3>
+                                                        <p class="tourism-card-description">
+                                                            Kasauli's established reputation, limited developable land, and increasing demand from urban buyers create strong fundamentals for long-term value appreciation. 
+                                                            Invest in a market where scarcity meets desirability.
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="tourism-cta-wrapper">
+                                                    <button class="tourism-action-button">Click here</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /Row -->
                                     
                                     <!-- Row -->
                                     <div class="content-row full text-align-center dark-section disable-header-gradient" data-bgcolor="#c8c8c8">                                
@@ -265,34 +329,53 @@
                                                 <div class="snap-slider-images">
                                                 	<div class="snap-slider-images-wrapper">
                                                 
+                                                        <!-- Slider Items background images -->
                                                         <div class="snap-slide trigger-item change-header-color">
                                                             <div class="img-mask">
                                                                 <div class="section-image trigger-item-link">
-                                                                    <img src="images/01hero.jpg" class="item-image grid__item-img" alt="">
+                                                                    <img src="images/Amenities/Gym.png" class="item-image grid__item-img" alt="">
                                                                 </div>                                                
-                                                                <img src="images/01hero.jpg" class="grid__item-img grid__item-img--large" alt="">                              
+                                                                <img src="images/Amenities/Gym.png" class="grid__item-img grid__item-img--large" alt="">                              
                                                             </div>
                                                         </div>
                                                         
                                                         <div class="snap-slide trigger-item change-header-color">
                                                             <div class="img-mask">
                                                                 <div class="section-image trigger-item-link">
-                                                                    <img src="images/02hero.jpg" class="item-image grid__item-img" alt="">
+                                                                    <img src="images/Amenities/Club House.png" class="item-image grid__item-img" alt="">
                                                                 </div>                                                
-                                                                <img src="images/02hero.jpg" class="grid__item-img grid__item-img--large" alt="">                            
+                                                                <img src="images/Amenities/Club House.png" class="grid__item-img grid__item-img--large" alt="">                            
                                                             </div>
                                                         </div>                    
                                                         
                                                         <div class="snap-slide trigger-item change-header-color">
                                                             <div class="img-mask">
                                                                 <div class="section-image trigger-item-link">
-                                                                    <img src="images/03hero.jpg" class="item-image grid__item-img" alt="">
+                                                                    <img src="images/Amenities/Natural Trail.png" class="item-image grid__item-img" alt="">
                                                                 </div>                                                
-                                                                <img src="images/03hero.jpg" class="grid__item-img grid__item-img--large" alt="">                           
+                                                                <img src="images/Amenities/Natural Trail.png" class="grid__item-img grid__item-img--large" alt="">                           
+                                                            </div>
+                                                        </div>
+
+                                                         <div class="snap-slide trigger-item change-header-color">
+                                                            <div class="img-mask">
+                                                                <div class="section-image trigger-item-link">
+                                                                    <img src="images/Amenities/Parking.png" class="item-image grid__item-img" alt="">
+                                                                </div>                                                
+                                                                <img src="images/Amenities/Parking.png" class="grid__item-img grid__item-img--large" alt="">                           
+                                                            </div>
+                                                        </div>
+
+                                                         <div class="snap-slide trigger-item change-header-color">
+                                                            <div class="img-mask">
+                                                                <div class="section-image trigger-item-link">
+                                                                    <img src="images/Amenities/Architecture.png" class="item-image grid__item-img" alt="">
+                                                                </div>                                                
+                                                                <img src="images/Amenities/Architecture.png" class="grid__item-img grid__item-img--large" alt="">                           
                                                             </div>
                                                         </div>
                                                         
-                                                        <div class="snap-slide trigger-item change-header-color">
+                                                        <!-- <div class="snap-slide trigger-item change-header-color">
                                                             <div class="img-mask">
                                                                 <div class="section-image trigger-item-link">
                                                                     <img src="images/04hero.jpg" class="item-image grid__item-img" alt="">
@@ -304,7 +387,7 @@
                                                                 </div>                                                
                                                                 <img src="images/04hero.jpg" class="grid__item-img grid__item-img--large" alt="">                            
                                                             </div>
-                                                        </div>
+                                                        </div> -->
                                                     
                                                 	</div>
                                                 </div>
@@ -312,33 +395,41 @@
                                                 
                                                 <div class="snap-slider-thumbs">                                                
                                                 	<div class="snap-slider-thumbs-wrapper">
-                                                
+                                                        
+                                                        <!-- Slider Items center thumbnails -->
                                                         <div class="thumb-slide" data-centerLine="OPEN">
                                                         	<div class="thumb-slide-img">
-                                                            	<img src="images/01hero1.jpg" class="item-image grid__item-img" alt="">
+                                                            	<img src="images/Amenities/GYM .5.png" class="item-image grid__item-img" alt="">
                                                             </div>
                                                             <a class="slide-link" data-type="page-transition" href="project01.html"></a>
                                                         </div>
                                                         
                                                         <div class="thumb-slide" data-centerLine="OPEN">
                                                         	<div class="thumb-slide-img">
-                                                            	<img src="images/02hero1.jpg" class="item-image grid__item-img" alt="">
+                                                            	<img src="images/Amenities/Clubhouse .5.png" class="item-image grid__item-img" alt="">
                                                             </div>
                                                             <a class="slide-link" data-type="page-transition" href="project02.html"></a>
                                                         </div>
                                                         
                                                         <div class="thumb-slide" data-centerLine="OPEN">
                                                         	<div class="thumb-slide-img">
-                                                            	<img src="images/03hero1.jpg" class="item-image grid__item-img" alt="">
+                                                            	<img src="images/Amenities/Natural Trail .5.png" class="item-image grid__item-img" alt="">
                                                             </div>
                                                             <a class="slide-link" data-type="page-transition" href="project03.html"></a>
                                                         </div>
                                                         
                                                         <div class="thumb-slide" data-centerLine="OPEN">
                                                         	<div class="thumb-slide-img">
-                                                            	<img src="images/04hero.jpg" class="item-image grid__item-img" alt="">
+                                                            	<img src="images/Amenities/Parking .5.png" class="item-image grid__item-img" alt="">
                                                             </div>
                                                             <a class="slide-link" data-type="page-transition" href="project04.html"></a>
+                                                        </div>
+
+                                                        <div class="thumb-slide" data-centerLine="OPEN">
+                                                        	<div class="thumb-slide-img">
+                                                            	<img src="images/Amenities/Architecture .5.png" class="item-image grid__item-img" alt="">
+                                                            </div>
+                                                            <a class="slide-link" data-type="page-transition" href="project05.html"></a>
                                                         </div>
                                                     
                                                     </div>                                                    
@@ -347,35 +438,41 @@
                                                 
                                                 <div class="snap-slider-captions">                                                
                                                     <div class="snap-slider-captions-wrapper content-full-width">
-                                                
+                                                        
+                                                        <!-- Sliders Options -->
                                                         <div class="snap-slide-caption">
-                                                            <div class="slide-title"><span>Son of a Tailor</span></div>                                                      
+                                                            <div class="slide-title"><span>Gymnasium </span></div>                                                      
                                                             <div class="slide-current"><span>01</span></div>
                                                             <div class="slide-counter"><span>04</span></div>
                                                             <div class="slide-subtitle"><span>Brand Identity</span></div>
                                                         </div>
                                                         
                                                         <div class="snap-slide-caption">
-                                                            <div class="slide-title"><span>Stena Air</span></div>                                                      
+                                                            <div class="slide-title"><span>Club House</span></div>                                                      
                                                             <div class="slide-current"><span>02</span></div>
                                                             <div class="slide-counter"><span>04</span></div>
                                                             <div class="slide-subtitle"><span>Graphic Design</span></div>
                                                         </div>
                                                         
                                                         <div class="snap-slide-caption change-header1" data-centerLine="OPEN">
-                                                            <div class="slide-title"><span>Lounge Chair</span></div>                                                      
+                                                            <div class="slide-title"><span>Nature Trail</span></div>
                                                             <div class="slide-current"><span>03</span></div>
                                                             <div class="slide-counter"><span>04</span></div>
                                                             <div class="slide-subtitle"><span>Photography</span></div>
                                                         </div>
                                                         
                                                         <div class="snap-slide-caption">
-                                                            <div class="slide-title"><span>Invincibles</span></div>                                                      
+                                                            <div class="slide-title"><span>Spacious Parking</span></div>
                                                             <div class="slide-current"><span>04</span></div>
                                                             <div class="slide-counter"><span>04</span></div>
                                                             <div class="slide-subtitle"><span>Video</span></div>
                                                         </div>
-                                                    
+                                                        <div class="snap-slide-caption">
+                                                            <div class="slide-title"><span>Finest Architecture</span></div>
+                                                            <div class="slide-current"><span>04</span></div>
+                                                            <div class="slide-counter"><span>04</span></div>
+                                                            <div class="slide-subtitle"><span>Video</span></div>
+                                                        </div>
                                                     </div>                                                    
                                                 </div>
                                                 
@@ -383,105 +480,710 @@
                                         
                                     </div> 
                                     <!--/Row -->
+
+                                    <div class="content-row full row_padding_top row_padding_left row_padding_right light-section" data-bgcolor="#c8c8c8">
                                     
-                                    
-                                    <!-- Row -->
-                                    <div class="content-row small text-align-center light-section" data-bgcolor="#c8c8c8">
-                                        
-                                        <hr><hr><hr>
-                                                
-                                        <p class="has-shuffle no-margins">Continue exploring our work collection</p>
-                                        
-                                        <br>
-                                        
-                                        <div class="button-box">             
-                                            <div class="clapat-button-wrap parallax-wrap hide-ball">
-                                                <div class="clapat-button parallax-element">
-                                                    <div class="button-border outline rounded parallax-element-second">
-                                                        <a class="ajax-link" data-type="page-transition" href="index-portfolio.html">
-                                                            <span data-hover="All Projects">All Projects</span>
-                                                         </a>
-                                                     </div>
-                                                </div>
-                                            </div> 
+                                        <div class="one_half">
+                                            <h5>EXCELLENCE UNDER CONSTRUCTION</h5>                                	
                                         </div>
-                                         
                                         
+                                        <div class="one_half last">
+                                            <p class="has-indent">
+                                                At The Woods Kasauli, your mountain sanctuary is taking shape. Ten exclusive 4 BHK villas are being meticulously crafted where modern architecture meets Himalayan serenity. 
+                                                Every foundation laid, every wall raised, and every finish applied reflects our commitment to creating homes that transcend ordinary living.
+                                            </p>
+                                            
+                                            <hr>
+                                            
+                                            <h4>
+                                                <span class="has-span-indent">Currently, our skilled craftsmen are bringing each villa to life with precision and care. </span>
+                                                 The master plan strategically positions all ten villas across the hillside terrain, ensuring each home captures panoramic mountain views while maintaining privacy and natural light flow. 
+                                            </h4>
+                                        </div>
+                                    
                                     </div> 
-                                    <!--/Row -->
                                     
-                                    
-                                    <!-- Row -->
-                                    <div class="content-row row_padding_top text-align-center light-section" data-bgcolor="#c8c8c8"> 
-                                        
-                                        <div class="pinned-lists-wrapper font-mode" data-duration="3x">
-                                            <p>You need it? We do it</p>                               
-                                            <ul class="pinned-lists">
-                                                <li>branding</li>
-                                                <li data-infoTextAfter="Inspire">web design</li>
-                                                <li>motion</li>
-                                                <li data-infoTextAfter="Create">development</li>
-                                                <li>marketing</li>
-                                            </ul>
-                                        </div>
-                                        
-                                    </div> 
-                                    <!--/Row -->
-                                    
-                                    
-                                    <!-- Row -->
-                                    <div class="content-row row_padding_top light-section text-align-center" data-bgcolor="#c8c8c8">                                   	
+                                    <!-- Portfolio Scroll Section -->
+                                    <div class="content-row full row_padding_top row_padding_left row_padding_right light-section" data-bgcolor="#c8c8c8">
+
+                                        <div class="hidden hidden-ball smooth-scroll rounded-borders hero-below-caption" data-primary-color="#fa821d">
                                         
                                         
-                                        <div class="one_third has-animation" data-delay="100">
-                                            
-                                            <div class="box-icon-wrapper block-boxes">
-                                                <div class="box-icon">
-                                                    <i class="fa fa-map-marker fa-2x" aria-hidden="true"></i>
+                                            <div>
+                                                <!-- Preloader -->
+                                                <div class="preloader-wrap" data-centerLine="Loading">
+                                        
+                                                    <div class="percentage-wrapper">
+                                                        <div class="percentage" id="precent">
+                                        
+                                                            <span class="number number_2">
+                                                                <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>0</span>
+                                                            </span>
+                                                            <span class="number number_3">
+                                                                <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>0</span>
+                                                            </span>
+                                                        </div>
+                                                        <div class="percentage-first"><span>wait, wait..</span></div>
+                                                        <div class="percentage-last"><span>100</span></div>
+                                                    </div>
+                                        
                                                 </div>
-                                                <div class="box-icon-content">
-                                                    <h6 class="no-margins">35 M Str, New York, USA</h6>
-                                                    <p>Address</p>
-                                                </div>
-                                            </div> 
-                                                                   
-                                        </div>
+                                                <!--/Preloader -->
                                         
-                                        <div class="one_third has-animation"  data-delay="200">
-                                            
-                                            <hr><p class="bigger">. . .</p>
-                                                                    
-                                        </div>
+                                                <div class="cd-index cd-main-content">
                                         
-                                        <div class=" one_third last has-animation"  data-delay="300">
-                                            
-                                            <div class="box-icon-wrapper block-boxes">
-                                                <div class="box-icon">
-                                                    <i class="fa fa-phone fa-2x" aria-hidden="true"></i>
-                                                </div>
-                                                <div class="box-icon-content">
-                                                    <h6 class="no-margins">0040 (7763) 574-8901</h6>
-                                                    <p>Phone</p>
+                                                    <!-- Page Content -->
+                                                    <div id="clapat-page-content" class="light-content" data-bgcolor="#0c0c0c">
+                                        
+                                                        <!-- Header -->
+                                                        <header class="clapat-header classic-menu invert-header" data-menucolor="#0c0c0c">
+                                        
+                                                            <!-- Graidient -->
+                                                            <div class="header-gradient"></div>
+                                                            <!--/Graidient -->
+                                        
+                                                            <div id="header-container">
+                                        
+                                                            </div>
+                                                        </header>
+                                                        <!--/Header -->
+                                        
+                                        
+                                        
+                                                        <!-- Content Scroll -->
+                                                        <div id="content-scroll">
+                                        
+                                        
+                                                            <!-- Main -->
+                                                            <div id="main">
+                                        
+                                                                <!-- Hero Section -->
+                                                                <div id="hero" class="fixed-hero">
+                                                                    <div id="hero-styles">
+                                                                        <div id="hero-caption"
+                                                                            class="content-full-width parallax-scroll-caption text-align-center hero-full-caption">
+                                                                            <div class="inner">
+                                                                                <h1 class="hero-title caption-timeline onload-shuffle">
+                                                                                    <span>archive</span>
+                                                                                </h1>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/Hero Section -->
+                                        
+                                        
+                                                                <!-- Main Content -->
+                                                                <div id="main-content">
+                                                                    <!-- Main Page Content -->
+                                                                    <div id="main-page-content">
+                                                                        <!-- Fit Thumb Screen Effects -->
+                                                                        <div id="itemsWrapperLinks">
+                                                                            <div id="itemsWrapper" class="webgl-fitthumbs fx-one">
+                                        
+                                                                                <!-- ClaPat Slider -->
+                                                                                <div id="clapat-webgl-slider"
+                                                                                    class="clapat-slider-wrapper showcase-gallery preview-mode-enabled">
+                                        
+                                                                                    <div id="trigger-slides" class="clapat-slider">
+                                        
+                                                                                        <!-- ClaPat Main Slider -->
+                                                                                        <div class="clapat-slider-viewport">
+                                        
+                                                                                            <div class="clapat-slide">
+                                                                                                <div class="slide-effects align-center has-scale-large">
+                                                                                                    <div class="slide-inner-height" data-centerLine="VIEW">
+                                                                                                        <div class="slide-moving">
+                                                                                                            <div class="trigger-item change-header"
+                                                                                                                data-centerLine="OPEN"
+                                                                                                                data-projectbgcolor="#c8c8c8">
+                                                                                                                <div class="img-mask">
+                                                                                                                    <a class="slide-link"
+                                                                                                                        data-type="page-transition"
+                                                                                                                        href="project01.html"></a>
+                                                                                                                    <div
+                                                                                                                        class="section-image trigger-item-link">
+                                                                                                                        <img src="images/Project Overview/Front Elevation.png"
+                                                                                                                            class="item-image grid__item-img"
+                                                                                                                            alt="">
+                                                                                                                    </div>
+                                                                                                                    <img src="images/Project Overview/Front Elevation.png"
+                                                                                                                        class="grid__item-img grid__item-img--large"
+                                                                                                                        alt="">
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div class="slide-caption">
+                                                                                                        <!-- <div class="slide-date"><span>2025</span></div> -->
+                                                                                                        <div class="slide-title"><span>Front Elevation</span>
+                                                                                                        </div>
+                                                                                                        <div class="slide-cat"><span>Branding</span></div>
+                                                                                                    </div>
+                                                                                                    <div class="slide-thumb speed-50">
+                                                                                                        <img src="images/Project Overview/Icons Project Overview/Front Elevation.png" alt="">
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                        
+                                                                                            <div class="clapat-slide">
+                                                                                                <div class="slide-effects align-left has-scale-small">
+                                                                                                    <div class="slide-inner-height" data-centerLine="VIEW">
+                                                                                                        <div class="slide-moving">
+                                                                                                            <div class="trigger-item change-header"
+                                                                                                                data-centerLine="OPEN"
+                                                                                                                data-projectbgcolor="#b8b6a7">
+                                                                                                                <div class="img-mask">
+                                                                                                                    <a class="slide-link"
+                                                                                                                        data-type="page-transition"
+                                                                                                                        href="project02.html"></a>
+                                                                                                                    <div
+                                                                                                                        class="section-image  trigger-item-link">
+                                                                                                                        <img src="images/Project Overview/Rear Elevation.png"
+                                                                                                                            class="item-image grid__item-img"
+                                                                                                                            alt="">
+                                                                                                                    </div>
+                                                                                                                    <img src="images/Project Overview/Rear Elevation.png"
+                                                                                                                        class="grid__item-img grid__item-img--large"
+                                                                                                                        alt="">
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div class="slide-caption">
+                                                                                                        <!-- <div class="slide-date"><span>2025</span></div> -->
+                                                                                                        <div class="slide-title"><span>Rear Elevation</span></div>
+                                                                                                        <!-- <div class="slide-cat"><span>Design</span></div> -->
+                                                                                                    </div>
+                                                                                                    <div class="slide-thumb speed-50">
+                                                                                                        <img src="images/Project Overview/Icons Project Overview/Rear Elevation.png" alt="">
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                        
+                                                                                            <div class="clapat-slide">
+                                                                                                <div class="slide-effects align-right has-scale-medium">
+                                                                                                    <div class="slide-inner-height" data-centerLine="VIEW">
+                                                                                                        <div class="slide-moving">
+                                                                                                            <div class="trigger-item" data-centerLine="OPEN"
+                                                                                                                data-projectbgcolor="#0c0c0c">
+                                                                                                                <div class="img-mask">
+                                                                                                                    <a class="slide-link"
+                                                                                                                        data-type="page-transition"
+                                                                                                                        href="project03.html"></a>
+                                                                                                                    <div
+                                                                                                                        class="section-image trigger-item-link">
+                                                                                                                        <img src="images/Project Overview/Site Layout.png"
+                                                                                                                            class="item-image grid__item-img"
+                                                                                                                            alt="">
+                                                                                                                    </div>
+                                                                                                                    <img src="images/Project Overview/Site Layout.png"
+                                                                                                                        class="grid__item-img grid__item-img--large"
+                                                                                                                        alt="">
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div class="slide-caption">
+                                                                                                        <!-- <div class="slide-date"><span>2025</span></div> -->
+                                                                                                        <div class="slide-title"><span>Site Layout</span></div>
+                                                                                                        <!-- <div class="slide-cat"><span>Design</span></div> -->
+                                                                                                    </div>
+                                                                                                    <div class="slide-thumb speed-50">
+                                                                                                        <img src="images/Project Overview/Icons Project Overview/Site Map.png" alt="">
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                        
+                                                                                            <div class="clapat-slide">
+                                                                                                <div class="slide-effects align-center has-scale-small">
+                                                                                                    <div class="slide-inner-height" data-centerLine="VIEW">
+                                                                                                        <div class="slide-moving">
+                                                                                                            <div class="trigger-item" data-centerLine="OPEN"
+                                                                                                                data-projectbgcolor="#192327">
+                                                                                                                <div class="img-mask">
+                                                                                                                    <a class="slide-link"
+                                                                                                                        data-type="page-transition"
+                                                                                                                        href="project04.html"></a>
+                                                                                                                    <div
+                                                                                                                        class="section-image trigger-item-link">
+                                                                                                                        <img src="images/Project Overview/Ground Floor Layout.png"
+                                                                                                                            class="item-image grid__item-img"
+                                                                                                                            alt="">
+                                                                                                                    </div>
+                                                                                                                    <img src="images/Project Overview/Ground Floor Layout.png"
+                                                                                                                        class="grid__item-img grid__item-img--large"
+                                                                                                                        alt="">
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div class="slide-caption">
+                                                                                                        <!-- <div class="slide-date"><span>2025</span></div> -->
+                                                                                                        <div class="slide-title"><span>Ground Floor Layout</span></div>
+                                                                                                        <!-- <div class="slide-cat"><span>Video</span></div> -->
+                                                                                                    </div>
+                                                                                                    <div class="slide-thumb speed-50">
+                                                                                                        <img src="images/Project Overview/Icons Project Overview/Ground Floor Plan.png" alt="">
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                        
+                                                                                            <div class="clapat-slide">
+                                                                                                <div class="slide-effects align-left has-scale-large">
+                                                                                                    <div class="slide-inner-height" data-centerLine="VIEW">
+                                                                                                        <div class="slide-moving">
+                                                                                                            <div class="trigger-item change-header"
+                                                                                                                data-centerLine="OPEN"
+                                                                                                                data-projectbgcolor="#f0efeb">
+                                                                                                                <div class="img-mask">
+                                                                                                                    <a class="slide-link"
+                                                                                                                        data-type="page-transition"
+                                                                                                                        href="project05.html"></a>
+                                                                                                                    <div
+                                                                                                                        class="section-image trigger-item-link">
+                                                                                                                        <img src="images/Project Overview/First Floor Layout.png"
+                                                                                                                            class="item-image grid__item-img"
+                                                                                                                            alt="">
+                                                                                                                    </div>
+                                                                                                                    <img src="images/Project Overview/First Floor Layout.png"
+                                                                                                                        class="grid__item-img grid__item-img--large"
+                                                                                                                        alt="">
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div class="slide-caption">
+                                                                                                        <!-- <div class="slide-date"><span>2025</span></div> -->
+                                                                                                        <div class="slide-title"><span>First Floor Layout</span>
+                                                                                                        </div>
+                                                                                                        <!-- <div class="slide-cat"><span>Branding</span></div> -->
+                                                                                                    </div>
+                                                                                                    <div class="slide-thumb speed-50">
+                                                                                                        <img src="images/Project Overview/Icons Project Overview/1st Floor Plan.png" alt="">
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                        
+                                                                                            <div class="clapat-slide">
+                                                                                                <div class="slide-effects align-center has-scale-small">
+                                                                                                    <div class="slide-inner-height" data-centerLine="VIEW">
+                                                                                                        <div class="slide-moving">
+                                                                                                            <div class="trigger-item" data-centerLine="OPEN"
+                                                                                                                data-projectbgcolor="#0c0c0c">
+                                                                                                                <div class="img-mask">
+                                                                                                                    <a class="slide-link"
+                                                                                                                        data-type="page-transition"
+                                                                                                                        href="project06.html"></a>
+                                                                                                                    <div
+                                                                                                                        class="section-image trigger-item-link">
+                                                                                                                        <img src="images/Project Overview/Second Floor Layout.png"
+                                                                                                                            class="item-image grid__item-img"
+                                                                                                                            alt="">
+                                                                                                                    </div>
+                                                                                                                    <img src="images/Project Overview/Second Floor Layout.png"
+                                                                                                                        class="grid__item-img grid__item-img--large"
+                                                                                                                        alt="">
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div class="slide-caption">
+                                                                                                        <!-- <div class="slide-date"><span>2025</span></div> -->
+                                                                                                        <div class="slide-title"><span>second Floor Layout</span></div>
+                                                                                                        <!-- <div class="slide-cat"><span>Photo</span></div> -->
+                                                                                                    </div>
+                                                                                                    <div class="slide-thumb speed-50">
+                                                                                                        <img src="images/Project Overview/Icons Project Overview/2nd Floor Plan.png" alt="">
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                        
+                                                                                            <div class="clapat-slide">
+                                                                                                <div class="slide-effects align-right has-scale-medium">
+                                                                                                    <div class="slide-inner-height" data-centerLine="VIEW">
+                                                                                                        <div class="slide-moving">
+                                                                                                            <div class="trigger-item change-header"
+                                                                                                                data-centerLine="OPEN"
+                                                                                                                data-projectbgcolor="#c8c8c8">
+                                                                                                                <div class="img-mask">
+                                                                                                                    <a class="slide-link"
+                                                                                                                        data-type="page-transition"
+                                                                                                                        href="project07.html"></a>
+                                                                                                                    <div
+                                                                                                                        class="section-image trigger-item-link">
+                                                                                                                        <img src="images/07hero.jpg"
+                                                                                                                            class="item-image grid__item-img"
+                                                                                                                            alt="">
+                                                                                                                    </div>
+                                                                                                                    <img src="images/07hero.jpg"
+                                                                                                                        class="grid__item-img grid__item-img--large"
+                                                                                                                        alt="">
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div class="slide-caption">
+                                                                                                        <div class="slide-date"><span>2025</span></div>
+                                                                                                        <div class="slide-title"><span>Nanotech Agency</span>
+                                                                                                        </div>
+                                                                                                        <div class="slide-cat"><span>Branding</span></div>
+                                                                                                    </div>
+                                                                                                    <div class="slide-thumb speed-50">
+                                                                                                        <img src="images/07hero1.jpg" alt="">
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                        
+                                                                                            <div class="clapat-slide">
+                                                                                                <div class="slide-effects align-left has-scale-large">
+                                                                                                    <div class="slide-inner-height" data-centerLine="VIEW">
+                                                                                                        <div class="slide-moving">
+                                                                                                            <div class="trigger-item" data-centerLine="OPEN"
+                                                                                                                data-projectbgcolor="#4b4d4f">
+                                                                                                                <div class="img-mask">
+                                                                                                                    <a class="slide-link"
+                                                                                                                        data-type="page-transition"
+                                                                                                                        href="project08.html"></a>
+                                                                                                                    <div
+                                                                                                                        class="section-image trigger-item-link">
+                                                                                                                        <img src="images/08hero.jpg"
+                                                                                                                            class="item-image grid__item-img"
+                                                                                                                            alt="">
+                                                                                                                    </div>
+                                                                                                                    <img src="images/08hero.jpg"
+                                                                                                                        class="grid__item-img grid__item-img--large"
+                                                                                                                        alt="">
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div class="slide-caption">
+                                                                                                        <div class="slide-date"><span>2025</span></div>
+                                                                                                        <div class="slide-title"><span>VFX Labs</span></div>
+                                                                                                        <div class="slide-cat"><span>Design</span></div>
+                                                                                                    </div>
+                                                                                                    <div class="slide-thumb speed-50">
+                                                                                                        <img src="images/08hero.jpg" alt="">
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                        
+                                                                                        </div>
+                                                                                        <!--/ClaPat Main Slider -->
+                                        
+                                        
+                                                                                        <!-- ClaPat Sync Slider -->
+                                                                                        <div class="clapat-sync-slider">
+                                                                                            <div class="clapat-sync-slider-wrapper">
+                                                                                                <div class="clapat-sync-slider-viewport">
+                                        
+                                                                                                    <div class="clapat-sync-slide">
+                                                                                                        <div class="trigger-item" data-centerLine="OPEN"
+                                                                                                            data-projectbgcolor="#e1dedf"
+                                                                                                            data-projectcolor="#9c505f">
+                                                                                                            <div class="hover-reveal landscape1">
+                                                                                                                <div class="hover-reveal__inner">
+                                                                                                                    <div class="hover-reveal__img">
+                                                                                                                        <img src="images/01hero.jpg"
+                                                                                                                            class="item-image grid__item-img"
+                                                                                                                            alt="">
+                                                                                                                        <img class="grid__item-img grid__item-img--large"
+                                                                                                                            src="images/01hero.jpg" alt="" />
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                        
+                                                                                                            <a class="slide-link" data-type="page-transition"
+                                                                                                                href="project01.html"></a>
+                                                                                                            <div
+                                                                                                                class="slide-title trigger-item-link modify-color">
+                                                                                                                <span>Son of a Tailor</span></div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                        
+                                        
+                                                                                                    <div class="clapat-sync-slide">
+                                                                                                        <div class="trigger-item" data-centerLine="OPEN"
+                                                                                                            data-projectbgcolor="#ceb7a3"
+                                                                                                            data-projectcolor="#ffffff">
+                                                                                                            <div class="hover-reveal">
+                                                                                                                <div class="hover-reveal__inner">
+                                                                                                                    <div class="hover-reveal__img">
+                                                                                                                        <img src="images/02hero.jpg"
+                                                                                                                            class="item-image grid__item-img"
+                                                                                                                            alt="">
+                                                                                                                        <img class="grid__item-img grid__item-img--large"
+                                                                                                                            src="images/02hero.jpg" alt="" />
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                        
+                                                                                                            <a class="slide-link" data-type="page-transition"
+                                                                                                                href="project02.html"></a>
+                                                                                                            <div
+                                                                                                                class="slide-title trigger-item-link modify-color">
+                                                                                                                <span>Stena Air</span></div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                        
+                                        
+                                                                                                    <div class="clapat-sync-slide">
+                                                                                                        <div class="trigger-item" data-centerLine="OPEN"
+                                                                                                            data-projectbgcolor="#2d2720"
+                                                                                                            data-projectcolor="#f4d8a6">
+                                                                                                            <div class="hover-reveal">
+                                                                                                                <div class="hover-reveal__inner">
+                                                                                                                    <div class="hover-reveal__img">
+                                                                                                                        <img src="images/03hero.jpg"
+                                                                                                                            class="item-image grid__item-img"
+                                                                                                                            alt="">
+                                                                                                                        <img class="grid__item-img grid__item-img--large"
+                                                                                                                            src="images/03hero.jpg" alt="" />
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                        
+                                                                                                            <a class="slide-link" data-type="page-transition"
+                                                                                                                href="project03.html"></a>
+                                                                                                            <div
+                                                                                                                class="slide-title trigger-item-link modify-color">
+                                                                                                                <span>Lounge Chair</span></div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                        
+                                        
+                                                                                                    <div class="clapat-sync-slide">
+                                                                                                        <div class="trigger-item" data-centerLine="OPEN"
+                                                                                                            data-projectbgcolor="#192327"
+                                                                                                            data-projectcolor="#c5feff">
+                                                                                                            <div class="hover-reveal">
+                                                                                                                <div class="hover-reveal__inner">
+                                                                                                                    <div class="hover-reveal__img">
+                                                                                                                        <img src="images/04hero.jpg"
+                                                                                                                            class="item-image grid__item-img"
+                                                                                                                            alt="">
+                                                                                                                        <div class="hero-video-wrapper">
+                                                                                                                            <video loop muted class="bgvid">
+                                                                                                                                <source src="images/04hero.mp4"
+                                                                                                                                    type="video/mp4">
+                                                                                                                            </video>
+                                                                                                                        </div>
+                                                                                                                        <img class="grid__item-img grid__item-img--large"
+                                                                                                                            src="images/04hero.jpg" alt="" />
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                        
+                                                                                                            <a class="slide-link" data-type="page-transition"
+                                                                                                                href="project04.html"></a>
+                                                                                                            <div
+                                                                                                                class="slide-title trigger-item-link modify-color">
+                                                                                                                <span>Invincibles</span></div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                        
+                                        
+                                                                                                    <div class="clapat-sync-slide">
+                                                                                                        <div class="trigger-item" data-centerLine="OPEN"
+                                                                                                            data-projectbgcolor="#fee2d7"
+                                                                                                            data-projectcolor="#dd5b5b">
+                                                                                                            <div class="hover-reveal">
+                                                                                                                <div class="hover-reveal__inner">
+                                                                                                                    <div class="hover-reveal__img">
+                                                                                                                        <img src="images/05hero.jpg"
+                                                                                                                            class="item-image grid__item-img"
+                                                                                                                            alt="">
+                                                                                                                        <img class="grid__item-img grid__item-img--large"
+                                                                                                                            src="images/05hero.jpg" alt="" />
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                        
+                                                                                                            <a class="slide-link" data-type="page-transition"
+                                                                                                                href="project05.html"></a>
+                                                                                                            <div
+                                                                                                                class="slide-title trigger-item-link modify-color">
+                                                                                                                <span>Kivira Naturals</span></div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                        
+                                        
+                                                                                                    <div class="clapat-sync-slide">
+                                                                                                        <div class="trigger-item" data-centerLine="OPEN"
+                                                                                                            data-projectbgcolor="#a4adb4"
+                                                                                                            data-projectcolor="#fff95a">
+                                                                                                            <div class="hover-reveal">
+                                                                                                                <div class="hover-reveal__inner">
+                                                                                                                    <div class="hover-reveal__img">
+                                                                                                                        <img src="images/06hero.jpg"
+                                                                                                                            class="item-image grid__item-img"
+                                                                                                                            alt="">
+                                                                                                                        <img class="grid__item-img grid__item-img--large"
+                                                                                                                            src="images/06hero.jpg" alt="" />
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                        
+                                                                                                            <a class="slide-link" data-type="page-transition"
+                                                                                                                href="project06.html"></a>
+                                                                                                            <div
+                                                                                                                class="slide-title trigger-item-link modify-color">
+                                                                                                                <span>Voxa Audio</span></div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                        
+                                                                                                    <div class="clapat-sync-slide">
+                                                                                                        <div class="trigger-item" data-centerLine="OPEN"
+                                                                                                            data-projectbgcolor="#ededed"
+                                                                                                            data-projectcolor="#f16120">
+                                                                                                            <div class="hover-reveal">
+                                                                                                                <div class="hover-reveal__inner">
+                                                                                                                    <div class="hover-reveal__img">
+                                                                                                                        <img src="images/07hero.jpg"
+                                                                                                                            class="item-image grid__item-img"
+                                                                                                                            alt="">
+                                                                                                                        <img class="grid__item-img grid__item-img--large"
+                                                                                                                            src="images/07hero.jpg" alt="" />
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                        
+                                                                                                            <a class="slide-link" data-type="page-transition"
+                                                                                                                href="project07.html"></a>
+                                                                                                            <div
+                                                                                                                class="slide-title trigger-item-link modify-color">
+                                                                                                                <span>Nanotech Agency</span></div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                        
+                                        
+                                                                                                    <div class="clapat-sync-slide">
+                                                                                                        <div class="trigger-item" data-centerLine="OPEN"
+                                                                                                            data-projectbgcolor="#353535"
+                                                                                                            data-projectcolor="#f90202">
+                                                                                                            <div class="hover-reveal">
+                                                                                                                <div class="hover-reveal__inner">
+                                                                                                                    <div class="hover-reveal__img">
+                                                                                                                        <img src="images/08hero.jpg"
+                                                                                                                            class="item-image grid__item-img"
+                                                                                                                            alt="">
+                                                                                                                        <img class="grid__item-img grid__item-img--large"
+                                                                                                                            src="images/08hero.jpg" alt="" />
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                        
+                                                                                                            <a class="slide-link" data-type="page-transition"
+                                                                                                                href="project08.html"></a>
+                                                                                                            <div
+                                                                                                                class="slide-title trigger-item-link modify-color">
+                                                                                                                <span>VFX Lab</span></div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                        
+                                        
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <!-- ClaPat Sync Slider -->
+                                        
+                                        
+                                                                                    </div>
+                                                                                    <!-- ClaPat Slider -->
+                                        
+                                                                                    <div class="slider-zoom-wrapper"></div>
+                                                                                    <div class="slider-thumbs-wrapper"></div>
+                                                                                    <div class="slider-close-preview"></div>
+                                        
+                                                                                </div>
+                                                                                <!--/ClaPat Slider Wrapper -->
+                                        
+                                                                            </div>
+                                                                        </div>
+                                                                        <!-- Fit Thumb Screen Effects -->
+                                                                    </div>
+                                                                    <!--/Main Page Content -->
+                                        
+                                        
+                                                                </div>
+                                                                <!--/Main Content -->
+                                        
+                                                            </div>
+                                                            <!--/Main -->
+                                        
+                                        
+                                        
+                                        
+                                                            <!-- Footer -->
+                                                            <footer class="clapat-footer hidden">
+                                                                <div id="footer-container">
+                                        
+                                                                    <div class="button-icon-link left cp-button-prev fade-slide-element fadeout-element">
+                                                                        <div class="icon-wrap-scale">
+                                                                            <div class="icon-wrap parallax-wrap">
+                                                                                <div class="button-icon parallax-element">
+                                                                                    <i class="fa-solid fa-arrow-left"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="button-text sticky left"><span data-hover="Prev">Prev</span></div>
+                                                                    </div>
+                                        
+                                                                    <div class="grid-list-option fade-slide-element fadeout-element">
+                                                                        <div class="grid-option active link">Grid</div>
+                                                                        <div class="list-option link">List</div>
+                                                                        <div class="current-option"></div>
+                                                                    </div>
+                                        
+                                                                    <div class="button-icon-link right cp-button-next fade-slide-element fadeout-element">
+                                                                        <div class="icon-wrap-scale">
+                                                                            <div class="icon-wrap parallax-wrap">
+                                                                                <div class="button-icon parallax-element">
+                                                                                    <i class="fa-solid fa-arrow-right"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="button-text sticky right"><span data-hover="Next">Next</span></div>
+                                                                    </div>
+                                        
+                                                                </div>
+                                                            </footer>
+                                                            <!--/Footer -->
+                                        
+                                        
+                                                        </div>
+                                                        <!--/Content Scroll -->
+                                        
+                                        
+                                                        <div id="app"></div>
+                                        
+                                        
+                                                    </div>
+                                                    <!--/Page Content -->
+                                        
                                                 </div>
                                             </div>
-                                            
-                                        </div> 
-                                                               
-                                    </div> 
-                                    <!--/Row -->
-                                   
-                                   
-                                    <!-- Row -->
-                                    <div class="content-row full row_padding_top light-section text-align-center" data-bgcolor="#c8c8c8">
                                         
-                                        <p class="bigger has-shuffle no-margins secondary-font">Ready to work together?</p>
-                                        <div id="copy-email" data-hover-message="Copy Mail" data-clicked-message="Copied"><span>office@bennet.com</span></div>
                                         
-                                    </div> 
-                                    <!--/Row -->
-                            
-                            
-                        		</div>                                                           
+                                        
+                                        
+                                            <div class="cd-cover-layer"></div>
+                                            <div id="magic-cursor">
+                                                <div id="ball">
+                                                    <div id="ball-drag-x"></div>
+                                                    <div id="ball-drag-y"></div>
+                                                    <div id="ball-loader"></div>
+                                                </div>
+                                            </div>
+                                            <div id="clone-image">
+                                                <div class="hero-translate"></div>
+                                            </div>
+                                            <div id="rotate-device"></div>
+                                        </div>
+                                        
+                                        </div>
+                                        
                             </div>    
                             <!-- Fit Thumb Screen Effects -->
                         </div>

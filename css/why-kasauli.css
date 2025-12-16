@@ -1,0 +1,127 @@
+.tourism-hero-section {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+        url('../images/The_Woods_Kasauli_Image_01.png') center/cover no-repeat;
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    position: relative;
+    font-family: 'Montserrat', sans-serif;
+    line-height: 1.6;
+}
+
+.tourism-main-container {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.tourism-white-card-box {
+    margin: 0;
+    padding: 50px 40px;
+    box-sizing: border-box;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.tourism-grid-wrapper {
+    margin: 0 0 40px 0;
+    padding: 0;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 40px;
+}
+
+.tourism-info-card {
+    margin: 0;
+    padding: 0 30px;
+    box-sizing: border-box;
+    text-align: center;
+    position: relative;
+}
+
+.tourism-info-card:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 1px;
+    background: #e0e0e0;
+}
+
+.tourism-card-title {
+    margin: 0 0 20px 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: 20px;
+    font-weight: 600;
+    color: #2c3e50;
+    letter-spacing: 0.5px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.tourism-card-description {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: #7f8c8d;
+    font-size: 14px;
+    line-height: 1.8;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.tourism-cta-wrapper {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.tourism-action-button {
+    margin: 0;
+    padding: 12px 35px;
+    box-sizing: border-box;
+    background: #2c3e50;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: capitalize;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.tourism-action-button:hover {
+    background: #34495e;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+    .tourism-grid-wrapper {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .tourism-info-card:not(:last-child)::after {
+        display: none;
+    }
+
+    .tourism-white-card-box {
+        padding: 40px 25px;
+    }
+
+    .tourism-hero-section {
+        min-height: 400px;
+    }
+}
