@@ -456,24 +456,28 @@
 
 	.bg-gif-woods {
 	  position: fixed;
-	  inset: 0;
-	  width: 100%;
-	  height: 100%;
+	  top: 0;
+	  left: 50%;
+	  transform: translateX(-50%);
+	  width: 1920px;
+	  height: 1012px;
+	  max-width: 100vw;
+	  max-height: calc(100vh - 0px);
 	  background-image: url("../gifs/nature-3507.gif");
 	  background-size: cover;
-	  background-position: center;
+	  background-position: top center;
 	  background-repeat: no-repeat;
-	  z-index: -1;
+	  z-index: 0; /* raised so it sits above the page-bg but below header */
 	  pointer-events: none;
 
 	  /* Visual tuning */
 	  filter: brightness(0.6) contrast(1.1) saturate(1.1);
-	}
+	}    
 	.bg-overlay {
 	  position: fixed;
 	  inset: 0;
 	  background: rgba(0, 0, 0, 0.01);
-	  z-index: 0;
+	  z-index: 1; /* sit above the video/gif */
 	  pointer-events: none;
 	}
 
