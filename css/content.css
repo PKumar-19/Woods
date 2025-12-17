@@ -1047,8 +1047,8 @@
 	}
 	
 	.next-hero-title {
-		font-size: calc(1rem + 12vw);
-  		line-height: calc(1rem + 14vw);
+		font-size: calc(1rem + 6vw);
+  		line-height: calc(1rem + 8vw);
 		font-weight: 600;
 		position: relative;
 		display:block;
