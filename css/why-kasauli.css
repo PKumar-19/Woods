@@ -131,7 +131,7 @@
     margin: 0 30px 0 30px;
     padding: 50px 40px;
     box-sizing: border-box;
-    background: white;
+    background: #f2eae3;
     border-radius: 8px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
 }
@@ -147,7 +147,7 @@
 
 .tourism-info-card {
     margin: 0;
-    padding: 0 30px;
+    padding: 60px 30px 60px 30px;
     box-sizing: border-box;
     text-align: center;
     position: relative;
@@ -164,10 +164,11 @@
 }
 
 .tourism-card-title {
+    color: #1f3533;
     margin: 0 0 20px 0;
     padding: 0;
     box-sizing: border-box;
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 600;
     color: #2c3e50;
     letter-spacing: 0.5px;
@@ -178,10 +179,36 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    color: #7f8c8d;
-    font-size: 14px;
+    color: #1f3533;
+    font-size: 16px;
     line-height: 1.8;
     font-family: 'Montserrat', sans-serif;
+}
+
+.why-kasauli-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.why-kasauli-section-title {
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #1f3533;
+    letter-spacing: 0.5px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.why-kasauli-section-subtext {
+	color: #1f3533;
+    font-size: 16px;
+    line-height: 1.8;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.why-kasauli-section-box {
+    width: 80%;
 }
 
 .tourism-cta-wrapper {

@@ -4211,6 +4211,7 @@ html,body {
 .feature-section .button-box { margin-top: 34px; }
 
 #Kasauli_house_in_woods_section {
+	color: #1f3533;
     background:
         linear-gradient(rgba(242, 234, 227, 0.7), rgba(242, 234, 227, 0.7)),
         url('images/The_Woods_Kasauli_Image_03.png');
@@ -4219,6 +4220,16 @@ html,body {
     background-size: cover, 600px;
     background-position: center, 60% center;
     background-repeat: no-repeat;
+	padding-top: 150px;
+}
+
+.Kasauli_house_in_woods_section_title {
+	color: #1f3533;
+	border-bottom: 1px dotted rgba(255, 255, 255, 0.45);
+}
+
+.Kasauli_house_in_woods_section_subtext {
+	margin: 20px 0 0 20px;
 }
 
 
@@ -4228,6 +4239,8 @@ html,body {
 		display:block;
 	}
 }
+
+
 
 @media only screen and (max-width: 900px) {
 	.feature-section .big-title { font-size: calc(1rem + 6vw); line-height: 1; }
