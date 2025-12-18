@@ -7,17 +7,31 @@ window.addEventListener("load", () => {
 
 // FAQ card toggle
 const cards = document.querySelectorAll(".faq-card");
+
+function toggleCard(card) {
+  const wasActive = card.classList.contains("active");
+  
+  // Close all cards
+  cards.forEach((c) => c.classList.remove("active"));
+  
+  // Open clicked card if it wasn't active
+  if (!wasActive) {
+    card.classList.add("active");
+  }
+}
+
 cards.forEach((card) => {
-  card.addEventListener("click", () => {
-    const wasActive = card.classList.contains("active");
-
-    // Close all cards
-    cards.forEach((c) => c.classList.remove("active"));
-
-    // Open clicked card if it wasn't active
-    if (!wasActive) {
-      card.classList.add("active");
-    }
+  card.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleCard(card);
+  });
+  
+  // Add touch support for mobile
+  card.addEventListener("touchend", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleCard(card);
   });
 });
 
