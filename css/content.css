@@ -85,7 +85,7 @@
 		position: relative;
 		display:block;
 		width:auto;		
-		color:#000;
+		color: aquamarine;
 		margin-bottom:0;
 		letter-spacing: -0.4vw;
 	}
@@ -463,7 +463,6 @@
 	  height: 1012px;
 	  max-width: 100vw;
 	  max-height: calc(100vh - 0px);
-	  background-image: url("../gifs/nature-3507.gif");
 	  background-size: cover;
 	  background-position: top center;
 	  background-repeat: no-repeat;
@@ -1047,7 +1046,7 @@
 	}
 	
 	.next-hero-title {
-		font-size: calc(1rem + 6vw);
+		font-size: calc(1rem + 5vw);
   		line-height: calc(1rem + 8vw);
 		font-weight: 600;
 		position: relative;

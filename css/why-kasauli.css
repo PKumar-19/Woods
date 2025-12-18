@@ -10,6 +10,8 @@
     padding: 80px 20px;
     position: relative;
     font-family: 'Montserrat', sans-serif;
+    background:
+        url('images/The_Woods_Kasauli_Image_01.png');
     line-height: 1.6;
     overflow: hidden;
 }
@@ -322,7 +324,7 @@
 .serenity-subtext {
     display: block;
     font-size: clamp(32px, 4vw, 56px);
-    font-weight: 300;
+    font-weight: 500;
     color: rgba(255, 255, 255, 0.85);
     letter-spacing: 2px;
     text-transform: uppercase;
