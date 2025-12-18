@@ -188,29 +188,118 @@
 }
 
 .why-kasauli-section {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.why-kasauli-section-title {
-    margin-bottom: 20px;
-    font-size: 24px;
-    font-weight: 600;
-    color: #1f3533;
-    letter-spacing: 0.5px;
-    font-family: 'Montserrat', sans-serif;
-}
-
-.why-kasauli-section-subtext {
-	color: #1f3533;
-    font-size: 16px;
-    line-height: 1.8;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
     font-family: 'Montserrat', sans-serif;
 }
 
 .why-kasauli-section-box {
-    width: 80%;
+    margin: 0;
+    padding: 50px 40px;
+    box-sizing: border-box;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    position: relative;
+    transition: all 0.3s ease;
+    border: 1px solid #f0f0f0;
+}
+
+.why-kasauli-section-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.12);
+}
+
+.why-kasauli-section-title {
+    margin: 0 0 20px 0;
+    padding: 0;
+    font-size: 22px;
+    font-weight: 700;
+    color: #1f3533;
+    letter-spacing: 0.3px;
+    text-transform: capitalize;
+    line-height: 1.4;
+}
+
+.why-kasauli-section-title span {
+    display: block;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.why-kasauli-section-title span::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 3px;
+    background: linear-gradient(90deg, #fa821d, #1f3533);
+    border-radius: 2px;
+}
+
+.why-kasauli-section-subtext {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: #555555;
+    font-size: 15px;
+    line-height: 1.8;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+}
+
+/* Why Kasauli Main Container */
+.why-kasauli-main-container {
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+    position: relative;
+    padding: 40px 30px;
+}
+
+/* Why Kasauli CTA Wrapper */
+.why-kasauli-cta-wrapper {
+    margin: 40px 0 0 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+/* Why Kasauli Button */
+.why-kasauli-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 15px 45px;
+    box-sizing: border-box;
+    background: linear-gradient(135deg, #1f3533, #2c3e50);
+    color: #f2eae3;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: capitalize;
+    font-family: 'Montserrat', sans-serif;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 15px rgba(31, 53, 51, 0.2);
+}
+
+.why-kasauli-button:hover {
+    background: linear-gradient(135deg, #2c3e50, #34495e);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(31, 53, 51, 0.35);
 }
 
 .tourism-cta-wrapper {
