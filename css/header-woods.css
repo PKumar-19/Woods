@@ -1,0 +1,62 @@
+.header-gradient-woods {
+  /* Force the header gradient to be fully transparent so the hero video shows through */
+  background-color: transparent !important;
+  mask-image: none !important;
+  -webkit-mask-image: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Ensure the logo stays on top of the hero video */
+.clapat-logo-woods {
+  position: relative !important;
+  z-index: 10 !important;
+}
+
+/* Make sure hero video sits underneath the header/logo but above page background */
+.bg-video-woods {
+  position: relative;
+  z-index: 5;
+}
+
+/* Make the hero video cover the viewport and sit above the page background */
+.bg-gif-woods {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100% !important;
+  max-width: 100vw !important;
+  height: 100vh !important;
+  overflow: hidden !important;
+  z-index: 10 !important;
+  pointer-events: none !important;
+}
+
+.bg-gif-woods .bg-video-woods {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  min-width: 100% !important;
+  min-height: 100% !important;
+  width: auto !important;
+  height: auto !important;
+  object-fit: cover !important;
+  z-index: 10 !important;
+}
+
+/* Keep header above the fixed video but not so high it blocks all content */
+.clapat-header-woods {
+  position: relative !important;
+  z-index: 100 !important;
+  background: transparent !important;
+}
+
+/* Override the original bg-overlay to prevent black bars and ensure full coverage */
+.bg-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  background: transparent !important;
+  z-index: 11 !important;
+  pointer-events: none !important;
+  display: none !important;
+}
