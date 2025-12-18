@@ -1,7 +1,6 @@
 .faq-wrapper {
-    min-height: 100vh;
     background: linear-gradient(180deg, #f8f8f8 0%, #ffffff 100%);
-    padding: 80px 40px;
+    padding: 80px 40px 40px 40px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
@@ -11,12 +10,12 @@
 }
 
 .faq-header {
-    margin-bottom: 80px;
+    margin-bottom: 10px;
     position: relative;
 }
 
 .faq-title {
-    font-size: 5rem;
+    font-size: 4rem;          /* ↓ from 5rem */    
     font-weight: 700;
     color: #000;
     /* margin: 0 0 20px 0; */
@@ -32,16 +31,17 @@
 .faq-title::after {
     content: '';
     position: absolute;
-    bottom: -10px;
-    left: 0;
+    bottom: -8px;               /* closer to text */
+    left: 15%;
+    transform: translateX(-50%);
     width: 0;
-    height: 4px;
+    height: 3px;                /* thinner line */
     background: #000;
     transition: width 0.8s ease;
 }
 
 .faq-title.animated::after {
-    width: 120px;
+    width: 80px;                /* ↓ from 120px */
 }
 
 .faq-subtitle {

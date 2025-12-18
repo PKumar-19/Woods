@@ -1,0 +1,249 @@
+/* Footer Hero Section - Custom Woods Override */
+
+/* Override hero spacing for footer contact section */
+#hero-footer-woods {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+#hero-styles-footer-woods {
+    margin: 0 !important;
+    padding: 0 !important;
+    position: relative !important;
+}
+
+#hero-caption-footer-woods {
+    margin: 0 !important;
+    padding: 80px 40px !important;
+    min-height: auto !important;
+    height: auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #0c0c0c !important;
+    color: #fff !important;
+}
+
+#hero-caption-footer-woods.content-full-width {
+    width: 100% !important;
+}
+
+#hero-caption-footer-woods .inner {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* Hero title styling - ensure animations work */
+#hero-caption-footer-woods .hero-title {
+    margin: 0 0 30px 0 !important;
+    padding: 0 !important;
+    font-size: 5.5rem !important;
+    font-weight: 700 !important;
+    line-height: 1.1 !important;
+    letter-spacing: -0.03em !important;
+    color: #fff !important;
+    text-transform: lowercase !important;
+    position: relative !important;
+    display: inline-block !important;
+}
+
+/* Display before and after text labels */
+#hero-caption-footer-woods .hero-title::before {
+    content: attr(data-infoTextBefore) !important;
+    position: absolute !important;
+    left: -300px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    font-size: 0.9rem !important;
+    font-weight: 400 !important;
+    letter-spacing: 0.1em !important;
+    color: #888 !important;
+    text-transform: uppercase !important;
+    white-space: nowrap !important;
+}
+
+#hero-caption-footer-woods .hero-title::after {
+    content: attr(data-infoTextAfter) !important;
+    position: absolute !important;
+    right: -300px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    font-size: 0.9rem !important;
+    font-weight: 400 !important;
+    letter-spacing: 0.1em !important;
+    color: #888 !important;
+    text-transform: uppercase !important;
+    white-space: nowrap !important;
+}
+
+#hero-caption-footer-woods .hero-title div {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+#hero-caption-footer-woods .hero-title span {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Hero subtitle styling */
+#hero-caption-footer-woods .hero-subtitle {
+    margin: 20px 0 !important;
+    padding: 0 !important;
+    font-size: 1.1rem !important;
+    line-height: 1.6 !important;
+    color: #ccc !important;
+}
+
+#hero-caption-footer-woods .hero-subtitle div {
+    display: block !important;
+    margin: 10px 0 !important;
+    padding: 0 !important;
+}
+
+#hero-caption-footer-woods .secondary-font {
+    font-family: 'Playfair Display', serif !important;
+    font-size: 1.3rem !important;
+    color: #aaa !important;
+}
+
+/* Caption timeline animation support */
+#hero-caption-footer-woods .caption-timeline {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Onload shuffle animation support */
+#hero-caption-footer-woods .onload-shuffle {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Footer contact footer bar */
+#hero-footer-contact-woods {
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    background: #0c0c0c !important;
+    color: #fff !important;
+}
+
+#hero-footer-contact-woods.has-border {
+    padding: 40px !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+.hero-footer-left-woods {
+    margin: 0 !important;
+    padding: 0 !important;
+    flex: 1 !important;
+    color: #fff !important;
+}
+
+.hero-footer-right {
+    margin: 0 !important;
+    padding: 0 !important;
+    flex: 1 !important;
+    text-align: right !important;
+}
+
+.hero-footer-center {
+    margin: 0 !important;
+    padding: 0 !important;
+    flex: 1 !important;
+    text-align: center !important;
+}
+
+#info-text-footer-woods {
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 0.95rem !important;
+    color: #999 !important;
+}
+
+/* Parallax scroll caption */
+#hero-caption-footer-woods.parallax-scroll-caption {
+    position: relative !important;
+}
+
+/* Button styling for scroll down */
+#hero-footer-contact-woods .button-wrap {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+#hero-footer-contact-woods .icon-wrap {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+#hero-footer-contact-woods .button-icon {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Mobile responsive */
+@media (max-width: 968px) {
+    #hero-caption-footer-woods {
+        padding: 60px 24px !important;
+    }
+    
+    #hero-caption-footer-woods .hero-title {
+        font-size: 3.5rem !important;
+    }
+    
+    #hero-caption-footer-woods .hero-title::before,
+    #hero-caption-footer-woods .hero-title::after {
+        position: relative !important;
+        left: 0 !important;
+        right: 0 !important;
+        display: block !important;
+        margin: 10px 0 !important;
+        transform: none !important;
+    }
+    
+    #hero-footer-contact-woods.has-border {
+        padding: 30px 24px !important;
+        flex-direction: column !important;
+        gap: 20px !important;
+    }
+    
+    .hero-footer-right {
+        text-align: center !important;
+    }
+}
+
+@media (max-width: 640px) {
+    #hero-caption-footer-woods {
+        padding: 40px 16px !important;
+    }
+    
+    #hero-caption-footer-woods .hero-title {
+        font-size: 2rem !important;
+        margin-bottom: 20px !important;
+    }
+    
+    #hero-caption-footer-woods .hero-title::before,
+    #hero-caption-footer-woods .hero-title::after {
+        font-size: 0.8rem !important;
+    }
+    
+    #hero-caption-footer-woods .hero-subtitle {
+        font-size: 0.95rem !important;
+    }
+    
+    #hero-footer-contact-woods.has-border {
+        padding: 24px 16px !important;
+    }
+}
