@@ -392,11 +392,11 @@ Function Scroll Effects
 		if ($('body').hasClass("swap-logo")) {
 		
 			var imgLogoWhite = document.querySelector('.white-logo');
-			var originalSrcWhite = 'images/logo-white.png';
+			var originalSrcWhite = 'images/Logo/logo.webp';
 			var updatedSrcWhite = 'images/logo-white-symbol.png';
 			
 			var imgLogoBlack = document.querySelector('.black-logo');
-			var originalSrcBlack = 'images/logo.png';
+			var originalSrcBlack = 'images/Logo/logo.webp';
 			var updatedSrcBlack = 'images/logo-symbol.png';
 			
 			// Create a scroll trigger

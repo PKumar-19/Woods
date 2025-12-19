@@ -776,11 +776,11 @@ Page Load Actions
 				
 				if ($(".clapat-header").hasClass("swapped-logo")) {
 					var imgLogoWhite = document.querySelector('.white-logo');
-					var originalSrcWhite = 'images/logo-white.png';
+					var originalSrcWhite = 'images/Logo/logo.webp';
 					var updatedSrcWhite = 'images/logo-white-symbol.png';
 					
 					var imgLogoBlack = document.querySelector('.black-logo');
-					var originalSrcBlack = 'images/logo.png';
+					var originalSrcBlack = 'images/Logo/logo.webp';
 					var updatedSrcBlack = 'images/logo-symbol.png';
 					gsap.to($("#clapat-logo"), {duration: 0.2, opacity:0, onComplete: function() {
 						imgLogoWhite.src = originalSrcWhite;

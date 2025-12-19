@@ -65,6 +65,48 @@
     line-height: 1.2;
 }
 
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes floatImage {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
 .beronet-image-wrapper {
     position: absolute;
     display: flex;
@@ -72,26 +114,31 @@
     align-items: center;
     gap: 8px;
     z-index: 5;
+    animation: fadeInUp 0.8s ease-out forwards;
 }
 
 .beronet-card-wrapper {
     top: 18%;
     left: 8%;
+    animation-delay: 0.2s;
 }
 
 .beronet-laptop-wrapper {
     top: 52%;
     left: 8%;
+    animation-delay: 0.4s;
 }
 
 .beronet-photo-top-wrapper {
     top: 15%;
     right: 8%;
+    animation-delay: 0.3s;
 }
 
 .beronet-mug-wrapper {
     top: 50%;
     right: 8%;
+    animation-delay: 0.5s;
 }
 
 .beronet-card-image {
@@ -99,6 +146,14 @@
     height: auto;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     border-radius: 8px;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: floatImage 3s ease-in-out infinite;
+    cursor: pointer;
+}
+
+.beronet-card-image:hover {
+    transform: scale(1.1) translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
 }
 
 .beronet-laptop-image {
@@ -106,6 +161,14 @@
     height: auto;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
     border-radius: 8px;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: floatImage 3.5s ease-in-out infinite;
+    cursor: pointer;
+}
+
+.beronet-laptop-image:hover {
+    transform: scale(1.1) translateY(-5px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
 }
 
 .beronet-photo-top-image {
@@ -113,6 +176,14 @@
     height: auto;
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
     border-radius: 8px;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: floatImage 3.2s ease-in-out infinite;
+    cursor: pointer;
+}
+
+.beronet-photo-top-image:hover {
+    transform: scale(1.1) translateY(-5px);
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.3);
 }
 
 .beronet-mug-image {
@@ -120,18 +191,260 @@
     height: auto;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     border-radius: 8px;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: floatImage 2.8s ease-in-out infinite;
+    cursor: pointer;
+}
+
+.beronet-mug-image:hover {
+    transform: scale(1.1) translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.28);
 }
 
 .beronet-image-label {
-    font-size: 15px;
+    font-size: 20px;
     color: #555;
     font-weight: 600;
     text-align: center;
     line-height: 1.5;
+    animation: slideInUp 0.8s ease-out 0.3s forwards;
+    opacity: 0;
+    transition: color 0.3s ease;
+}
+
+.beronet-image-wrapper:hover .beronet-image-label {
+    color: #333;
 }
 
 .beronet-image-sublabel {
-    font-size: 12px;
+    font-size: 16px;
     color: #777;
     font-weight: 400;
+    animation: slideInUp 0.8s ease-out 0.4s forwards;
+    opacity: 0;
+    transition: color 0.3s ease;
+}
+
+.beronet-image-wrapper:hover .beronet-image-sublabel {
+    color: #555;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Tablet Responsive (768px - 1024px) */
+@media only screen and (max-width: 1024px) {
+    .beronet-hero-container {
+        height: auto;
+        padding: 40px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        align-items: center;
+        justify-items: center;
+    }
+
+    .beronet-logo-container {
+        position: static;
+        transform: none;
+        grid-column: 1 / -1;
+        margin: 20px 0;
+        order: 3;
+    }
+
+    .beronet-image-wrapper {
+        position: static;
+        margin: 0;
+    }
+
+    .beronet-card-wrapper {
+        order: 1;
+        animation-delay: 0.1s;
+    }
+
+    .beronet-photo-top-wrapper {
+        order: 2;
+        animation-delay: 0.2s;
+    }
+
+    .beronet-laptop-wrapper {
+        order: 4;
+        animation-delay: 0.3s;
+    }
+
+    .beronet-mug-wrapper {
+        order: 5;
+        animation-delay: 0.4s;
+    }
+
+    .beronet-card-image {
+        width: 140px;
+    }
+
+    .beronet-laptop-image {
+        width: 160px;
+    }
+
+    .beronet-photo-top-image {
+        width: 130px;
+    }
+
+    .beronet-mug-image {
+        width: 150px;
+    }
+
+    .beronet-image-label {
+        font-size: 18px;
+    }
+
+    .beronet-image-sublabel {
+        font-size: 14px;
+    }
+
+    .beronet-logo {
+        font-size: 40px;
+    }
+}
+
+/* Mobile Responsive (320px - 767px) */
+@media only screen and (max-width: 767px) {
+    .beronet-body {
+        padding: 20px;
+    }
+
+    .beronet-hero-container {
+        height: auto;
+        padding: 20px 15px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+        align-items: center;
+        justify-items: center;
+    }
+
+    .beronet-welcome-text,
+    .beronet-est-text {
+        display: none;
+    }
+
+    .beronet-logo-container {
+        position: static;
+        transform: none;
+        margin: 20px 0;
+        grid-column: 1 / -1;
+        max-width: 90%;
+        order: 3;
+    }
+
+    .beronet-image-wrapper {
+        position: static;
+        margin: 0;
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Top two images */
+    .beronet-card-wrapper {
+        order: 1;
+        animation-delay: 0.1s;
+    }
+
+    .beronet-photo-top-wrapper {
+        order: 2;
+        animation-delay: 0.2s;
+    }
+
+    /* Bottom two images */
+    .beronet-laptop-wrapper {
+        order: 4;
+        animation-delay: 0.3s;
+    }
+
+    .beronet-mug-wrapper {
+        order: 5;
+        animation-delay: 0.4s;
+    }
+
+    .beronet-card-image {
+        width: 120px;
+    }
+
+    .beronet-laptop-image {
+        width: 130px;
+    }
+
+    .beronet-photo-top-image {
+        width: 110px;
+    }
+
+    .beronet-mug-image {
+        width: 140px;
+    }
+
+    .beronet-image-label {
+        font-size: 15px;
+    }
+
+    .beronet-image-sublabel {
+        font-size: 12px;
+    }
+
+    .beronet-logo {
+        font-size: 28px;
+        letter-spacing: 0;
+    }
+}
+
+/* Extra Small Mobile (320px - 480px) */
+@media only screen and (max-width: 480px) {
+    .beronet-hero-container {
+        padding: 15px 10px;
+        gap: 15px;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .beronet-logo {
+        font-size: 22px;
+        line-height: 1.3;
+    }
+
+    .beronet-logo-container {
+        max-width: 85%;
+    }
+
+    .beronet-card-image {
+        width: 100px;
+    }
+
+    .beronet-laptop-image {
+        width: 110px;
+    }
+
+    .beronet-photo-top-image {
+        width: 90px;
+    }
+
+    .beronet-mug-image {
+        width: 90px;
+    }
+
+    .beronet-image-label {
+        font-size: 13px;
+    }
+
+    .beronet-image-sublabel {
+        font-size: 10px;
+    }
+
+    .beronet-image-wrapper {
+        gap: 5px;
+    }
 }
