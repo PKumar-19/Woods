@@ -1444,18 +1444,16 @@
 
 	.bg-video-woods {
 	  position: fixed;
-	  top: 0;
-	  left: 50%;
-	  transform: translateX(-50%);
-	  width: 1920px;
-	  height: 1212px;
+	  inset: 0; /* left/right/top/bottom = 0 */
+	  width: 100vw;
+	  height: 100vh;
 	  max-width: 100vw;
-	  max-height: calc(180vh - 0px);
+	  max-height: 100vh;
 	  object-fit: cover;
-	  object-position: top center;
+	  object-position: center center;
 	  z-index: 0; /* raised so it sits above the page-bg but below overlay/header */
 	  pointer-events: none;
-	
+
 	  /* Visual tuning */
 	  filter: brightness(0.6) contrast(1.1) saturate(1.1);
 	  will-change: transform;

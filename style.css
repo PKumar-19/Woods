@@ -2730,7 +2730,7 @@ html,body {
 	
 	#footer-container {
 		padding: 0 80px;
-		margin: 20px auto;
+		margin: 70px auto;
 		height: 80px;
 		position: absolute;
 		width: 100%;
@@ -2748,6 +2748,133 @@ html,body {
 		left: 0;
 		pointer-events: none;;
 	}
+
+/* Make footer flow and reduce font sizes on smaller screens to avoid overlap */
+@media only screen and (max-width: 1024px) {
+	.clapat-footer {
+		height: auto;
+		padding: 24px 18px;
+		pointer-events: initial;
+	}
+
+	#footer-container {
+		position: relative;
+		padding: 10px 18px;
+		margin: 12px auto 0;
+		height: auto;
+		box-sizing: border-box;
+	}
+
+	.footer-middle {
+		position: relative;
+		display: block;
+		pointer-events: initial;
+	}
+
+	/* Put socials in their own row and show icons automatically on tablet and mobile */
+	.socials-wrap {
+		float: none;
+		width: 100%;
+		height: auto;
+		margin-top: 10px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		transform: none !important;
+		transition: none !important;
+		position: relative;
+		z-index: 30;
+	}
+
+	.socials-text {
+		font-size: 13px;
+		float: none;
+		transform: none;
+		display: inline-block;
+		margin-right: 12px;
+		text-align: center;
+	}
+
+	.socials-wrap .socials {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 10px;
+		transform: none;
+		margin-top: 8px;
+		width: auto;
+	}
+
+	.socials-wrap .socials li {
+		opacity: 1;
+		transform: none;
+		float: none;
+		width: auto;
+		height: auto;
+		display: inline-flex;
+		margin-left: 8px;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.socials-icon {
+		float: none;
+		transform: none;
+		width: auto;
+		height: auto;
+		line-height: normal;
+		font-size: 16px;
+		margin-left: 6px;
+	}
+
+	.copyright {
+		top: 0px;
+		line-height: 1.3;
+		padding: 8px 10px;
+		max-width: 100%;
+		font-size: 13px;
+	}
+
+	.clapat-footer .link-text, .copyright, .socials-text { font-size: 13px; }
+}
+
+@media only screen and (max-width: 480px) {
+	/* Further reduce text to avoid wrapping issues on very small mobile screens */
+	.copyright, .clapat-footer .link-text, .socials-text { font-size: 12px; }
+	#footer-container { padding: 8px 12px; }
+
+	/* Stack footer elements vertically and ensure there is spacing so nothing overlaps */
+	#footer-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 8px;
+	}
+
+	.footer-middle { width: 100%; text-align: center; order: 1; padding: 0 6px; }
+
+	.socials-wrap {
+		order: 2;
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 8px;
+		margin-top: 4px;
+		transform: none !important;
+		transition: none !important;
+	}
+
+	.socials-text { margin-right: 8px; }
+
+	.socials-wrap .socials { display: flex; gap: 8px; margin-top: 0; transform: none; }
+	.socials-wrap .socials li { opacity: 1; transform: none; float: none; width: 36px; height: 36px; line-height: 36px; }
+
+	/* Ensure enough bottom padding in footer so it doesn't overlap page content */
+	.clapat-footer { padding-bottom: 18px; }
+}
+
 	
 	.copyright {
 		position: relative;
@@ -3428,11 +3555,6 @@ html,body {
     	height: 100px;
 	}
 	
-	#footer-container {
-    	padding: 0 60px;
-		margin: 10px auto;
-	}
-	
 	.socials-wrap:hover .socials-text {
 		transform: translateY(20px) translateX(5px);
 		-webkit-transform: translateY(20px) translateX(5px);		
@@ -3680,10 +3802,6 @@ html,body {
 	
 	.classic-menu .button-wrap.right.menu {
 		display: block;
-	}
-	
-	#footer-container {
-    	padding: 0 40px;	
 	}
 	
 	.copyright {
@@ -3948,13 +4066,7 @@ html,body {
 	.footer-button-wrap {
     	bottom: 80px;
 	}
-	
-	#footer-container {
-		height: 80px;
-		padding: 0 30px;
-		margin:0;
-	}
-	
+
 	#footer-container #backtotop.button-wrap.left {
 		float: none;
 		top:5px;
@@ -4110,11 +4222,6 @@ html,body {
 		right: -10px;
 	}
 	
-	#footer-container {
-		padding: 0px;
-		margin:0;
-	}
-	
 	.clapat-footer.showcase-footer #footer-container {
 		padding: 0px 20px;
 	}
@@ -4223,9 +4330,27 @@ html,body {
 	padding-top: 150px;
 }
 
+@media (max-width: 991px) {
+	/* increase overlay opacity on tablet for better contrast */
+	#Kasauli_house_in_woods_section {
+		background-image:
+			linear-gradient(rgba(242, 234, 227, 0.9), rgba(242, 234, 227, 0.9)),
+			url('images/The_Woods_Kasauli_Image_03.png');
+	}
+}
+
+@media (max-width: 767px) {
+	/* increase overlay opacity on mobile for better contrast */
+	#Kasauli_house_in_woods_section {
+		background-image:
+			linear-gradient(rgba(242, 234, 227, 0.9), rgba(242, 234, 227, 0.9)),
+			url('images/The_Woods_Kasauli_Image_03.png');
+	}
+}
+
 .Kasauli_house_in_woods_section_title {
 	color: #1f3533;
-	border-bottom: 5px dotted rgba(255, 255, 255, 0.45);
+	/* border-bottom: 5px dotted rgba(255, 255, 255, 0.45); */
 	padding-bottom: 20px;
 }
 
@@ -4242,6 +4367,67 @@ html,body {
 		display:block;
 	}
 }
+
+/* --------------------------------------------------
+   Fix: Ensure hero background video always covers viewport
+   This overrides conflicting rules in other css files and
+   eliminates dynamic top/bottom gaps / letterboxing.
+-------------------------------------------------- */
+.bg-gif-woods {
+  position: fixed !important;
+  inset: 0 !important; /* top:0; right:0; bottom:0; left:0 */
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: 100vw !important;
+  max-height: 100vh !important;
+  overflow: hidden !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Make the <video> behave like a cover background - use fixed full-viewport sizing
+   instead of centered transform. This avoids letterboxing when aspect ratios differ. */
+.bg-gif-woods .bg-video-woods,
+.bg-video-woods {
+  position: fixed !important;
+  inset: 0 !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  min-width: 100vw !important;
+  min-height: 100vh !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  transform: none !important;
+  display: block !important;
+  margin: 0 !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Ensure overlay doesn't add unexpected spacing */
+.bg-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  background: transparent !important;
+  z-index: 1 !important;
+  pointer-events: none !important;
+}
+
+/* Remove accidental top/bottom padding that can shift the visual viewport
+   (keeps caption padding but doesn't affect the fixed background) */
+#hero {
+  margin: 0;
+  padding: 0;
+}
+
+/* Some hero caption padding is intentional; keep layout but don't let it
+   influence the fixed video positioning */
+#hero-caption {
+  box-sizing: border-box;
+}
+
 
 
 

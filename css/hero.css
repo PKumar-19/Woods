@@ -23,6 +23,8 @@
     height: 600px;
     padding: 60px 80px;
     background: #c4c4c4;
+    /* Prevent absolutely positioned hero elements from overflowing into following sections */
+    overflow: hidden;
 }
 
 .beronet-welcome-text {
@@ -447,4 +449,36 @@
     .beronet-image-wrapper {
         gap: 5px;
     }
+}
+
+/* Additional responsive rules to handle iPad, Surface, and zoomed-out viewports */
+@media only screen and (min-width: 768px) and (max-width: 1280px) {
+    .beronet-hero-container {
+        /* Prevent hero artwork from overflowing into following sections on medium screens */
+        max-height: 60vh;
+        overflow: hidden;
+        padding-bottom: 40px;
+    }
+
+    /* Reduce image sizes and lower stacking so page nav sits on top reliably */
+    .beronet-image-wrapper {
+        z-index: 1;
+    }
+
+    .beronet-card-image { width: 140px; }
+    .beronet-laptop-image { width: 150px; }
+    .beronet-photo-top-image { width: 120px; }
+    .beronet-mug-image { width: 120px; }
+}
+
+/* Handle short viewports (zoomed out or short browser height) */
+@media only screen and (max-height: 720px) {
+    .beronet-hero-container {
+        max-height: calc(100vh - 160px);
+        overflow: hidden;
+        padding-bottom: 36px;
+    }
+
+    /* Small increase to give page-nav breathing room */
+    #page-nav { margin-top: 24px; }
 }

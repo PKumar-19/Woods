@@ -1002,7 +1002,32 @@
 		margin-bottom: 0;
 		opacity:0;
 		overflow:hidden;
+		/* Ensure the page navigation sits above hero elements on small/zoomed viewports */
+		z-index: 20;
 	}
+
+/* Tablet & iPad adjustments to prevent hero bleed and ensure nav visibility */
+@media only screen and (min-width: 768px) and (max-width: 1280px) {
+	#page-nav {
+		z-index: 999;
+		position: relative;
+		margin-top: 20px;
+	}
+
+	.next-hero-title {
+		font-size: calc(1rem + 3.5vw);
+		line-height: calc(1rem + 6vw);
+	}
+}
+
+/* Short viewport (zoomed out) safety */
+@media only screen and (max-height: 720px) {
+	#page-nav {
+		z-index: 999;
+		margin-top: 28px;
+	}
+}
+
 	
 	.page-nav-wrap {
 		position: relative;
@@ -1859,52 +1884,6 @@
 		padding-right:20px;
 	}
 		
-/* DEBUG OUTLINES - temporary: highlight main wrappers that may cause extra page height */
-#content-scroll, #main, #main-content, #main-page-content, #itemsWrapper, #hero, #hero-styles, #hero-caption, .clipped-image-wrapper, .clipped-image-content, .beronet-body, .beronet-hero-container, .clapat-footer, #footer-container, #app {
-    outline: 20px dashed rgba(255,0,0,0.25) !important;
-}
-/* Add small diagnostic label to these elements (will show if element has a data-debug-height attribute set by JS or when inspected) */
-#content-scroll::after, #main::after, #main-content::after, #main-page-content::after {
-    content: attr(data-debug-height);
-    position: absolute;
-    right: 8px;
-    bottom: 8px;
-    background: rgba(0,0,0,0.6);
-    color: #fff;
-    font-size: 11px;
-    padding: 2px 6px;
-    border-radius: 3px;
-    pointer-events: none;
-}
-
-/* Additional DEBUG MARKERS: fixed viewport-bottom (green) and document-bottom (red) */
-body {
-    position: relative !important;
-}
-body::before {
-    content: "";
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 4px;
-    background: rgba(0,255,0,0.95);
-    z-index: 2147483647;
-    pointer-events: none;
-}
-body::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 100%; /* at the bottom of the entire document */
-    height: 4px;
-    background: rgba(255,0,0,0.95);
-    z-index: 2147483647;
-    pointer-events: none;
-}
-
-/* End debug block - remove once root cause is found */
 
 }			
 	

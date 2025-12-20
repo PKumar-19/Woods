@@ -15,33 +15,44 @@
 
 /* Make sure hero video sits underneath the header/logo but above page background */
 .bg-video-woods {
-  position: relative;
-  z-index: 5;
+  /* Use fixed full-viewport sizing to avoid letterboxing */
+  position: fixed !important;
+  inset: 0 !important; /* top:0; right:0; bottom:0; left:0 */
+  width: 100vw !important;
+  height: 100vh !important;
+  min-width: 100vw !important;
+  min-height: 100vh !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  transform: none !important;
+  margin: 0 !important;
+  z-index: 5 !important; /* Keep it under the header */
 }
 
-/* Make the hero video cover the viewport and sit above the page background */
+/* Make the hero container cover the viewport (video already fixed) */
 .bg-gif-woods {
   position: fixed !important;
   inset: 0 !important;
-  width: 100% !important;
+  width: 100vw !important;
   max-width: 100vw !important;
   height: 100vh !important;
   overflow: hidden !important;
-  z-index: 10 !important;
+  z-index: 0 !important; /* place under content/overlay */
   pointer-events: none !important;
 }
 
+/* Remove previous centering transform rules to prevent letterboxing */
 .bg-gif-woods .bg-video-woods {
-  position: absolute !important;
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  min-width: 100% !important;
-  min-height: 100% !important;
-  width: auto !important;
-  height: auto !important;
+  /* no-op: the fixed .bg-video-woods rules above apply */
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
   object-fit: cover !important;
-  z-index: 10 !important;
+  object-position: center center !important;
+  transform: none !important;
+  margin: 0 !important;
+  z-index: 5 !important;
 }
 
 /* Keep header above the fixed video but not so high it blocks all content */

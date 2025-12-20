@@ -240,7 +240,7 @@
     transform: translateX(-50%);
     width: 40px;
     height: 3px;
-    background: linear-gradient(90deg, #fa821d, #1f3533);
+    background: linear-gradient(90deg, #3a5a57, #1f3533);
     border-radius: 2px;
 }
 
@@ -248,7 +248,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    color: #555555;
+    color: #1f3533;
     font-size: 15px;
     line-height: 1.8;
     font-family: 'Montserrat', sans-serif;
@@ -297,9 +297,10 @@
 }
 
 .why-kasauli-button:hover {
-    background: linear-gradient(135deg, #2c3e50, #34495e);
+    color: #ffffff;
+    background: linear-gradient(135deg, #1f3533, #1f3533);
     transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(31, 53, 51, 0.35);
+    /* box-shadow: 0 8px 25px rgba(31, 53, 51, 0.35); */
 }
 
 .tourism-cta-wrapper {
