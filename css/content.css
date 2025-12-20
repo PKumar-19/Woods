@@ -53,7 +53,7 @@
 	}
 	
 	#hero-caption.hero-full-caption {
-		height:100vh;
+		min-height:100vh;
 	}
 	
 	#hero-caption.text-align-center {
@@ -662,7 +662,7 @@
 		width: 100%;
 		height: auto;
 		padding-top:80px;
-		padding-bottom: 300px;
+		padding-bottom: 80px; /* reduced from 300px to prevent extra bottom whitespace */
 		margin: 0 auto;
 		box-sizing: border-box;
 		pointer-events: initial;
@@ -779,21 +779,25 @@
 		color:#000;
 		overflow:hidden;
 	}
-	
-	.light-content #hero-footer {
-		color:#fff;
-	}
-	
-	#hero-footer.has-border::after {
-		content:"";
-		position:absolute;
-		left:0;
-		right:0;
-		bottom:0;
-		width:100%;
-		height:1px;
-		opacity:0;
-		background-color:rgba(0,0,0,0.1);
+
+/* Fix: contain any hero elements that become fixed/pinned so they can't extend past the document bottom
+   This prevents pinning/transforms from creating extra scrollable space when scroll containers are in use. */
+#hero.fixed-hero, #hero-styles.fixed-hero, #hero.fixed-hero * {
+    max-height: 100vh !important;
+    height: auto !important;
+    overflow: hidden !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    transform: translateY(0) !important;
+}
+
+/* Also ensure scroll-content and preloader don't get unusually large heights */
+.scroll-content, .preloader-wrap, #content-scroll {
+    max-height: 100vh !important;
+    height: auto !important;
+    overflow: visible !important;
+}
 		transform: scaleX(0);
 		transform-origin: center;
 		transition: all 0.3s ease-out 0s;
@@ -1855,5 +1859,52 @@
 		padding-right:20px;
 	}
 		
+/* DEBUG OUTLINES - temporary: highlight main wrappers that may cause extra page height */
+#content-scroll, #main, #main-content, #main-page-content, #itemsWrapper, #hero, #hero-styles, #hero-caption, .clipped-image-wrapper, .clipped-image-content, .beronet-body, .beronet-hero-container, .clapat-footer, #footer-container, #app {
+    outline: 20px dashed rgba(255,0,0,0.25) !important;
+}
+/* Add small diagnostic label to these elements (will show if element has a data-debug-height attribute set by JS or when inspected) */
+#content-scroll::after, #main::after, #main-content::after, #main-page-content::after {
+    content: attr(data-debug-height);
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    pointer-events: none;
+}
+
+/* Additional DEBUG MARKERS: fixed viewport-bottom (green) and document-bottom (red) */
+body {
+    position: relative !important;
+}
+body::before {
+    content: "";
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 4px;
+    background: rgba(0,255,0,0.95);
+    z-index: 2147483647;
+    pointer-events: none;
+}
+body::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%; /* at the bottom of the entire document */
+    height: 4px;
+    background: rgba(255,0,0,0.95);
+    z-index: 2147483647;
+    pointer-events: none;
+}
+
+/* End debug block - remove once root cause is found */
+
 }			
 	

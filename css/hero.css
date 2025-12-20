@@ -10,7 +10,7 @@
     box-sizing: border-box;
     font-family: -apple-system, BlinkMacSystemFont, 'Montserrat', sans-serif;
     background: #c4c4c4;
-    min-height: 100vh;
+    height: auto;
     display: flex;
     align-items: center;
     justify-content: center;
