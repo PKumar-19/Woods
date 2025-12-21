@@ -270,21 +270,42 @@
                                                     <div class="serenity-content">
                                                         <div class="serenity-text-box">
                                                             <h2 class="serenity-heading">
-                                                                <!-- <span class="serenity-label">INVEST IN</span>
-                                                                <span class="serenity-main">KASAULI'S</span> -->
-                                                                <span class="serenity-subtext">SERENITY</span>
-                                                                <span class="serenity-subtext">Nature</span>
-                                                                <span class="serenity-subtext">Wilderness</span>
-                                                                <span class="serenity-subtext">AQI</span>
+                                                                <span class="serenity-label">INVEST IN</span>
+                                                                <span class="serenity-main">KASAULI'S -</span>
+                                                                <span class="serenity-rotator" aria-live="polite" aria-atomic="true">
+                                                                    <span class="serenity-subtext active">SERENITY</span>
+                                                                    <span class="serenity-subtext">Nature</span>
+                                                                    <span class="serenity-subtext">Wilderness</span>
+                                                                    <span class="serenity-subtext">AQI</span>
+                                                                </span>
                                                             </h2>
                                                         </div>
                                                         <div class="serenity-image-box">
-                                                            <img src="images/Invest_in_Kasauli/Serenity.png"
-                                                                alt="Invest in Kasauli's Serenity"
-                                                                class="serenity-image">
+                                                            <div class="serenity-image-rotator" aria-hidden="true">
+                                                                <img src="images/Invest_in_Kasauli/Serenity.png" alt="Serenity" class="serenity-image rot-image active">
+                                                                <img src="images/Invest_in_Kasauli/Nature.png" alt="Nature" class="serenity-image rot-image">
+                                                                <img src="images/Invest_in_Kasauli/Wilderness.png" alt="Wilderness" class="serenity-image rot-image">
+                                                                <img src="images/Invest_in_Kasauli/AQI.png" alt="AQI" class="serenity-image rot-image">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <script>
+                                                (function(){
+                                                    const texts = Array.from(document.querySelectorAll('.serenity-rotator .serenity-subtext'));
+                                                    const imgs = Array.from(document.querySelectorAll('.serenity-image-rotator .rot-image'));
+                                                    const count = Math.min(texts.length, imgs.length);
+                                                    if (!count) return;
+                                                    let idx = 0;
+                                                    const show = i => {
+                                                        texts.forEach((el,j) => el.classList.toggle('active', j === i));
+                                                        imgs.forEach((el,j) => el.classList.toggle('active', j === i));
+                                                    };
+                                                    show(0);
+                                                    const interval = 2500;
+                                                    setInterval(() => { idx = (idx + 1) % count; show(idx); }, interval);
+                                                })();
+                                                </script>
 
                                                 <div class="tourism-white-card-box">
                                                     <div class="tourism-grid-wrapper">
