@@ -21,17 +21,43 @@ function toggleCard(card) {
 }
 
 cards.forEach((card) => {
+  // Variables to detect scroll vs tap
+  let touchStartX = 0, touchStartY = 0, touchStartTime = 0, touchMoved = false;
+  let suppressClickUntil = 0; // to avoid double toggle (touch then click)
+
   card.addEventListener("click", (e) => {
+    // Ignore synthetic clicks that follow a handled tap
+    if (Date.now() < suppressClickUntil) return;
     e.preventDefault();
     e.stopPropagation();
     toggleCard(card);
   });
-  
-  // Add touch support for mobile
+
+  // Touch handlers: treat as a tap only when movement is small and duration is short
+  card.addEventListener("touchstart", (e) => {
+    const t = e.touches[0];
+    touchStartX = t.clientX;
+    touchStartY = t.clientY;
+    touchStartTime = Date.now();
+    touchMoved = false;
+  }, { passive: true });
+
+  card.addEventListener("touchmove", (e) => {
+    const t = e.touches[0];
+    const dx = Math.abs(t.clientX - touchStartX);
+    const dy = Math.abs(t.clientY - touchStartY);
+    if (dx > 10 || dy > 10) touchMoved = true; // treat as scroll/drag
+  }, { passive: true });
+
   card.addEventListener("touchend", (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    toggleCard(card);
+    const duration = Date.now() - touchStartTime;
+    // Consider it a tap only if not moved significantly and was a short touch
+    if (!touchMoved && duration < 300) {
+      e.preventDefault();
+      e.stopPropagation();
+      toggleCard(card);
+      suppressClickUntil = Date.now() + 500; // ignore subsequent click
+    }
   });
 });
 
