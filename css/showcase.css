@@ -607,7 +607,7 @@
 	
 	
 	.showcase-gallery .clapat-slider {
-		padding:0 20vw 0 20vw;
+		padding:0 2vw 0 2vw;
 	}
 	
 	.showcase-gallery .clapat-slider-viewport {
@@ -1634,4 +1634,9 @@
 		bottom: 15px;
 	}
 	
-}			
+}
+
+/* Force Clapat slide captions to always be visible and prevent transform hiding */
+.clapat-slide .slide-caption { opacity: 1 !important; transform: none !important; }
+.clapat-slide .slide-caption span { opacity: 1 !important; transform: none !important; }
+			

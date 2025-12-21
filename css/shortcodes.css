@@ -274,11 +274,11 @@
 	}
 	
 	.content-slider.looped-carousel .clapat-slider-viewport {
-		max-width:1280px;
+		max-width: 100%;
 	}
 	
 	.content-slider.small-looped-carousel .clapat-slider-viewport {
-		max-width:600px;
+		max-width: 100vw;
 	}
 	
 	.content-slider .clapat-slider {

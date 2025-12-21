@@ -2201,8 +2201,9 @@ Function Showcase Gallery
 				slider.enabled = false;
 				
 				gsap.to($(".grid-list-option"), {duration: 0.2, opacity:0, ease:Power2.easeIn});					
-				gsap.to($(".clapat-slide.hovered .slide-caption span"), {duration: 0.15, y:-30, opacity:0, stagger:0.05, ease:Power2.easeIn});
-				gsap.to($(".clapat-slide .slide-caption"), {duration: 0.2, opacity:0, delay:0, ease:Power2.easeIn});
+				// Disabled caption hide so captions remain visible at all times
+				// gsap.to($(".clapat-slide.hovered .slide-caption span"), {duration: 0.15, y:-30, opacity:0, stagger:0.05, ease:Power2.easeIn});
+				// gsap.to($(".clapat-slide .slide-caption"), {duration: 0.2, opacity:0, delay:0, ease:Power2.easeIn}); // Disabled to keep captions visible
 				gsap.to($(".clapat-slide .slide-thumb img"), {duration: 0.3, scale:0, opacity:0, ease:Power2.easeIn, onComplete: function() {
 					gsap.set(".clapat-slide .slide-thumb", { scale: 0, opacity:0 });
 				}});
@@ -2708,15 +2709,28 @@ Function Showcase Gallery
 			
 			
 		}
-	
-	}//End Showcase Gallery
 
+        // Continuous auto-scroll for the portfolio ClaPat slider (edge-to-edge, pauses on hover/interaction)
+        (function() {
+            const el = document.getElementById('clapat-webgl-slider');
+            if (!el) return;
+            const instance = el.clapat_slider || (el.closest && el.closest('.clapat-slider-wrapper') && el.closest('.clapat-slider-wrapper').clapat_slider);
+            if (!instance) return;
+            // Speed in pixels per second (adjustable). Set to 0.6 to be slower than 1 (very gentle scroll).
+            instance.autoScrollSpeed = 0.2; // px/sec
+            // add ticker to increment the target continuously (creates smooth infinite scroll)
+            instance._autoScrollTicker = gsap.ticker.add((time, deltaTime) => {
+                if (!instance.enabled || instance.state.flags.dragging || document.body.classList.contains('disable-scroll')) return;
+                instance.state.target -= instance.autoScrollSpeed * deltaTime; // deltaTime is in seconds
+            });
+            // pause on hover / interaction
+            el.addEventListener('mouseenter', () => instance.enabled = false);
+            el.addEventListener('mouseleave', () => instance.enabled = true);
+            el.addEventListener('mousedown', () => instance.enabled = false);
+            document.addEventListener('mouseup', () => instance.enabled = true);
+        })();
 
-/*--------------------------------------------------
-Function Showcase Snap Slider
----------------------------------------------------*/
-	
-	function ShowcaseSnapSlider() {
+/*---------------------------------------------------*/
 		
 		if( $('.snap-slider-holder').length > 0 ){
 			
