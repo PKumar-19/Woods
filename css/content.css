@@ -798,10 +798,10 @@
     height: auto !important;
     overflow: visible !important;
 }
-		transform: scaleX(0);
+		/* transform: scaleX(0);
 		transform-origin: center;
 		transition: all 0.3s ease-out 0s;
-	}
+	} */
 	
 	.light-content #hero-footer.has-border::after {
 		background-color:rgba(255,255,255,0.15);

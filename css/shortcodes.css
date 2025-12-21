@@ -2592,14 +2592,25 @@
 	
 	#map_canvas {
 		display: block;
-		height:100vh;
+		height:80vh;
 		position:relative;
 		width: 100%;
+		background: #e5e5e5;
 	}
 	
 	.rounded-borders #map_canvas {
 		border-radius:8px;
 		overflow:hidden;
+	}
+
+	/* Ensure map is above clipped-image overlays so tiles are visible */
+	.clipped-image #map_canvas {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 11;
 	}
 	
 	#hero-image.bgrelative #map_canvas {
@@ -3267,6 +3278,7 @@
 		max-width: 1000%!important;
 		width: 100vw!important;
 		overflow:hidden;
+		height: 50vh;
 	}
 	
 	.clipped-image-pin {
@@ -3293,7 +3305,7 @@
 		transform: scale(0.7) translateY(0%);
 		transform-origin: center center;
 		margin:0 auto;
-		filter:grayscale(1);	
+		/* filter:grayscale(1);	 */
 	}
 	
 	.clipped-image img {
@@ -3326,6 +3338,14 @@
 		width:100%;
 		margin:0 auto;
 		z-index:10;
+	}
+
+	/* Allow maps to render in color even when the parent has grayscale */
+	.clipped-image iframe,
+	.clipped-image .map-embed-wrapper,
+	#map_canvas {
+		-webkit-filter: none !important;
+		filter: none !important;
 	}
 	
 /*--------------------------------------------------

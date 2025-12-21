@@ -12,15 +12,7 @@ jQuery(function ($) {
 		ShowcasePortfolio();
 		ShowcaseHighlights();
 		ShowcaseGallery();
-		ShowcaseSnapSlider();
-		FitThumbScreenWEBGL();
-		Shortcodes();		
-		Core();
-		MouseCursor();
-		JustifiedGrid();
-		Lightbox();
-		ContactForm();	
-		PlayVideo();
+		if (typeof ShowcaseSnapSlider === 'function') { ShowcaseSnapSlider(); } else { console.warn('ShowcaseSnapSlider not defined'); }
 		ContactMap();
 		CustomFunction();
 		ShuffleElementsFunction();
