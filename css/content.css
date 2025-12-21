@@ -1630,7 +1630,7 @@
 	
 	.page-nav-caption {
 		padding-top: 100px;
-		height: calc(100vh - 100px);
+		height: calc(40vh - 100px);
 	}
 	
 	.hero-subtitle {
@@ -1721,7 +1721,7 @@
 	
 	.page-nav-caption {
 		padding-top: 80px;
-		height: calc(100vh - 80px);
+		height: calc(50vh - 80px);
 	}
 	
 	.hero-title::before {
