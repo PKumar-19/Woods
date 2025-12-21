@@ -4146,6 +4146,7 @@ html,body {
 		line-height: 20px;
 		display: table;
 		width: auto;
+		margin-top: 40px;
 	}
 	
 	.socials li, .socials li a {
@@ -4438,4 +4439,9 @@ html,body {
 	.feature-section .col-img-wrapper { margin-top: 24px; }
 	.feature-section .col-img-wrapper img { max-width: 100%; }
 	.feature-section { padding-top: 6vw; padding-bottom: 6vw; }
+}
+
+
+@media only screen and (max-width: 900px) {
+
 }
