@@ -4345,6 +4345,7 @@ html,body {
 		background-image:
 			linear-gradient(rgba(242, 234, 227, 0.9), rgba(242, 234, 227, 0.9)),
 			url('images/The_Woods_Kasauli_Image_03.png');
+		background-position: center calc(100% + 80px);
 	}
 }
 

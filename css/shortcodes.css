@@ -2584,23 +2584,67 @@
 	#message fieldset {		
 		border:none;		
 	}
-	
-	
+
+
 /*--------------------------------------------------
 	Google Map
 ---------------------------------------------------*/	
-	
+
 	#map_canvas {
 		display: block;
 		height:80vh;
 		position:relative;
 		width: 100%;
 		background: #e5e5e5;
+		min-height: 300px;
+		max-height: 900px;
 	}
 	
+	/* Small rounded variant */
 	.rounded-borders #map_canvas {
 		border-radius:8px;
 		overflow:hidden;
+	}
+
+	/* Responsive sizes: tablet and mobile */
+	@media (max-width: 991px) { /* tablets */
+		#map_canvas { height:50vh; min-height:260px; }
+		.map-embed-wrapper { height:50vh; }
+	}
+
+	@media (max-width: 767px) { /* mobile */
+		/* Use a clamped mobile map height so it never exceeds the viewport while keeping 1340px as a max */
+		#map_canvas { height: clamp(400px, 80vh, 1340px) !important; min-height: 400px !important; width:100% !important; background:#e5e5e5; border-radius:8px; overflow:hidden; box-sizing: border-box; }
+		/* Allow embed wrappers to follow the clamped size but not force an oversized height */
+		.map-embed-wrapper { height: auto !important; max-width: calc(100vw - 32px); margin: 0 auto; padding: 0; box-sizing: border-box; }
+		/* Ensure embedded iframe wrappers also scale to the wrapper */
+		.map-embed-wrapper iframe,
+		#map_canvas iframe {
+			height:100% !important;
+			width:100% !important;
+			display:block;
+			border-radius:8px;
+		}
+		/* Adjust clipped-image container: allow initial clipped state and scale so animations run on mobile */
+		.clipped-image {
+			width: calc(100vw - 32px) !important;
+			height: auto !important;
+			/* Keep same clipping as desktop (but slightly reduced margins for small screens) */
+			clip-path: inset(8% 6% round 10px) !important;
+			-webkit-transform: scale(0.7) translateY(0) !important;
+			transform: scale(0.7) translateY(0) !important;
+			padding: 0;
+			margin: 0 auto;
+			overflow: hidden;
+		}
+		.clipped-image-wrapper {
+			height: auto !important;
+			padding-bottom: 20px;
+			overflow: visible;
+		}
+		.clipped-image-gradient { display:none !important; }
+		.clipped-image-content { padding-top: 20px !important; }
+		.clipped-image #map_canvas { position: relative !important; }
 	}
 
 	/* Ensure map is above clipped-image overlays so tiles are visible */

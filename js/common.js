@@ -1101,13 +1101,36 @@ Function Scroll Effects
 			}
 			
 			function setClippedImageWrapperProperties() {
-				gsap.set(clippedImageContent, { paddingTop:""});											
-				gsap.set(clippedImageGradient, { height: window.innerHeight * 0.3});
-				gsap.set(clippedImage, { height: window.innerHeight - document.querySelector('.clapat-header').offsetHeight * 2 });								
-				gsap.set(clippedImageContent, { paddingTop: (window.innerHeight/2) + clippedImageContent.offsetHeight});
-				gsap.set(clippedImageWrapper, { height: window.innerHeight + clippedImageContent.offsetHeight - document.querySelector('.clapat-header').offsetHeight});
+				gsap.set(clippedImageContent, { paddingTop:""});
 				
-			}		
+				gsap.set(clippedImageGradient, { height: window.innerHeight * 0.3});
+				// Calculate clipped image height. Use a fixed 1340px on small screens (mobile) if requested.
+				var headerHeight = (document.querySelector('.clapat-header') && document.querySelector('.clapat-header').offsetHeight) || 0;
+				var clippedHeight = window.innerHeight - headerHeight * 2;
+				if (window.innerWidth <= 767) {
+					// Mobile: cap clipped height so it won't grow beyond the viewport; keep 1340px as maximum
+					var mobileCap = Math.min(1340, Math.max(400, Math.floor(window.innerHeight * 0.9)));
+					clippedHeight = mobileCap;
+				}
+				gsap.set(clippedImage, { height: clippedHeight });
+				
+				gsap.set(clippedImageContent, { paddingTop: (window.innerHeight/2) + clippedImageContent.offsetHeight});
+				// Ensure wrapper is tall enough for either the window-based layout or the forced mobile height
+				var wrapperHeight = Math.max(
+					window.innerHeight + clippedImageContent.offsetHeight - headerHeight,
+					clippedHeight + clippedImageContent.offsetHeight - headerHeight
+				);
+				gsap.set(clippedImageWrapper, { height: wrapperHeight });
+				// Refresh ScrollTrigger to recalculate pin/start/end after size changes (esp. mobile rotation/resizes)
+				try { 
+					if (typeof ScrollTrigger !== 'undefined') {
+						ScrollTrigger.refresh(); 
+					}
+				} 
+				catch(e) { 
+					console.warn('ScrollTrigger.refresh failed', e); 
+				}
+			}
 			
 			imagesLoaded('body', function() {
 				setClippedImageWrapperProperties();
