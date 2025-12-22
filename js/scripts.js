@@ -2724,7 +2724,7 @@ Function Showcase Gallery
             // Portfolio scroll buttons: temporary boost in speed/direction when clicked
             const leftBtn = document.getElementById('portfolio-scroll-left');
             const rightBtn = document.getElementById('portfolio-scroll-right');
-            const applyBoost = (boostValue, duration = 500) => {
+            const applyBoost = (boostValue, duration = 200) => {
                 if (!instance) return;
                 const prev = instance.autoScrollSpeed;
                 instance.autoScrollSpeed = boostValue;
@@ -2737,7 +2737,7 @@ Function Showcase Gallery
             if (leftBtn) leftBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 // negative boost reverses direction for a short time (0.5s)
-                applyBoost(-3, 500);
+                applyBoost(-2, 200);
                 // add a quick nudge so the scroll visibly moves left immediately
                 if (instance && instance.state) gsap.to(instance.state, { duration: 0.5, target: instance.state.target + 400, ease: "power2.out" });
             });
@@ -2745,7 +2745,7 @@ Function Showcase Gallery
             if (rightBtn) rightBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 // positive boost increases forward speed (0.5s)
-                applyBoost(3, 500);
+                applyBoost(2, 200);
                 // nudge to the right
                 if (instance && instance.state) gsap.to(instance.state, { duration: 0.5, target: instance.state.target - 400, ease: "power2.out" });
             });
