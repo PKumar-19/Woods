@@ -76,7 +76,7 @@
 }
 
 /* small caption above the main word */
-.kasauli-text::before {
+/* .kasauli-text::before {
   content: "WHY";
   font-style: italic;
   position: absolute;
@@ -88,6 +88,42 @@
   letter-spacing: 3px;
   color: rgba(255,255,255,0.95);
   text-shadow: none;
+} */
+
+#why {
+  /* font-size: clamp(12px, 1.2vw, 14px);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  opacity: 0.8;
+  margin-bottom: 6px; */
+  content: "WHY";
+  font-style: italic;
+  position: absolute;
+  top: -2.2em;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: clamp(10px, 1.6vw, 18px);
+  font-weight: 400;
+  letter-spacing: 3px;
+  color: rgba(255,255,255,0.95);
+  text-shadow: none;
+}
+
+#tourism-dock-point {
+  display: inline-block;
+}
+
+.kasauli-title-center {
+  height: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 7vh;
+  text-align: center;
+}
+
+.kasauli-title-inner {
+  position: relative;
 }
 
 /* dotted line under the main title */

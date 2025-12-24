@@ -262,16 +262,21 @@
                                                 Your browser does not support the video tag.
                                             </video> -->
 
-                                            <div class="tourism-main-container row_padding_bottom">
-
-                                                <h1 class="kasauli-text">Kasauli</h1>
+                                            <div id="tourism-hero" class="tourism-main-container row_padding_bottom">
+                                                <div id="sticky" class="kasauli-title-center">
+                                                    <div class="kasauli-title-inner">
+                                                        <h3 id="why">Why</h3>
+                                                        <h1 id="tourism-hero-title" class="kasauli-text">Kasauli</h1>
+                                                    </div>
+                                                </div>
+                                                
 
                                                 <div class="kasauli_serenity_section">
                                                     <div class="serenity-content">
                                                         <div class="serenity-text-box">
-                                                            <h2 class="serenity-heading">
+                                                            <h2 class="serenity-heading" id="sentence">
                                                                 <span class="serenity-label">INVEST IN</span>
-                                                                <span class="serenity-main">KASAULI'S -</span>
+                                                                <span id="tourism-dock-point"></span>
                                                                 <span class="serenity-rotator" aria-live="polite" aria-atomic="true">
                                                                     <span class="serenity-subtext active">SERENITY</span>
                                                                     <span class="serenity-subtext">Nature</span>
@@ -290,22 +295,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <script>
-                                                (function(){
-                                                    const texts = Array.from(document.querySelectorAll('.serenity-rotator .serenity-subtext'));
-                                                    const imgs = Array.from(document.querySelectorAll('.serenity-image-rotator .rot-image'));
-                                                    const count = Math.min(texts.length, imgs.length);
-                                                    if (!count) return;
-                                                    let idx = 0;
-                                                    const show = i => {
-                                                        texts.forEach((el,j) => el.classList.toggle('active', j === i));
-                                                        imgs.forEach((el,j) => el.classList.toggle('active', j === i));
-                                                    };
-                                                    show(0);
-                                                    const interval = 2500;
-                                                    setInterval(() => { idx = (idx + 1) % count; show(idx); }, interval);
-                                                })();
-                                                </script>
 
                                                 <div class="tourism-white-card-box">
                                                     <div class="tourism-grid-wrapper">
@@ -1801,8 +1790,8 @@
 
 
     <script src="js/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/Flip.min.js"></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/5.0.0/imagesloaded.pkgd.min.js'></script>
@@ -1818,6 +1807,7 @@
     <script src="js/scripts.js"></script>
     <script src="js/faq.js"></script>
     <script src="js/header-woods.js"></script>
+    <script src="js/tourism-scroll.js"></script>
 
     
 
