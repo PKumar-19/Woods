@@ -17,6 +17,9 @@ jQuery(function ($) {
 		CustomFunction();
 		ShuffleElementsFunction();
 		InitShuffleElements();
+		// Initialize cursor/core features if available
+		if (typeof Core === 'function') { Core(); } else { console.warn('Core not defined'); }
+		if (typeof MouseCursor === 'function') { MouseCursor(); } else { console.warn('MouseCursor not defined'); }
 	});
 	
 	
