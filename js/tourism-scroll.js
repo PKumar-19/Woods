@@ -28,22 +28,21 @@ window.addEventListener("load", () => {
     return;
   }
 
-  // Calculate the x/y offset relative to the sticky container
+  // Calculate a robust x/y offset so the hero word docks to the dock point across breakpoints
   function getDockPosition() {
     const heroRect = heroWord.getBoundingClientRect();
     const dockRect = dockPoint.getBoundingClientRect();
-    const stickyRect = sticky.getBoundingClientRect();
-    // Defensive arithmetic in case layout changes
-    return {
-      x:
-        dockRect.left -
-        heroRect.left +
-        (heroWord.offsetLeft - heroWord.getBoundingClientRect().left),
-      y:
-        dockRect.top -
-        heroRect.top +
-        (heroWord.offsetTop - heroWord.getBoundingClientRect().top),
-    };
+
+    // Use center alignment by default (more robust across different font sizes/line-wrapping)
+    const heroCenterX = heroRect.left + heroRect.width / 2;
+    const heroCenterY = heroRect.top + heroRect.height / 2;
+    const dockCenterX = dockRect.left + dockRect.width / 2;
+    const dockCenterY = dockRect.top + dockRect.height / 2;
+
+    const dx = dockCenterX - heroCenterX;
+    const dy = dockCenterY - heroCenterY;
+
+    return { x: dx, y: dy };
   }
 
   /* MAIN SCROLL TIMELINE */
@@ -136,18 +135,50 @@ window.addEventListener("load", () => {
     0.2
   );
 
-  /* DOCK Kasauli on its OWN LINE */
+  /* DOCK Kasauli on its OWN LINE (responsive-friendly) */
+  function getTargetScale() {
+    const w = window.innerWidth;
+    if (w <= 480) return 0.6; // small phones
+    if (w <= 768) return 0.45; // phones / small tablets
+    if (w <= 1024) return 0.35; // tablets
+    return 0.3; // desktop
+  }
+
+  // Small horizontal nudge to move the docked title slightly right on larger screens.
+  function getDockNudge(heroRect) {
+    const w = window.innerWidth;
+    // Use a fraction of the hero width so the adjustment scales with text size
+    if (w >= 1400) return heroRect.width * 0.60;
+    if (w >= 1200) return heroRect.width * 0.80;
+    if (w >= 1024) return heroRect.width * 0.82;
+    if (w >= 768) return heroRect.width * 0.62;
+    return 0;
+  }
+
   tl.to(
     heroWord,
     {
-      x: () => getDockPosition().x,
+      x: () => {
+        const pos = getDockPosition();
+        const heroRect = heroWord.getBoundingClientRect();
+        return pos.x + getDockNudge(heroRect);
+      },
       y: () => getDockPosition().y,
-      scale: 0.3,
-      transformOrigin: "81% -10%",
+      scale: () => getTargetScale(),
+      // keep transform origin centered vertically, left-aligned horizontally for consistent docking
+      transformOrigin: "left center",
       ease: "power2.inOut",
     },
     0
   );
+
+  // Ensure measurements are recalculated on resize/orientation changes
+  window.addEventListener('orientationchange', () => ScrollTrigger.refresh());
+  window.addEventListener('resize', () => {
+    // small debounce
+    clearTimeout(window._tourismResizeTimeout);
+    window._tourismResizeTimeout = setTimeout(() => ScrollTrigger.refresh(), 120);
+  });
 
   /* ROTATING WORDS (commented out intentionally) */
   /*
