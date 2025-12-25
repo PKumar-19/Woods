@@ -106,6 +106,11 @@
                                         <source src="videos/THE_WOODS_KASAULIii.mp4" type="video/mp4">
                                         Your browser does not support HTML5 video.
                                     </video>
+
+                                    <!-- Centered hero caption -->
+                                    <div class="bg-woods-caption" id="bg-woods-caption" aria-hidden="false">
+                                        <h1 id="bg-woods-title" class="bg-woods-title">Own Luxury 4BHK Villas <br /> In The Heart Of Kasauli</h1>
+                                    </div>
                                 </div>
                                 <div class="bg-overlay"></div>
 
@@ -1830,6 +1835,47 @@
     <script src="js/faq.js"></script>
     <script src="js/header-woods.js"></script>
     <script src="js/tourism-scroll.js"></script>
+
+    <!-- Hero caption: one-time, robust trigger to start the masked reveal animation -->
+    <script>
+    (function(){
+      var title = document.getElementById('bg-woods-title');
+      var wrapper = document.getElementById('bg-woods-caption');
+      if(!title) return;
+
+      function finalize() {
+        title.style.opacity = '1';
+        title.style.transform = 'none';
+        if(wrapper) wrapper.classList.add('bg-woods-caption--played');
+        title.dataset.woodsPlayed = '1';
+      }
+
+      function startOnce(){
+        if(title.dataset.woodsPlayed === '1') return;
+        // Add mask first so the reveal can play — mask is off-screen by default so this won't hide text if JS fails
+        title.classList.add('bg-woods-title--mask');
+        // Force reflow so transition can start reliably
+        void title.offsetHeight;
+        // Start the animate class which drives the reveal and subtle text motion
+        title.classList.add('bg-woods-title--animate');
+
+        title.addEventListener('animationend', function onEnd(){
+          finalize();
+          title.removeEventListener('animationend', onEnd);
+        }, {once:true});
+
+        // fallback in case animationend doesn't fire
+        setTimeout(function(){ if(title.dataset.woodsPlayed !== '1') finalize(); }, 1700);
+      }
+
+      if(document.readyState === 'complete'){
+        startOnce();
+      } else {
+        window.addEventListener('load', startOnce, {once:true});
+        document.addEventListener('DOMContentLoaded', function(){ setTimeout(startOnce, 120); }, {once:true});
+      }
+    })();
+    </script>
 
     
 

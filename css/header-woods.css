@@ -71,3 +71,114 @@
   pointer-events: none !important;
   display: none !important;
 }
+
+/* Centered caption over the hero video */
+.bg-woods-caption {
+  position: fixed !important;
+  inset: 0 !important; /* top:0; right:0; bottom:0; left:0 */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 20 !important; /* above the video (z-index:5) and below header */
+  pointer-events: none !important;
+  padding: 0 32px !important;
+  text-align: center !important;
+}
+
+.bg-woods-caption .bg-woods-title {
+  font-family: 'Montserrat', sans-serif !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  font-size: clamp(24px, 4.8vw, 64px) !important;
+  line-height: 1.05 !important;
+  text-shadow: 0 8px 24px rgba(0,0,0,0.6) !important;
+  margin: 0 !important;
+  letter-spacing: -0.2px !important;
+}
+
+/* Make sure caption is readable on very small screens */
+@media (max-width: 420px) {
+  .bg-woods-caption .bg-woods-title {
+    font-size: 20px !important;
+    padding: 0 12px !important;
+  }
+}
+
+/* Enhanced masked reveal animation (isolated to caption) */
+.bg-woods-caption .bg-woods-title {
+  position: relative !important;
+  display: inline-block !important;
+  overflow: hidden !important;
+  z-index: 1 !important;
+}
+
+/* Mask is hidden by default so text remains visible if animation doesn't run */
+.bg-woods-caption .bg-woods-title::before {
+  content: '' !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background: rgba(14, 20, 20, 0.85) !important; /* dark mask used for reveal */
+  z-index: 2 !important;
+  transform: translateX(110%) !important; /* off-screen by default */
+  opacity: 0 !important;
+  transition: transform 900ms cubic-bezier(.2,.9,.3,1) 350ms, opacity 900ms cubic-bezier(.2,.9,.3,1) 350ms !important;
+  pointer-events: none !important;
+}
+
+/* When we want to use the mask, add the mask class first (only via JS). This places the mask over the text. */
+.bg-woods-title--mask::before {
+  transform: translateX(0) !important;
+  opacity: 1 !important;
+}
+
+/* Primary animation: fade/slide/scale of the text + mask slides out */
+.bg-woods-title--animate {
+  opacity: 1 !important; /* text stays visible during mask animation */
+  transform: translateY(0) scale(1) !important;
+  will-change: opacity, transform !important;
+  animation: woodsReveal 900ms cubic-bezier(.2,.9,.3,1) 350ms both !important;
+  animation-iteration-count: 1 !important;
+  animation-fill-mode: both !important;
+}
+
+/* when both mask and animate are present, move mask away to reveal */
+.bg-woods-title--mask.bg-woods-title--animate::before {
+  transform: translateX(110%) !important; /* slide mask away */
+  opacity: 0 !important;
+}
+
+@keyframes woodsReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-6px) scale(1.005);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Keep final masked state if script sets played class */
+.bg-woods-caption--played .bg-woods-title::before {
+  transform: translateX(110%) !important;
+  transition: none !important;
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .bg-woods-title--animate, .bg-woods-caption--played .bg-woods-title {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .bg-woods-caption .bg-woods-title::before { display: none !important; }
+}
+
+/* Optional utility to re-trigger the animation with JS if desired */
+.bg-woods-caption--replay .bg-woods-title--animate {
+  animation: woodsReveal 900ms cubic-bezier(.2,.9,.3,1) 350ms both;
+}

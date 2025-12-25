@@ -53,6 +53,7 @@ window.addEventListener("load", () => {
     start: "top top",
     end: "bottom bottom",
     scrub: 1.2,
+    delay: 2.0,
     // markers: true, // turn on when debugging
     onUpdate: (self) => {
       // debug
