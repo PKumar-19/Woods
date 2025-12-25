@@ -90,8 +90,39 @@
 	.clapat-slider-wrapper {
 		width:100%;
 		height: 70vh;
-		position:relative;	
+		position:relative; 
+		overflow: hidden; 
 		background-color: #1f3533;
+	}
+
+	/* Background image layer with adjustable opacity */
+	.clapat-slider-wrapper::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-image: url('../images/Project_Overview/Project_Overview_Scroll.png');
+		background-size: cover;
+		background-position: center;
+		background-repeat: no-repeat;
+		opacity: 0.25; /* adjust opacity as needed */
+		pointer-events: none;
+		z-index: 0;
+	}
+
+	/* Gentle dark overlay to preserve contrast over the image */
+	.clapat-slider-wrapper::after {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: rgba(0,0,0,0.15);
+		pointer-events: none;
+		z-index: 1;
 	}
 
 	.clapat-slider {

@@ -2213,10 +2213,26 @@ Function Showcase Gallery
 				gsap.to(".clapat-slider .clapat-slide .trigger-item", { duration: 1, opacity:0, scale:0.7, ease:Power2.easeOut });
 				
 				const projectBgColor = gridPreview.currentImage.dataset.projectbgcolor;
-				
+			const projectBgImage = gridPreview.currentImage.dataset.projectbgimage;
+
+			if (projectBgImage) {
+				// If a background image is provided on the slide, use it with a semi-opaque overlay
+				const bgValue = `linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url('${projectBgImage}')`;
+				// make header gradient transparent so the image shows through
+				gsap.to('.header-gradient', { duration: 0.5, delay:0.15, backgroundColor: 'transparent', ease:Power2.easeInOut });
+				// animate color to transparent, then set backgroundImage for main
+				gsap.to("main", { duration: 0.5, delay:0.15, backgroundColor: 'transparent', ease:Power2.easeInOut, onComplete: function() {
+					document.querySelector('main').style.backgroundImage = bgValue;
+					document.querySelector('main').style.backgroundSize = 'cover';
+					document.querySelector('main').style.backgroundPosition = 'center';
+					document.querySelector('main').style.backgroundRepeat = 'no-repeat';
+				}});
+			} else {
+				// clear any previous image and fallback to color
+				document.querySelector('main').style.backgroundImage = '';
 				gsap.to('.header-gradient', { duration: 0.5, delay:0.15, backgroundColor: projectBgColor, ease:Power2.easeInOut });
 				gsap.to("main", { duration: 0.5, delay:0.15, backgroundColor: projectBgColor, ease:Power2.easeInOut });
-				
+			}
 				
 				
 				if (document.getElementById('clapat-page-content').classList.contains('dark-content')) {

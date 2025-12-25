@@ -888,6 +888,13 @@ html,body {
 		box-sizing: border-box;
 	}
 
+	@media (min-width: 1080px) {
+	  .portfolio-scroll-section {
+	    margin-bottom: -150px !important; /* negative margin works */ /* or whatever you want instead */
+	  }
+	}
+
+
 	/* Small spacer and isolation for the middle hero so it doesn't visually overlap */
 	.hero-middle-section {
 		margin-top: 2.5vw;
@@ -2365,6 +2372,9 @@ html,body {
 			
 		}
 	
+		/* .portfolio-scroll-section {
+			padding-bottom: -150px;
+		} */
 	}
 
 	.clapat-nav-wrapper, .clapat-nav-wrapper.open {
@@ -2893,6 +2903,10 @@ html,body {
 
 	/* Ensure enough bottom padding in footer so it doesn't overlap page content */
 	.clapat-footer { padding-bottom: 18px; }
+
+	/* .portfolio-scroll-section {
+		padding-bottom: 9vw;
+	} */
 }
 
 	

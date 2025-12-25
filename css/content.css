@@ -470,7 +470,7 @@
 	  pointer-events: none;
 
 	  /* Visual tuning */
-	  filter: brightness(0.8) contrast(0.9) saturate(1.5);
+	  filter: brightness(0.9) contrast(0.8) saturate(1.5);
 	}    
 	.bg-overlay {
 	  position: fixed;

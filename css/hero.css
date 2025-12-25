@@ -9,7 +9,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: -apple-system, BlinkMacSystemFont, 'Montserrat', sans-serif;
-    background: #c4c4c4;
+    background: #f2eae3;
     height: auto;
     display: flex;
     align-items: center;
@@ -22,7 +22,7 @@
     max-width: 1400px;
     height: 600px;
     padding: 60px 80px;
-    background: #c4c4c4;
+    background: #f2eae3;
     /* Prevent absolutely positioned hero elements from overflowing into following sections */
     overflow: hidden;
 }
