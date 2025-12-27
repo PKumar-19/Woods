@@ -1,0 +1,379 @@
+/* Right Sticky Social Media */
+.social-sticky-left {
+    position: fixed;
+    right: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 999;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transition: color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.social-detector {
+    width: 1px;
+    height: 1px;
+    position: absolute;
+    pointer-events: none;
+    opacity: 0;
+}
+
+.social-detector-top {
+    top: 0;
+}
+
+.social-detector-bottom {
+    bottom: 0;
+}
+
+.social-sticky-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.social-text {
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    color: #fff;
+    white-space: nowrap;
+    transition: color 0.3s ease;
+}
+
+.social-text .social-link {
+    color: #fff;
+    text-decoration: none;
+    position: relative;
+    transition: color 0.3s ease, transform 0.3s ease;
+    display: inline-block;
+}
+
+.social-text .social-link:hover {
+    color: #f2eae3;
+    transform: scale(1.1);
+}
+
+.social-text .social-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1px;
+    bottom: -2px;
+    left: 50%;
+    background-color: #f2eae3;
+    transition: width 0.3s ease, left 0.3s ease;
+}
+
+.social-text .social-link:hover::after {
+    width: 100%;
+    left: 0;
+}
+
+/* Dark text for light backgrounds */
+.social-sticky-left.dark-text .social-text,
+.social-sticky-left.dark-text .social-link {
+    color: #000 !important;
+}
+
+.social-sticky-left.dark-text .social-link:hover {
+    color: #fa821d !important;
+}
+
+.social-sticky-left.dark-text .social-link::after {
+    background-color: #fa821d;
+}
+
+/* Responsive: Hide on mobile */
+@media only screen and (max-width: 767px) {
+    .social-sticky-left {
+        display: none;
+    }
+}
+
+/* Custom Three-Column Layout for ClaPat Slider */
+
+/* Hide hover-reveal images by default - they should only appear on hover */
+.showcase-gallery .hover-reveal,
+.hover-reveal {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* Add spacing between slides to prevent overlapping */
+.showcase-gallery .clapat-slide {
+    width: 75vw !important;
+    margin: 0 5vw !important;
+    padding: 0 !important;
+    flex-shrink: 0 !important;
+    overflow: hidden !important;
+}
+
+/* Reset any conflicting original styles */
+.showcase-gallery .slide-effects.align-center,
+.showcase-gallery .slide-effects.align-left,
+.showcase-gallery .slide-effects.align-right {
+    display: flex !important;
+    flex-direction: row !important;
+}
+
+/* Horizontal flow layout: Image → Text → Thumbnail */
+.showcase-gallery .slide-effects,
+.showcase-gallery .clapat-slide .slide-effects {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 3vw !important;
+    height: 70vh !important;
+    width: 100% !important;
+    padding: 0 2vw !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+/* Left: Main large image - proportional to section height */
+.showcase-gallery .slide-inner-height {
+    flex-shrink: 0 !important;
+    width: auto !important;
+    height: 40vh !important;
+    max-width: 28vw !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    padding-top: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: relative !important;
+    overflow: visible !important;
+    z-index: 5 !important;
+}
+
+.showcase-gallery .slide-inner-height::before {
+    display: none !important;
+}
+
+/* Handle all nested containers for the image */
+.showcase-gallery .slide-moving,
+.showcase-gallery .slide-inner-height .slide-moving,
+.showcase-gallery .clapat-slide .trigger-item,
+.showcase-gallery .slide-inner-height .trigger-item {
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    z-index: 5 !important;
+}
+
+.showcase-gallery .img-mask,
+.showcase-gallery .slide-inner-height .img-mask {
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    z-index: 5 !important;
+}
+
+.showcase-gallery .slide-inner-height .section-image {
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 5 !important;
+}
+
+.showcase-gallery .slide-inner-height .item-image,
+.showcase-gallery .slide-inner-height .grid__item-img {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: 40vh !important;
+    object-fit: contain !important;
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    flex-shrink: 0 !important;
+}
+
+/* Hide the large duplicate image that's used for animations */
+.showcase-gallery .grid__item-img--large,
+.grid__item-img--large {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* Center: Caption content (title, category) - RIGHT SIDE OF IMAGE */
+.showcase-gallery .slide-caption,
+.showcase-gallery .clapat-slide .slide-caption,
+.showcase-gallery .clapat-slide:nth-child(odd) .slide-caption,
+.showcase-gallery .clapat-slide:nth-child(even) .slide-caption {
+    flex-shrink: 0 !important;
+    position: relative !important;
+    padding: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin: 0 !important;
+    opacity: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    align-self: center !important;
+    justify-content: center !important;
+    text-align: left !important;
+    min-width: 280px !important;
+    max-width: 350px !important;
+    z-index: 10 !important;
+    height: auto !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+}
+
+/* Hide the date (year) */
+.showcase-gallery .slide-caption .slide-date {
+    display: none !important;
+}
+
+/* Style for title - proportional to section */
+.showcase-gallery .slide-caption .slide-title {
+    font-size: 38px !important;
+    line-height: 1.1;
+    margin-bottom: 8px !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.02em;
+    white-space: normal;
+}
+
+/* Style for category - proportional to section */
+.showcase-gallery .slide-caption .slide-cat {
+    font-size: 38px !important;
+    line-height: 1.1;
+    margin-bottom: 0 !important;
+    font-weight: 300 !important;
+    opacity: 1 !important;
+    white-space: normal;
+}
+
+
+/* Right: Small thumbnail image - slightly lower middle */
+.showcase-gallery .slide-thumb,
+.showcase-gallery .clapat-slide .slide-thumb,
+.showcase-gallery .clapat-slide:nth-child(odd) .slide-thumb,
+.showcase-gallery .clapat-slide:nth-child(even) .slide-thumb {
+    flex-shrink: 0 !important;
+    width: 200px !important;
+    height: auto !important;
+    margin: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    margin-top: 6vh !important;
+    aspect-ratio: 4/3 !important;
+    align-self: center !important;
+    position: relative !important;
+}
+
+.showcase-gallery .slide-thumb::before {
+    padding-top: 75% !important;
+    float: left !important;
+    content: "" !important;
+}
+
+.showcase-gallery .slide-thumb::after {
+    display: block !important;
+    content: "" !important;
+    clear: both !important;
+}
+
+.showcase-gallery .slide-thumb img {
+    border-radius: 8px !important;
+    width: 75% !important;
+    height: 100% !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    object-fit: cover !important;
+}
+
+/* Ensure all slides use the same layout regardless of odd/even - rules now consolidated above */
+
+/* Remove the hover effect for caption opacity */
+.showcase-gallery .clapat-slide .slide-caption {
+    opacity: 1 !important;
+}
+
+.showcase-gallery .clapat-slide.hovered .slide-caption {
+    opacity: 1 !important;
+}
+
+/* Ensure caption text is always visible */
+.showcase-gallery .slide-caption span {
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+/* Responsive adjustments */
+@media only screen and (max-width: 1024px) {
+    .showcase-gallery .slide-effects {
+        flex-direction: column;
+        height: auto;
+        gap: 4vh;
+        padding: 3vh 3vw;
+    }
+
+    .showcase-gallery .slide-inner-height {
+        height: 50vh !important;
+        max-width: 90vw;
+        width: 100% !important;
+    }
+
+    .showcase-gallery .slide-inner-height .item-image,
+    .showcase-gallery .slide-inner-height .grid__item-img {
+        max-width: 90vw;
+    }
+
+    .showcase-gallery .slide-caption {
+        min-width: auto;
+        max-width: 100%;
+        align-items: center;
+        text-align: center;
+    }
+
+    .showcase-gallery .slide-caption .slide-title,
+    .showcase-gallery .slide-caption .slide-cat {
+        white-space: normal;
+    }
+
+    .showcase-gallery .slide-thumb {
+        width: 200px !important;
+        margin-left: 0 !important;
+        margin-top: 0 !important;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .showcase-gallery .slide-caption .slide-title,
+    .showcase-gallery .slide-caption .slide-cat {
+        font-size: 28px !important;
+    }
+
+    .showcase-gallery .slide-caption .slide-date {
+        font-size: 16px !important;
+    }
+}

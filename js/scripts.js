@@ -34,9 +34,128 @@ Function CustomFunction
 ---------------------------------------------------*/
 
 	function CustomFunction() {
-		
+
 		//Add here your custom js code
-		
+
+		// Dynamic color change for sticky social media based on background
+		function updateSocialStickyColor() {
+			const socialSticky = $('.social-sticky-left');
+			if (socialSticky.length === 0) return;
+
+			// Get the sticky element position
+			const stickyRect = socialSticky[0].getBoundingClientRect();
+			const centerX = stickyRect.left + (stickyRect.width / 2);
+
+			// Check multiple points along the height of the sticky element
+			const checkPoints = [
+				stickyRect.top + 20,           // Near top
+				stickyRect.top + stickyRect.height / 4,  // Quarter down
+				stickyRect.top + stickyRect.height / 2,  // Middle
+				stickyRect.top + (3 * stickyRect.height / 4),  // Three quarters
+				stickyRect.bottom - 20         // Near bottom
+			];
+
+			let lightCount = 0;
+			let darkCount = 0;
+
+			// Check each point
+			for (let i = 0; i < checkPoints.length; i++) {
+				const bgColor = getBackgroundAtPoint(centerX, checkPoints[i]);
+				if (isLightColor(bgColor)) {
+					lightCount++;
+				} else {
+					darkCount++;
+				}
+			}
+
+			// If majority of points are on light background, use dark text
+			if (lightCount > darkCount) {
+				if (!socialSticky.hasClass('dark-text')) {
+					socialSticky.addClass('dark-text');
+				}
+			} else {
+				if (socialSticky.hasClass('dark-text')) {
+					socialSticky.removeClass('dark-text');
+				}
+			}
+		}
+
+		// Get background color at a specific point
+		function getBackgroundAtPoint(x, y) {
+			// Temporarily disable pointer events on sticky element
+			const socialSticky = $('.social-sticky-left');
+			socialSticky.css('pointer-events', 'none');
+
+			const element = document.elementFromPoint(x, y);
+
+			// Re-enable pointer events
+			socialSticky.css('pointer-events', 'auto');
+
+			if (!element) return null;
+
+			let bgColor = window.getComputedStyle(element).backgroundColor;
+			let currentElement = element;
+			let maxIterations = 25;
+			let iterations = 0;
+
+			// Traverse up to find non-transparent background
+			while (currentElement && iterations < maxIterations &&
+				   (bgColor === 'rgba(0, 0, 0, 0)' || bgColor === 'transparent' || bgColor === '')) {
+				currentElement = currentElement.parentElement;
+				iterations++;
+				if (currentElement) {
+					bgColor = window.getComputedStyle(currentElement).backgroundColor;
+				}
+			}
+
+			return bgColor;
+		}
+
+		// Helper function to determine if color is light
+		function isLightColor(color) {
+			if (!color || color === 'rgba(0, 0, 0, 0)' || color === 'transparent' || color === '') {
+				return false;
+			}
+
+			// Parse RGB values
+			const rgb = color.match(/\d+/g);
+			if (!rgb || rgb.length < 3) return false;
+
+			// Calculate relative luminance
+			const r = parseInt(rgb[0]);
+			const g = parseInt(rgb[1]);
+			const b = parseInt(rgb[2]);
+
+			// Using relative luminance formula (weighted for human perception)
+			const luminance = (0.299 * r + 0.587 * g + 0.114 * b);
+
+			// Threshold: 170 works well for distinguishing light backgrounds
+			return luminance > 170;
+		}
+
+		// Run on scroll - check continuously
+		$(window).on('scroll', function() {
+			updateSocialStickyColor();
+		});
+
+		// Also run on requestAnimationFrame for smooth updates
+		function continuousCheck() {
+			updateSocialStickyColor();
+			requestAnimationFrame(continuousCheck);
+		}
+
+		// Run on load
+		$(window).on('load', function() {
+			updateSocialStickyColor();
+			// Start continuous checking
+			requestAnimationFrame(continuousCheck);
+		});
+
+		// Run immediately after delays to ensure DOM is ready
+		setTimeout(updateSocialStickyColor, 100);
+		setTimeout(updateSocialStickyColor, 500);
+		setTimeout(updateSocialStickyColor, 1000);
+
 	}// End CustomFunction
 	
 	
@@ -1997,9 +2116,9 @@ Function Showcase Gallery
 			
 			
 			
-			slider = new ClapatSlider('.clapat-slider-wrapper', { 
+			slider = new ClapatSlider('.clapat-slider-wrapper', {
 				direction: 'horizontal',
-				ease: 0.075, 
+				ease: 0.04,
 				outer: '.clapat-slider',
 				inner: '.clapat-slider-viewport',
 				navigation: {
@@ -2007,9 +2126,9 @@ Function Showcase Gallery
 					prevEl: '.cp-button-prev'
 				},
 				snap:false,
-				parallax : [{					
+				parallax : [{
 					element: '.speed-50',
-					margin: -80
+					margin: -10
 				}],
 				on: {	
 					init : function(slide) {
