@@ -1571,7 +1571,7 @@
 	}
 	
 	.showcase-gallery .clapat-slider {
-    	padding: 0 10vw 0 10vw;
+    	padding: 0 5vw 0 5vw;
 	}
 	
 	.showcase-gallery .clapat-slide {
@@ -1679,7 +1679,13 @@
 		font-size: calc(1rem + 3vw);
 	}
 	
-	
+	.slide-title {
+		margin-bottom: 40px;
+		margin-left: -25px;
+	}
+	.slide-subtitle {
+		display: none;
+	}
 }
 
 

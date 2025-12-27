@@ -1046,10 +1046,10 @@
 		justify-content: flex-start;
 		width: 100%;
 		margin: 0 auto;
-		padding-top: 60px;
-  		padding-bottom: 60px;
+		/* padding-top: 30px; */
+  		padding-bottom: 30px;
 		margin: 0 auto;
-		height: auto;
+		height: 45vh;
 		top:0;
 		opacity:0;
 		position: relative;
@@ -1630,7 +1630,7 @@
 	
 	.page-nav-caption {
 		padding-top: 100px;
-		height: calc(40vh - 100px);
+		height: calc(45vh - 100px);
 	}
 	
 	.hero-subtitle {
@@ -1721,7 +1721,7 @@
 	
 	.page-nav-caption {
 		padding-top: 80px;
-		height: calc(50vh - 80px);
+		height: calc(35vh - 80px);
 	}
 	
 	.hero-title::before {

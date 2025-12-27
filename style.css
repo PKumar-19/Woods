@@ -890,7 +890,7 @@ html,body {
 
 	@media (min-width: 1080px) {
 	  .portfolio-scroll-section {
-	    margin-bottom: -150px !important; /* negative margin works */ /* or whatever you want instead */
+	    margin-bottom: -250px !important; /* negative margin works */ /* or whatever you want instead */
 	  }
 	}
 
@@ -2790,7 +2790,7 @@ html,body {
 	#footer-container {
 		position: relative;
 		padding: 10px 18px;
-		margin: 12px auto 0;
+		margin: 0px auto 0;
 		height: auto;
 		box-sizing: border-box;
 	}
