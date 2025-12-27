@@ -1752,8 +1752,12 @@ html,body {
 	
 	#clapat-logo a {
 		display:block;
+		width: auto !important;
+		height: auto !important;
+		max-width: 200px;
+		max-height: 60px;
 		-webkit-transition: transform 0.5s ease-in-out 0.1s;
-		transition: transform 0.5s ease-in-out 0.1s;	
+		transition: transform 0.5s ease-in-out 0.1s;
 	}
 	
 	#clapat-logo a.disable, .open #clapat-logo a {
