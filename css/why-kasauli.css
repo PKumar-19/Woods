@@ -375,32 +375,39 @@
 }
 
 .tourism-cta-wrapper {
-    margin: 0;
+    margin: 40px 0 0 0;
     padding: 0;
     box-sizing: border-box;
     text-align: center;
 }
 
 .tourism-action-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     margin: 0;
-    padding: 12px 35px;
+    padding: 15px 45px;
     box-sizing: border-box;
-    background: #2c3e50;
-    color: white;
+    background: linear-gradient(135deg, #1f3533, #2c3e50);
+    color: #f2eae3;
     border: none;
-    border-radius: 25px;
-    font-size: 14px;
-    font-weight: 500;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
     text-transform: capitalize;
     font-family: 'Montserrat', sans-serif;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 15px rgba(31, 53, 51, 0.2);
 }
 
 .tourism-action-button:hover {
-    background: #34495e;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    color: #ffffff;
+    background: linear-gradient(135deg, #1f3533, #1f3533);
+    transform: translateY(-3px);
+    /* box-shadow: 0 8px 25px rgba(31, 53, 51, 0.35); */
 }
 
 @media (max-width: 768px) {
