@@ -1,13 +1,13 @@
 jQuery(function ($) {
 
 	$(document).ready(function() {
-		
+
 		"use strict";
-		
-		PageLoad();		
-		ScrollEffects();		
-		Sliders();	 
-		FirstLoad(); 
+
+		PageLoad();
+		ScrollEffects();
+		Sliders();
+		FirstLoad();
 		PageLoadActions();
 		ShowcasePortfolio();
 		ShowcaseHighlights();
@@ -20,6 +20,12 @@ jQuery(function ($) {
 		// Initialize cursor/core features if available
 		if (typeof Core === 'function') { Core(); } else { console.warn('Core not defined'); }
 		if (typeof MouseCursor === 'function') { MouseCursor(); } else { console.warn('MouseCursor not defined'); }
+	});
+
+	// Wait for all resources (images, videos, fonts) to load before initializing .has-animation triggers
+	// This prevents race conditions where ScrollTrigger calculates wrong positions due to layout shifts
+	$(window).on('load', function() {
+		InitContentAnimations();
 	});
 	
 	
@@ -508,7 +514,7 @@ Function Page Load
 			
 			var perfData = performance.getEntriesByType('navigation')[0] || performance.timing;
 			var EstimatedTime = -(perfData.loadEventEnd - perfData.startTime);
-			var time = Math.min(Math.max(((EstimatedTime / 100) % 50) * 1000, 500), 20000);
+			var time = Math.min(Math.max(((EstimatedTime / 100) % 50) * 1000, 1500), 20000);
 			var timeSeconds = time/1000 - 1.5
 			window.preloaderTimeout = time; 
 			

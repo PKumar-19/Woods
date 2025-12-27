@@ -2590,46 +2590,8 @@ Function Scroll Effects
 			});
 		});
 		
-		var hasAnimation = gsap.utils.toArray('.has-animation');			
-		hasAnimation.forEach(function(hAnimation) {
-			var delayValue = parseInt(hAnimation.getAttribute("data-delay")) || 0;
-			gsap.to(hAnimation, { 					
-				scrollTrigger: {
-					trigger: hAnimation,
-					start: "top 85%",
-					onEnter: function() {
-						hAnimation.classList.add('animated');
-					},
-				},
-				opacity: 1,
-				y:0,
-				duration: 0.5,
-				ease:Power2.easeOut,
-				delay: delayValue / 1000,
-			});
-		});
-		
-		var hasAnimationButton = gsap.utils.toArray('.button-box.has-animation');			
-		hasAnimationButton.forEach(function(hAnimationButton) {
-			var delayValue = parseInt(hAnimationButton.getAttribute("data-delay")) || 0;
-			
-			var buttonBorder = hAnimationButton.querySelector('.button-border');
-			
-			gsap.to(buttonBorder, { 					
-				scrollTrigger: {
-					trigger: hAnimationButton,
-					start: "top 85%",
-					onEnter: function() {
-						buttonBorder.classList.add('animated');
-					},
-				},
-				opacity: 1,
-				width:"auto",
-				duration: 0.7,
-				ease:Power2.easeOut,
-				delay: delayValue / 1000,
-			});
-		});
+		// Note: .has-animation triggers moved to InitContentAnimations() function
+		// which is called on window.load to ensure proper layout calculations
 	
 		$(".has-cover").css('background-color', function () {
 			return $(this).parents(".content-row").data('bgcolor')
@@ -2922,16 +2884,115 @@ Function Scroll Effects
 		});	
 		
 		// Reinit All Scrolltrigger After Page Load
-		
-		imagesLoaded('body', function() {
-			setTimeout(function() {	
-				ScrollTrigger.refresh()
-			}, 1000);
-		});
+		// NOTE: Disabled this refresh to prevent conflicts with InitContentAnimations
+		// imagesLoaded('body', function() {
+		// 	setTimeout(function() {
+		// 		ScrollTrigger.refresh()
+		// 	}, 1000);
+		// });
 		
 		
 	
 	}// End Scroll Effects
+
+
+/*--------------------------------------------------
+Function Init Content Animations
+Separated from ScrollEffects to run on window.load
+for accurate position calculations after all resources load
+---------------------------------------------------*/
+
+	window.InitContentAnimations = function() {
+
+		console.log('InitContentAnimations: Starting...');
+
+		// Determine the scroller element for smooth-scroll
+		var scrollerElement = document.body.classList.contains("smooth-scroll")
+			? document.querySelector('#content-scroll')
+			: null;
+
+		console.log('InitContentAnimations: scrollerElement =', scrollerElement);
+
+		// Wait for imagesLoaded to finish before setting up animations
+		// This ensures layout is stable before calculating ScrollTrigger positions
+		imagesLoaded('body', function() {
+			console.log('InitContentAnimations: Images loaded, waiting for layout stabilization');
+
+			// Wait for layout to fully stabilize after images load
+			setTimeout(function() {
+				console.log('InitContentAnimations: Setting up .has-animation triggers');
+
+				var hasAnimation = gsap.utils.toArray('.has-animation');
+				console.log('InitContentAnimations: Found ' + hasAnimation.length + ' .has-animation elements');
+
+				hasAnimation.forEach(function(hAnimation) {
+					var delayValue = parseInt(hAnimation.getAttribute("data-delay")) || 0;
+
+					var scrollTriggerConfig = {
+						trigger: hAnimation,
+						start: "top 85%",
+						onEnter: function() {
+							hAnimation.classList.add('animated');
+						},
+					};
+
+					// Add scroller if using smooth-scroll
+					if (scrollerElement) {
+						scrollTriggerConfig.scroller = scrollerElement;
+					}
+
+					gsap.to(hAnimation, {
+						scrollTrigger: scrollTriggerConfig,
+						opacity: 1,
+						y:0,
+						duration: 0.5,
+						ease:Power2.easeOut,
+						delay: delayValue / 1000,
+					});
+				});
+
+				var hasAnimationButton = gsap.utils.toArray('.button-box.has-animation');
+				hasAnimationButton.forEach(function(hAnimationButton) {
+					var delayValue = parseInt(hAnimationButton.getAttribute("data-delay")) || 0;
+
+					var buttonBorder = hAnimationButton.querySelector('.button-border');
+
+					if (!buttonBorder) return; // Skip if button-border doesn't exist
+
+					var scrollTriggerConfig = {
+						trigger: hAnimationButton,
+						start: "top 85%",
+						onEnter: function() {
+							buttonBorder.classList.add('animated');
+						},
+					};
+
+					// Add scroller if using smooth-scroll
+					if (scrollerElement) {
+						scrollTriggerConfig.scroller = scrollerElement;
+					}
+
+					gsap.to(buttonBorder, {
+						scrollTrigger: scrollTriggerConfig,
+						opacity: 1,
+						width:"auto",
+						duration: 0.7,
+						ease:Power2.easeOut,
+						delay: delayValue / 1000,
+					});
+				});
+
+				// Final refresh after all triggers are created
+				console.log('InitContentAnimations: Triggers created, performing final refresh');
+				setTimeout(function() {
+					ScrollTrigger.refresh();
+					console.log('InitContentAnimations: Complete');
+				}, 200);
+
+			}, 500);
+		});
+
+	}// End Init Content Animations
 
 
 /*--------------------------------------------------
