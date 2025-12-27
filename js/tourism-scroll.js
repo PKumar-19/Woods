@@ -64,11 +64,11 @@ window.addEventListener("load", () => {
         "docked:",
         docked
       );
-      if (docked) {
-        heroWord.textContent = "Kasauli's";
-      } else {
-        heroWord.textContent = "Kasauli";
-      }
+      setTimeout(() => {
+        heroWord.textContent = docked ? "Kasauli's" : "Kasauli";
+        heroWord.style.opacity = "1";
+        // heroWord.style.marginBottom = docked ? "20px" : "0px";
+      }, 300); // match CSS transition duration
     },
     onToggle: (self) =>
       console.log("tourism-scroll onToggle, isActive:", self.isActive),
@@ -141,7 +141,7 @@ window.addEventListener("load", () => {
     const w = window.innerWidth;
     if (w <= 480) return 0.6; // small phones
     if (w <= 768) return 0.45; // phones / small tablets
-    if (w <= 1024) return 0.35; // tablets
+    if (w <= 1024) return 0.22; // tablets
     return 0.3; // desktop
   }
 

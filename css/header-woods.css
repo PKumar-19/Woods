@@ -13,6 +13,44 @@
   z-index: 10 !important;
 }
 
+/* Logo theme toggles — both images overlayed, JS will set theme by toggling .theme-dark/.theme-light on #clapat-logo */
+#clapat-logo a {
+  position: relative;
+  display: inline-block;
+}
+#clapat-logo img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+  transition: opacity 220ms ease, transform 280ms ease;
+  backface-visibility: hidden;
+}
+#clapat-logo img.white-logo {
+  opacity: 0;
+  transform: translateZ(0) scale(1);
+}
+#clapat-logo img.black-logo {
+  opacity: 1;
+}
+#clapat-logo.theme-dark img.white-logo {
+  opacity: 1;
+}
+#clapat-logo.theme-dark img.black-logo {
+  opacity: 0;
+}
+#clapat-logo.theme-light img.white-logo {
+  opacity: 0;
+}
+#clapat-logo.theme-light img.black-logo {
+  opacity: 1;
+}
+
+/* Ensure both images don't affect layout — JS will measure natural size and set inline container size to avoid shifts */
+@media (prefers-reduced-motion: reduce) {
+  #clapat-logo img { transition: none !important; }
+}
+
 /* Make sure hero video sits underneath the header/logo but above page background */
 .bg-video-woods {
   /* Use fixed full-viewport sizing to avoid letterboxing */
