@@ -6,14 +6,113 @@ window.addEventListener("load", () => {
   const imgs = Array.from(document.querySelectorAll('.serenity-image-rotator .rot-image'));
   const count = Math.min(texts.length, imgs.length);
   if (!count) return;
+
+  const rotator = document.querySelector('.serenity-image-rotator');
+  if (!rotator) return;
+
   let idx = 0;
+  let isTransitioning = false;
+
+  // Get background color from page content
+  const pageContent = document.getElementById('clapat-page-content');
+  const bgColor = pageContent ? pageContent.getAttribute('data-bgcolor') : '#1f3533';
+
+  // Function to create pixel grid
+  function createPixelGrid() {
+    const windowWidth = window.innerWidth;
+    let pixelsPerRow = 0;
+
+    // Define breakpoints matching the existing system
+    if (windowWidth >= 1920) {
+      pixelsPerRow = 20;
+    } else if (windowWidth >= 1600) {
+      pixelsPerRow = 18;
+    } else if (windowWidth >= 1280) {
+      pixelsPerRow = 16;
+    } else if (windowWidth >= 1024) {
+      pixelsPerRow = 14;
+    } else if (windowWidth >= 768) {
+      pixelsPerRow = 12;
+    } else {
+      pixelsPerRow = 10;
+    }
+
+    const pixelSize = windowWidth / pixelsPerRow;
+    const parentWidth = rotator.offsetWidth;
+    const parentHeight = rotator.offsetHeight;
+    const cols = Math.ceil(parentWidth / pixelSize);
+    const rows = Math.ceil(parentHeight / pixelSize) + 1;
+    const pixelSizePercent = (100 / cols) + '%';
+
+    // Create pixels wrapper
+    const pixelsWrapper = document.createElement('div');
+    pixelsWrapper.className = 'pixels-wrapper';
+
+    // Create pixel elements
+    for (let i = 0; i < rows * cols; i++) {
+      const pixel = document.createElement('div');
+      pixel.className = 'pixel';
+      pixel.style.width = pixelSizePercent;
+      pixel.style.backgroundColor = bgColor;
+      pixelsWrapper.appendChild(pixel);
+    }
+
+    return pixelsWrapper;
+  }
+
+  // Function to animate pixels out
+  function animatePixelsOut(pixelsWrapper, callback) {
+    const pixelElements = pixelsWrapper.querySelectorAll('.pixel');
+
+    gsap.to(pixelElements, {
+      duration: 0.2,
+      opacity: 0,
+      delay: function() {
+        return gsap.utils.random(0, 0.4);
+      },
+      ease: Power4.easeOut,
+      onComplete: function() {
+        pixelsWrapper.remove();
+        isTransitioning = false;
+        if (callback) callback();
+      }
+    });
+  }
+
   const show = i => {
-      texts.forEach((el,j) => el.classList.toggle('active', j === i));
-      imgs.forEach((el,j) => el.classList.toggle('active', j === i));
+    if (isTransitioning) return;
+    isTransitioning = true;
+
+    texts.forEach((el, j) => el.classList.toggle('active', j === i));
+
+    // Create pixel cover container
+    const pixelCover = document.createElement('div');
+    pixelCover.className = 'serenity-pixels-cover';
+
+    // Create and add pixels
+    const pixelsWrapper = createPixelGrid();
+    pixelCover.appendChild(pixelsWrapper);
+    rotator.appendChild(pixelCover);
+
+    // Change the image underneath the pixels
+    setTimeout(() => {
+      imgs.forEach((el, j) => el.classList.toggle('active', j === i));
+
+      // Animate pixels out to reveal new image
+      setTimeout(() => {
+        animatePixelsOut(pixelsWrapper, () => {
+          pixelCover.remove();
+        });
+      }, 50);
+    }, 50);
   };
+
   show(0);
   const interval = 2500;
-  setInterval(() => { idx = (idx + 1) % count; show(idx); }, interval);
+  setInterval(() => {
+    idx = (idx + 1) % count;
+    show(idx);
+  }, interval);
   
   const heroWord = document.getElementById("tourism-hero-title");
   console.log("heroWord:", heroWord);

@@ -553,6 +553,35 @@
     z-index: 2;
 }
 
+/* Pixel cover effect for serenity images */
+.serenity-image-rotator .serenity-pixels-cover {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    pointer-events: none;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.serenity-image-rotator .pixels-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.serenity-image-rotator .pixel {
+    flex-shrink: 0;
+    opacity: 1;
+}
+
 @media (max-width: 1024px) {
     .serenity-image-rotator {
         transform: translateX(4%);
