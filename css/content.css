@@ -1075,7 +1075,7 @@
 	}
 	
 	.next-hero-title {
-		font-size: calc(1rem + 5vw);
+		font-size: calc(1rem + 3vw);
   		line-height: calc(1rem + 8vw);
 		font-weight: 600;
 		position: relative;
@@ -1083,7 +1083,7 @@
 		width:auto;
 		color:#000;
 		margin-bottom:0px;
-		letter-spacing: -0.4vw;		
+		letter-spacing: -0.1vw;		
 	}
 	
 	.light-content .next-hero-title {
@@ -1096,7 +1096,7 @@
 		line-height: 20px;
 		font-weight:400;
 		width:auto;
-		height:20px;
+		height:10px;
 		position: absolute;
 		left: -130px;
 		top: calc(50% - 0px);

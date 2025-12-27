@@ -36,7 +36,7 @@
     transform: translateX(-50%);
     width: 0;
     height: 3px;                /* thinner line */
-    background: #000;
+    /* background: #000; */
     transition: width 0.8s ease;
 }
 

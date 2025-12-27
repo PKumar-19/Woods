@@ -3821,7 +3821,7 @@ Function Shortcodes
 		if( $('.has-hover-image').length > 0 ){
 			
 			var parent_row = $('.has-hover-image').closest('.content-row');
-			parent_row.css("z-index", "10");
+			parent_row.css("z-index", "5");
 			
 			if ($("body").hasClass("smooth-scroll")) {
 				var elem = document.querySelector("#content-scroll");

@@ -878,11 +878,11 @@ html,body {
 	.portfolio-scroll-section {
 		/* keep same spacing as row_padding_top/bottom to preserve layout */
 		padding-top: 9vw;
-		padding-bottom: 9vw;
+		/* padding-bottom: 3vw; */
 		/* ensure the section fills at least one viewport height so following sections start below the fixed hero */
 		min-height: 100vh;
 		/* provide a local stacking context and ensure normal flow */
-		position: relative;
+		position: relative; 
 		/* allow content beneath to be visible and not clipped by the parent */
 		overflow: visible !important;
 		box-sizing: border-box;
