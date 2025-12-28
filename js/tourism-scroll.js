@@ -317,4 +317,61 @@ window.addEventListener("load", () => {
 
   // Refresh ScrollTrigger after a small delay to ensure measurements are correct
   setTimeout(() => ScrollTrigger.refresh(), 200);
+
+  /* SERENITY LABEL AND ROTATOR SCROLL FADE ANIMATIONS */
+  const serenityLabel = document.querySelector('.serenity-label');
+  const serenityRotator = document.querySelector('.serenity-rotator');
+
+  if (serenityLabel && serenityRotator) {
+    // Set initial state
+    gsap.set([serenityLabel, serenityRotator], {
+      opacity: 0,
+      y: 30
+    });
+
+    // Create scroll trigger for fade in/out effect
+    ScrollTrigger.create({
+      trigger: '.kasauli_serenity_section',
+      start: 'top 70%',
+      end: 'bottom 30%',
+      scroller: scrollerEl || undefined,
+      // markers: true, // uncomment for debugging
+      onEnter: () => {
+        gsap.to([serenityLabel, serenityRotator], {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'power2.out',
+          stagger: 0.15
+        });
+      },
+      onLeave: () => {
+        gsap.to([serenityLabel, serenityRotator], {
+          opacity: 0,
+          y: -30,
+          duration: 0.6,
+          ease: 'power2.in',
+          stagger: 0.1
+        });
+      },
+      onEnterBack: () => {
+        gsap.to([serenityLabel, serenityRotator], {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'power2.out',
+          stagger: 0.15
+        });
+      },
+      onLeaveBack: () => {
+        gsap.to([serenityLabel, serenityRotator], {
+          opacity: 0,
+          y: 30,
+          duration: 0.6,
+          ease: 'power2.in',
+          stagger: 0.1
+        });
+      }
+    });
+  }
 });
