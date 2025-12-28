@@ -342,6 +342,8 @@
     padding: 0;
     box-sizing: border-box;
     text-align: center;
+    position: relative;
+    z-index: 10;
 }
 
 /* Why Kasauli Button */
@@ -379,6 +381,8 @@
     padding: 0;
     box-sizing: border-box;
     text-align: center;
+    position: relative;
+    z-index: 10;
 }
 
 .tourism-action-button {

@@ -633,7 +633,7 @@ Function Page Load
 			
 			var perfData = performance.getEntriesByType('navigation')[0] || performance.timing;
 			var EstimatedTime = -(perfData.loadEventEnd - perfData.startTime);
-			var time = Math.min(Math.max(((EstimatedTime / 100) % 50) * 1000, 1500), 20000);
+			var time = Math.min(Math.max(((EstimatedTime / 100) % 50) * 1000, 3500), 20000);
 			var timeSeconds = time/1000 - 1.5
 			window.preloaderTimeout = time; 
 			

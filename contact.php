@@ -9,78 +9,70 @@ function isEmail($email) {
 
 if (!defined("PHP_EOL")) define("PHP_EOL", "\r\n");
 
-$name     = $_POST['name'];
-$email    = $_POST['email'];
-$comments = $_POST['comments'];
-$verify   = $_POST['verify'];
+$name     = isset($_POST['name']) ? trim($_POST['name']) : '';
+$email    = isset($_POST['email']) ? trim($_POST['email']) : '';
+$comments = isset($_POST['comments']) ? trim($_POST['comments']) : ''; // This is the phone number from the form
+$message  = isset($_POST['message']) ? trim($_POST['message']) : '';
 
-if(trim($name) == '') {
+// Validation
+if($name == '') {
 	echo '<div class="error_message">Attention! You must enter your name.</div>';
 	exit();
-} else if(trim($email) == '') {
+} else if($email == '') {
 	echo '<div class="error_message">Attention! Please enter a valid email address.</div>';
 	exit();
 } else if(!isEmail($email)) {
-	echo '<div class="error_message">Attention! You have enter an invalid e-mail address, try again.</div>';
+	echo '<div class="error_message">Attention! You have entered an invalid e-mail address, try again.</div>';
 	exit();
-}else if(trim($comments) == '') {
-	echo '<div class="error_message">Attention! Please enter your message.</div>';
+} else if($comments == '') {
+	echo '<div class="error_message">Attention! Please enter your contact number.</div>';
 	exit();
-}else if(!isset($verify) || trim($verify) == '') {
-	echo '<div class="error_message">Attention! Please enter the verification number.</div>';
-	exit();
-} else if(trim($verify) != '4') {
-	echo '<div class="error_message">Attention! The verification number you entered is incorrect.</div>';
-	exit();
-} 
+}
 
 $comments = htmlspecialchars($comments);
+$name = htmlspecialchars($name);
+$message = htmlspecialchars($message);
 
+// Configuration: Enter the email address that you want emails to be sent to.
+$address = "pyush@diviworkplac.com";
 
-// Configuration option.
-// Enter the email address that you want to emails to be sent to.
+// Email subject
+$e_subject = 'New Enquiry Received – The Woods Kasauli';
 
-//$address = "example@youremail.net";
-$address = "clapatform@gmail.com";
+// Email body with the exact format requested
+$e_body = "Hello," . PHP_EOL . PHP_EOL;
+$e_body .= "You have received a new enquiry through *The Woods Kasauli* website." . PHP_EOL . PHP_EOL;
+$e_body .= "*Enquiry Details:*" . PHP_EOL . PHP_EOL;
+$e_body .= "* *Name:* " . $name . PHP_EOL;
+$e_body .= "* *Email:* " . $email . PHP_EOL;
+$e_body .= "* *Contact Number:* " . $comments . PHP_EOL;
 
+if($message != '') {
+	$e_body .= "* *Message:* " . $message . PHP_EOL;
+}
 
-// Configuration option.
-// i.e. The standard subject will appear as, "You've been contacted by John Doe."
+$e_body .= PHP_EOL;
+$e_body .= "Please reach out to the enquirer at the earliest to assist them with their request." . PHP_EOL . PHP_EOL;
+$e_body .= "Warm regards," . PHP_EOL;
+$e_body .= "*The Woods Kasauli*" . PHP_EOL;
+$e_body .= "Website Enquiry Notification";
 
-// Example, $e_subject = '$name . ' has contacted you via Your Website.';
+$msg = wordwrap($e_body, 70);
 
-$e_subject = 'You\'ve been contacted by ' . $name . '.';
-
-
-// Configuration option.
-// You can change this if you feel that you need to.
-// Developers, you may wish to add more fields to the form, in which case you must be sure to add them here.
-
-$e_body = "You have been contacted by $name, their additional message is as follows." . PHP_EOL . PHP_EOL;
-$e_content = "\"$comments\"" . PHP_EOL . PHP_EOL;
-$e_reply = "You can contact $name via email, $email";
-
-$msg = wordwrap( $e_body . $e_content . $e_reply, 70 );
-
-$headers = "From: $email" . PHP_EOL;
-$headers .= "Reply-To: $email" . PHP_EOL;
+$headers = "From: " . $email . PHP_EOL;
+$headers .= "Reply-To: " . $email . PHP_EOL;
 $headers .= "MIME-Version: 1.0" . PHP_EOL;
 $headers .= "Content-type: text/plain; charset=utf-8" . PHP_EOL;
 $headers .= "Content-Transfer-Encoding: quoted-printable" . PHP_EOL;
 
 if(mail($address, $e_subject, $msg, $headers)) {
-
-	// Email has sent successfully, echo a success page.
-
+	// Email has sent successfully
 	echo "<fieldset>";
 	echo "<div id='success_page'>";
 	echo "<h3>Email Sent Successfully.</h3>";
-	echo "<p>Thank you <strong>$name</strong>, your message has been submitted to us.</p>";
+	echo "<p>Thank you <strong>" . htmlspecialchars($name) . "</strong>, your message has been submitted to us.</p>";
 	echo "</div>";
 	echo "</fieldset>";
-
 } else {
-
-	echo 'ERROR!';
-
+	echo '<div class="error_message">ERROR! Could not send email. Please try again later.</div>';
 }

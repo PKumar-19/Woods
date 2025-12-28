@@ -275,9 +275,13 @@ window.addEventListener("load", () => {
     if (isMobileOrTablet && serenityLabelForDock) {
       const labelRect = serenityLabelForDock.getBoundingClientRect();
 
-      // Both hero text and serenity label are now left-aligned with same padding
-      // Calculate target X to align left edges precisely
-      const targetX = labelRect.left - heroRect.left;
+      // Calculate centers for alignment
+      const heroCenterX = heroRect.left + heroRect.width / 2;
+      const labelCenterX = labelRect.left + labelRect.width / 2;
+
+      // With transformOrigin "center top", the center stays aligned during scaling
+      // We need to move the hero center to align with the label center
+      const targetX = labelCenterX - heroCenterX;
 
       // Calculate target Y to position below INVEST IN with appropriate spacing
       const targetY = labelRect.bottom - heroRect.top + 5;
@@ -285,6 +289,8 @@ window.addEventListener("load", () => {
       cachedDockPosition = { x: targetX, y: targetY };
 
       console.log('Dock position calc:', {
+        heroCenterX: heroCenterX,
+        labelCenterX: labelCenterX,
         labelLeft: labelRect.left,
         heroLeft: heroRect.left,
         targetX: targetX,
@@ -324,8 +330,8 @@ window.addEventListener("load", () => {
       x: () => cachedDockPosition ? cachedDockPosition.x : 0,
       y: () => cachedDockPosition ? cachedDockPosition.y : 0,
       scale: () => getTargetScale(),
-      // Use left top origin for proper alignment
-      transformOrigin: isMobileOrTablet ? "left top" : "left center",
+      // Use center top origin for mobile/tablet so text stays centered while scaling
+      transformOrigin: isMobileOrTablet ? "center top" : "left center",
       ease: "power2.inOut",
     },
     0
