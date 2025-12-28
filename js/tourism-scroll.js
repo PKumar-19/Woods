@@ -147,27 +147,45 @@ window.addEventListener("load", () => {
   /* MAIN SCROLL TIMELINE */
   // Use explicit scroller when available to avoid depending on defaults
   const scrollerEl = document.querySelector('#content-scroll');
+  const windowWidth = window.innerWidth;
+  const isMobile = windowWidth <= 480;
+  const isTablet = windowWidth > 480 && windowWidth <= 1024;
+  const isMobileOrTablet = windowWidth <= 1024;
+
+  // Get responsive scroll trigger settings
+  // For mobile/tablet: the animation should complete within the kasauli-title-center height
+  function getScrollTriggerSettings() {
+    if (isMobile) {
+      // Mobile: animation completes within first 35% of section scroll
+      return { start: "top top", end: "35% top", scrub: 0.5 };
+    } else if (isTablet) {
+      // Tablet: animation completes within first 30% of section scroll
+      return { start: "top top", end: "30% top", scrub: 0.5 };
+    }
+    return { start: "top top", end: "bottom bottom", scrub: 1.2 };
+  }
+
+  const scrollSettings = getScrollTriggerSettings();
+
+  // Adjust scroll trigger settings for mobile/tablet
   const scrollTriggerConfig = {
     trigger: "#tourism-hero",
-    start: "top top",
-    end: "bottom bottom",
-    scrub: 1.2,
-    delay: 2.0,
+    start: scrollSettings.start,
+    end: scrollSettings.end,
+    scrub: scrollSettings.scrub,
     // markers: true, // turn on when debugging
     onUpdate: (self) => {
-      // debug
-      const docked = self.progress > 0.5; // adjust threshold as needed
+      // Change text when animation is 50% complete
+      const docked = self.progress > 0.5;
       console.log(
         "tourism-scroll progress:",
         self.progress,
         "docked:",
         docked
       );
-      setTimeout(() => {
-        heroWord.textContent = docked ? "Kasauli's" : "Kasauli";
-        heroWord.style.opacity = "1";
-        // heroWord.style.marginBottom = docked ? "20px" : "0px";
-      }, 300); // match CSS transition duration
+      // Update text immediately without delay for better sync
+      heroWord.textContent = docked ? "Kasauli's" : "Kasauli";
+      heroWord.style.opacity = "1";
     },
     onToggle: (self) =>
       console.log("tourism-scroll onToggle, isActive:", self.isActive),
@@ -208,8 +226,9 @@ window.addEventListener("load", () => {
   ScrollTrigger.create({
     id: "tourism-debug",
     trigger: "#tourism-hero",
-    start: "top top",
-    end: "bottom bottom",
+    start: scrollSettings.start,
+    end: scrollSettings.end,
+    scroller: scrollerEl || undefined,
     // markers: true,
     onUpdate: function (self) {
       console.log("tourism-debug onUpdate:", self.progress);
@@ -238,35 +257,75 @@ window.addEventListener("load", () => {
   /* DOCK Kasauli on its OWN LINE (responsive-friendly) */
   function getTargetScale() {
     const w = window.innerWidth;
-    if (w <= 480) return 0.6; // small phones
-    if (w <= 768) return 0.45; // phones / small tablets
-    if (w <= 1024) return 0.22; // tablets
+    if (w <= 480) return 0.28; // small phones
+    if (w <= 768) return 0.26; // phones / small tablets
+    if (w <= 1024) return 0.24; // tablets
     return 0.3; // desktop
   }
 
-  // Small horizontal nudge to move the docked title slightly right on larger screens.
-  function getDockNudge(heroRect) {
-    const w = window.innerWidth;
-    // Use a fraction of the hero width so the adjustment scales with text size
-    if (w >= 1400) return heroRect.width * 0.60;
-    if (w >= 1200) return heroRect.width * 0.80;
-    if (w >= 1024) return heroRect.width * 0.82;
-    if (w >= 768) return heroRect.width * 0.62;
-    return 0;
+  // Cache the initial positions at load time for consistent animation
+  let cachedDockPosition = null;
+
+  function calculateAndCacheDockPosition() {
+    const heroRect = heroWord.getBoundingClientRect();
+    const serenityLabelForDock = document.querySelector('.serenity-label');
+    const dockPointEl = document.getElementById('tourism-dock-point');
+    const scale = getTargetScale();
+
+    if (isMobileOrTablet && serenityLabelForDock) {
+      const labelRect = serenityLabelForDock.getBoundingClientRect();
+
+      // Both hero text and serenity label are now left-aligned with same padding
+      // Calculate target X to align left edges precisely
+      const targetX = labelRect.left - heroRect.left;
+
+      // Calculate target Y to position below INVEST IN with appropriate spacing
+      const targetY = labelRect.bottom - heroRect.top + 5;
+
+      cachedDockPosition = { x: targetX, y: targetY };
+
+      console.log('Dock position calc:', {
+        labelLeft: labelRect.left,
+        heroLeft: heroRect.left,
+        targetX: targetX,
+        targetY: targetY,
+        scale: scale
+      });
+    } else if (dockPointEl) {
+      // Desktop: dock to the dock point
+      const pos = getDockPosition();
+      const nudge = (() => {
+        const w = window.innerWidth;
+        if (w >= 1400) return heroRect.width * 0.60;
+        if (w >= 1200) return heroRect.width * 0.80;
+        if (w >= 1024) return heroRect.width * 0.82;
+        return 0;
+      })();
+      cachedDockPosition = { x: pos.x + nudge, y: pos.y };
+    } else {
+      cachedDockPosition = { x: 0, y: 0 };
+    }
+
+    return cachedDockPosition;
   }
+
+  // Calculate initial dock position
+  calculateAndCacheDockPosition();
+
+  // Recalculate on resize
+  window.addEventListener('resize', () => {
+    cachedDockPosition = null;
+    calculateAndCacheDockPosition();
+  });
 
   tl.to(
     heroWord,
     {
-      x: () => {
-        const pos = getDockPosition();
-        const heroRect = heroWord.getBoundingClientRect();
-        return pos.x + getDockNudge(heroRect);
-      },
-      y: () => getDockPosition().y,
+      x: () => cachedDockPosition ? cachedDockPosition.x : 0,
+      y: () => cachedDockPosition ? cachedDockPosition.y : 0,
       scale: () => getTargetScale(),
-      // keep transform origin centered vertically, left-aligned horizontally for consistent docking
-      transformOrigin: "left center",
+      // Use left top origin for proper alignment
+      transformOrigin: isMobileOrTablet ? "left top" : "left center",
       ease: "power2.inOut",
     },
     0
@@ -319,59 +378,74 @@ window.addEventListener("load", () => {
   setTimeout(() => ScrollTrigger.refresh(), 200);
 
   /* SERENITY LABEL AND ROTATOR SCROLL FADE ANIMATIONS */
-  const serenityLabel = document.querySelector('.serenity-label');
-  const serenityRotator = document.querySelector('.serenity-rotator');
+  const serenityLabelEl = document.querySelector('.serenity-label');
+  const serenityRotatorEl = document.querySelector('.serenity-rotator');
 
-  if (serenityLabel && serenityRotator) {
-    // Set initial state
-    gsap.set([serenityLabel, serenityRotator], {
+  if (serenityLabelEl && serenityRotatorEl) {
+    // Set initial state - hidden until scroll reveals them
+    gsap.set([serenityLabelEl, serenityRotatorEl], {
       opacity: 0,
       y: 30
     });
 
-    // Create scroll trigger for fade in/out effect
-    ScrollTrigger.create({
-      trigger: '.kasauli_serenity_section',
-      start: 'top 70%',
-      end: 'bottom 30%',
-      scroller: scrollerEl || undefined,
-      // markers: true, // uncomment for debugging
-      onEnter: () => {
-        gsap.to([serenityLabel, serenityRotator], {
+    if (isMobileOrTablet) {
+      // For mobile/tablet: sync reveal with the docking animation using same trigger
+      // Add the reveal animation to the main timeline so it syncs with docking
+      tl.to(
+        [serenityLabelEl, serenityRotatorEl],
+        {
           opacity: 1,
           y: 0,
-          duration: 0.8,
+          stagger: 0.1,
           ease: 'power2.out',
-          stagger: 0.15
-        });
-      },
-      onLeave: () => {
-        gsap.to([serenityLabel, serenityRotator], {
-          opacity: 0,
-          y: -30,
-          duration: 0.6,
-          ease: 'power2.in',
-          stagger: 0.1
-        });
-      },
-      onEnterBack: () => {
-        gsap.to([serenityLabel, serenityRotator], {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: 'power2.out',
-          stagger: 0.15
-        });
-      },
-      onLeaveBack: () => {
-        gsap.to([serenityLabel, serenityRotator], {
-          opacity: 0,
-          y: 30,
-          duration: 0.6,
-          ease: 'power2.in',
-          stagger: 0.1
-        });
-      }
-    });
+        },
+        0.3 // Start slightly after docking begins
+      );
+    } else {
+      // Desktop: use separate scroll trigger for reveal
+      ScrollTrigger.create({
+        trigger: '.kasauli_serenity_section',
+        start: 'top 70%',
+        end: 'bottom 30%',
+        scroller: scrollerEl || undefined,
+        // markers: true, // uncomment for debugging
+        onEnter: () => {
+          gsap.to([serenityLabelEl, serenityRotatorEl], {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: 'power2.out',
+            stagger: 0.15
+          });
+        },
+        onLeave: () => {
+          gsap.to([serenityLabelEl, serenityRotatorEl], {
+            opacity: 0,
+            y: -30,
+            duration: 0.6,
+            ease: 'power2.in',
+            stagger: 0.1
+          });
+        },
+        onEnterBack: () => {
+          gsap.to([serenityLabelEl, serenityRotatorEl], {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: 'power2.out',
+            stagger: 0.15
+          });
+        },
+        onLeaveBack: () => {
+          gsap.to([serenityLabelEl, serenityRotatorEl], {
+            opacity: 0,
+            y: 30,
+            duration: 0.6,
+            ease: 'power2.in',
+            stagger: 0.1
+          });
+        }
+      });
+    }
   }
 });

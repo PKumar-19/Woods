@@ -422,15 +422,140 @@
 
     .tourism-white-card-box {
         padding: 40px 25px;
+        margin: 0 15px;
+        position: relative;
+        z-index: 5;
     }
 
     .tourism-hero-section {
-        min-height: 400px;
+        min-height: auto !important;
+        height: auto !important;
+        padding: 40px 15px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        position: relative;
+    }
+
+    /* Make parallax layer contained within section on mobile */
+    .tourism-hero-section .tourism-parallax-layer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 100%;
+    }
+
+    .tourism-main-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        position: relative;
+        z-index: 2;
+        flex: none;
+    }
+
+    .kasauli-title-center {
+        height: auto;
+        padding-top: 20px;
+        padding-bottom: 10px;
+        position: relative;
+        flex: none;
+    }
+
+    .kasauli-text {
+        margin: 0;
+        padding-bottom: 0;
+    }
+
+    .kasauli_serenity_section {
+        margin-top: 15px;
+        margin-bottom: 20px;
+        position: relative;
+        flex: none;
+    }
+
+    .serenity-content {
+        gap: 20px;
+    }
+
+    .serenity-image-box {
+        padding: 10px;
     }
 
     /* Reduce the scale on smaller screens to avoid excessive cropping and bandwidth */
     .tourism-hero-section .tourism-bg-video {
         transform: translate(-50%, -50%) scale(1.05);
+    }
+}
+
+/* Tablet responsive adjustments */
+@media (max-width: 1024px) and (min-width: 769px) {
+    .tourism-hero-section {
+        min-height: auto !important;
+        height: auto !important;
+        padding: 60px 20px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        position: relative;
+    }
+
+    /* Make parallax layer contained within section on tablet */
+    .tourism-hero-section .tourism-parallax-layer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 100%;
+    }
+
+    .tourism-main-container {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        position: relative;
+        z-index: 2;
+        flex: none;
+    }
+
+    .kasauli-title-center {
+        height: 60vh;
+        padding-top: 40px;
+        padding-bottom: 20px;
+        position: relative;
+        flex: none;
+        /* Keep centered initially - JS will animate to left on dock */
+        justify-content: center;
+        text-align: center;
+    }
+
+    .kasauli-text {
+        margin: 0;
+        padding-bottom: 0;
+    }
+
+    .kasauli_serenity_section {
+        margin-top: 20px;
+        margin-bottom: 30px;
+        position: relative;
+        flex: none;
+    }
+
+    .serenity-content {
+        padding: 0 25px;
+    }
+
+    .tourism-white-card-box {
+        margin: 0 20px;
+        position: relative;
+        z-index: 5;
     }
 }
 
@@ -594,6 +719,14 @@
         transform: translateX(4%);
         max-width: 520px;
     }
+
+    .serenity-label {
+        font-size: clamp(36px, 5vw, 60px);
+    }
+
+    .serenity-subtext {
+        font-size: clamp(26px, 4vw, 40px);
+    }
 }
 @media (max-width: 768px) {
     .serenity-rotator {
@@ -609,18 +742,21 @@
         min-width: 4ch;
         display: block;
         margin-top: clamp(6px, 1.2vw, 12px);
-        text-align: center;
+        text-align: left;
+        min-height: 1.5em;
+        position: relative;
     }
     /* Keep absolute positioning so rotation still shows one active word at a time on mobile */
     .serenity-rotator .serenity-subtext {
         position: absolute;
-        left: 50%;
+        left: 0;
         top: 0;
-        transform: translate(-50%, 6px);
+        transform: translateY(6px);
         white-space: nowrap;
+        margin-left: 0;
     }
     .serenity-rotator .serenity-subtext.active {
-        transform: translate(-50%, 0);
+        transform: translateY(0);
     }
     /* On small screens keep the rotator layout vertical but show only the active image */
     .serenity-image-rotator {
@@ -640,6 +776,16 @@
         display: block;
         opacity: 1;
         visibility: visible;
+    }
+
+    .serenity-text-box {
+        width: 100%;
+    }
+
+    .serenity-heading {
+        width: 100%;
+        align-items: flex-start;
+        text-align: left;
     }
 }
 
@@ -680,17 +826,17 @@
 @media (max-width: 1024px) {
     .serenity-content {
         flex-direction: column;
-        text-align: center;
+        text-align: left;
         gap: clamp(20px, 5vw, 40px);
     }
 
     .serenity-text-box {
         flex: 1 1 100%;
-        justify-content: center;
+        justify-content: flex-start;
     }
 
     .serenity-heading {
-        text-align: center;
+        text-align: left;
     }
 
     .serenity-image-box {
@@ -702,7 +848,7 @@
 
 @media (max-width: 768px) {
     .serenity-label {
-        font-size: clamp(14px, 1.8vw, 18px);
+        font-size: clamp(28px, 6vw, 40px);
         margin-bottom: clamp(6px, 1.2vw, 12px);
     }
 
@@ -711,17 +857,44 @@
     }
 
     .serenity-subtext {
-        font-size: clamp(24px, 3.5vw, 32px);
+        font-size: clamp(20px, 5vw, 28px);
         margin-top: clamp(6px, 1.2vw, 12px);
     }
 
-    .kasauli_serenity_section {
-        margin-top: clamp(30px, 6vw, 50px);
-        margin-bottom: clamp(30px, 6vw, 50px);
+    .serenity-image-box {
+        max-width: 90%;
+        margin: 0 auto;
     }
 }
 
 @media (max-width: 480px) {
+    .tourism-hero-section {
+        padding: 30px 10px;
+    }
+
+    .kasauli-title-center {
+        padding-top: 50%;
+        padding-bottom: 15px;
+        height: 70vh;
+        /* Keep centered initially - JS will animate to left on dock */
+        justify-content: center;
+        text-align: center;
+    }
+
+    .kasauli-text {
+        margin: 0;
+        padding-bottom: 0;
+    }
+
+    .kasauli_serenity_section {
+        margin-top: 15px;
+        margin-bottom: 20px;
+    }
+
+    .serenity-content {
+        padding: 0 15px;
+    }
+
     .serenity-heading {
         display: flex;
         flex-direction: column;
@@ -729,7 +902,7 @@
     }
 
     .serenity-label {
-        font-size: 12px;
+        font-size: clamp(22px, 6vw, 32px);
         letter-spacing: 1px;
     }
 
@@ -739,7 +912,30 @@
     }
 
     .serenity-subtext {
-        font-size: 14px;
+        font-size: clamp(16px, 5vw, 22px);
         letter-spacing: 0.5px;
+    }
+
+    .tourism-white-card-box {
+        margin: 0 10px;
+        padding: 30px 20px;
+    }
+
+    .tourism-info-card {
+        padding: 30px 15px;
+    }
+
+    .tourism-card-title {
+        font-size: 20px;
+    }
+
+    .tourism-card-description {
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    .serenity-image-box {
+        max-width: 100%;
+        padding: clamp(5px, 2vw, 10px);
     }
 }
