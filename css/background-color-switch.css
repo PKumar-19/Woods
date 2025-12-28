@@ -1,0 +1,163 @@
+/* ============================================
+   LOGO SWITCHING STYLES v3
+   High specificity to override other styles
+   ============================================ */
+
+/* Base logo container setup */
+#clapat-logo {
+    position: relative;
+}
+
+#clapat-logo a {
+    display: block;
+    position: relative;
+}
+
+/* Logo images base styles */
+#clapat-logo .white-logo {
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    visibility: visible !important;
+    position: relative !important;
+}
+
+#clapat-logo .black-logo {
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
+
+/* Position black logo absolutely on top of white logo */
+#clapat-logo .black-logo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* width: 100%;
+    height: 100%; */
+    object-fit: contain;
+}
+
+/* White logo is the base (relative positioning) */
+#clapat-logo .white-logo {
+    position: relative;
+}
+
+/* ============================================
+   DEFAULT STATE (before detection)
+   Show white logo by default
+   ============================================ */
+
+#clapat-logo .black-logo {
+    opacity: 0;
+    visibility: hidden;
+}
+
+#clapat-logo .white-logo {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ============================================
+   LOGO-DARK STATE
+   Light background → Show BLACK logo
+   ============================================ */
+
+#clapat-logo.logo-dark .black-logo,
+body #clapat-logo.logo-dark .black-logo,
+html body #clapat-logo.logo-dark .black-logo,
+.clapat-logo-woods.logo-dark .black-logo {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+#clapat-logo.logo-dark .white-logo,
+body #clapat-logo.logo-dark .white-logo,
+html body #clapat-logo.logo-dark .white-logo,
+.clapat-logo-woods.logo-dark .white-logo {
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
+/* ============================================
+   LOGO-LIGHT STATE
+   Dark background → Show WHITE logo
+   ============================================ */
+
+#clapat-logo.logo-light .black-logo,
+body #clapat-logo.logo-light .black-logo,
+html body #clapat-logo.logo-light .black-logo,
+.clapat-logo-woods.logo-light .black-logo {
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
+#clapat-logo.logo-light .white-logo,
+body #clapat-logo.logo-light .white-logo,
+html body #clapat-logo.logo-light .white-logo,
+.clapat-logo-woods.logo-light .white-logo {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* ============================================
+   Z-INDEX FIX
+   Ensure proper stacking
+   ============================================ */
+
+#clapat-logo .black-logo {
+    z-index: 2;
+}
+
+#clapat-logo .white-logo {
+    z-index: 1;
+}
+
+/* When black logo is hidden, lower its z-index */
+#clapat-logo.logo-light .black-logo {
+    z-index: 0;
+}
+
+#clapat-logo.logo-dark .white-logo {
+    z-index: 0;
+}
+
+/* ============================================
+   SOCIAL TEXT STYLES
+   ============================================ */
+
+.social-text.text-dark,
+body .social-text.text-dark,
+html body .social-text.text-dark {
+    color: #1a1a1a !important;
+}
+
+.social-text.text-dark .social-link,
+body .social-text.text-dark .social-link {
+    color: #1a1a1a !important;
+}
+
+.social-text.text-dark .social-link:hover {
+    color: #444 !important;
+}
+
+.social-text.text-dark .social-link::after {
+    background-color: #1a1a1a !important;
+}
+
+.social-text.text-light,
+body .social-text.text-light,
+html body .social-text.text-light {
+    color: #fff !important;
+}
+
+.social-text.text-light .social-link,
+body .social-text.text-light .social-link {
+    color: #fff !important;
+}
+
+.social-text.text-light .social-link:hover {
+    color: #f2eae3 !important;
+}
+
+.social-text.text-light .social-link::after {
+    background-color: #f2eae3 !important;
+}

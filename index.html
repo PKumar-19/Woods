@@ -33,6 +33,8 @@
     <link href="css/header-woods.css" rel="stylesheet" />
     <link href="css/clapat-custom-layout.css" rel="stylesheet" />
     <link href="css/infinite-scroll.css" rel="stylesheet" />
+    <link href="css/background-color-switch.css" rel="stylesheet" />
+    <link href="css/logo-working.css" rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..900&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet"> -->
@@ -1257,6 +1259,7 @@
     <script src="js/brochure-download.js"></script>
     <script src="js/infinite-scroll.js"></script>
     <script src="js/background-color-change.js"></script>
+    <script src="js/bg-video-detector-fix.js"></script>
 
     <!-- Hero caption: one-time, robust trigger to start the masked reveal animation -->
     <script>
@@ -1618,6 +1621,15 @@
           scheduled = false;
         });
       }
+
+      // Destroy auto-init and reinit with debug
+    if (bgDetector) bgDetector.destroy();
+    
+    setupColorDetection({
+        debug: true,           // Shows debug panel
+        luminanceThreshold: 0.45,  // Adjust if needed
+        updateInterval: 80
+    });
 
       function startVideoDetectionLoop(){
         if(detectionLoop) return;
