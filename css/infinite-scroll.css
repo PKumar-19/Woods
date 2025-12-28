@@ -1,0 +1,339 @@
+/* ============================================
+   INFINITE SCROLL PORTFOLIO - STYLES
+   Updated for JS-driven smooth animation
+   ============================================ */
+
+/* Wrapper */
+.scroll-wrapper {
+    position: relative;
+    width: 100%;
+    background-image: url('../images/Project_Overview/Project_Overview_Scroll.png');
+}
+
+/* Container */
+.scroll-container {
+    width: 100%;
+    overflow: hidden;
+    padding: 40px 0;
+}
+
+/* Track - holds all cards */
+.scroll-track {
+    display: flex;
+    gap: 24px;
+    width: max-content;
+    /* Hardware acceleration for smooth animation */
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    perspective: 1000px;
+    -webkit-perspective: 1000px;
+}
+
+/* ============================================
+   SCROLL BUTTONS
+   ============================================ */
+
+.scroll-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.scroll-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.scroll-btn:active {
+    transform: translateY(-50%) scale(0.95);
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.scroll-btn.active {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.scroll-btn-left {
+    left: 20px;
+}
+
+.scroll-btn-right {
+    right: 20px;
+}
+
+.scroll-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.7);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: stroke 0.3s ease;
+    pointer-events: none;
+}
+
+.scroll-btn:hover svg {
+    stroke: rgba(255, 255, 255, 0.95);
+}
+
+/* ============================================
+   EDGE GRADIENTS
+   ============================================ */
+
+.edge-gradient {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100px;
+    pointer-events: none;
+    z-index: 5;
+}
+
+/* .edge-gradient-left {
+    left: 0;
+    background: linear-gradient(to right, #1a1a1a 0%, transparent 100%);
+} */
+
+/* .edge-gradient-right {
+    right: 0;
+    background: linear-gradient(to left, #1a1a1a 0%, transparent 100%);
+} */
+
+/* ============================================
+   PROJECT CARDS
+   ============================================ */
+
+.project-card {
+    display: flex;
+    gap: 20px;
+    border-radius: 12px;
+    padding: 16px;
+    margin: 0 0.5%;
+    min-width: 750px;
+    height: 280px;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    /* Prevent cards from being affected by parent transform */
+    transform-style: preserve-3d;
+}
+
+.project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Card Image */
+.card-image {
+    width: auto;
+    height: 100%;
+    min-width: 50%;
+    border-radius: 8px;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Card Content */
+.card-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+    padding: 8px 0;
+    max-width: 60%;
+}
+
+.card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.card-year {
+    color: #888;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+}
+
+.card-title {
+    color: #f2eae3;
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 1.3;
+    margin: 0;
+}
+
+/* Card Mockup */
+.card-mockup {
+    width: 100px;
+    height: 100px;
+    align-self: flex-end;
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+/* Custom mockup image */
+.card-mockup .mockup-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Default laptop mockup (shown when no custom image) */
+.laptop-mockup {
+    width: 80px;
+    height: 50px;
+    background: #333;
+    border-radius: 4px 4px 0 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.laptop-mockup::before {
+    content: '';
+    width: 70px;
+    height: 40px;
+    background: linear-gradient(135deg, #2a2a2a 0%, #3a3a3a 100%);
+    border-radius: 2px;
+}
+
+.laptop-mockup::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    width: 90px;
+    height: 6px;
+    background: #444;
+    border-radius: 0 0 4px 4px;
+}
+
+/* ============================================
+   IMAGE CLASSES
+   ============================================ */
+
+.card-image.front-elevation {
+    background-image: url('../images/Project_Overview/Fv1-Front-Shot-The-Woods.png');
+}
+
+.card-image.rear-elevation {
+    background-image: url('../images/Project_Overview/Rear-Elevation.png');
+}
+
+.card-image.site-layout {
+    background-image: url('../images/Project_Overview/Site-Map.png');
+}
+
+.card-image.ground-floor {
+    background-image: url('../images/Project_Overview/TWK-Ground-Floor.png');
+}
+
+.card-image.first-floor {
+    background-image: url('../images/Project_Overview/TWK-First-Floor.png');
+}
+
+.card-image.second-floor {
+    background-image: url('../images/Project_Overview/TWK-Second-Floor.png');
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+    .project-card {
+        min-width: 360px;
+        height: 220px;
+        padding: 12px;
+        gap: 16px;
+    }
+
+    .card-image {
+        width: 180px;
+    }
+
+    .card-title {
+        font-size: 18px;
+    }
+
+    .card-mockup {
+        width: 80px;
+        height: 55px;
+    }
+
+    .laptop-mockup {
+        width: 60px;
+        height: 38px;
+    }
+
+    .laptop-mockup::before {
+        width: 52px;
+        height: 30px;
+    }
+
+    .laptop-mockup::after {
+        width: 70px;
+        height: 5px;
+    }
+
+    .scroll-btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    .scroll-btn-left {
+        left: 10px;
+    }
+
+    .scroll-btn-right {
+        right: 10px;
+    }
+
+    .scroll-btn svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .edge-gradient {
+        width: 60px;
+    }
+}

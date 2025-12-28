@@ -2082,30 +2082,70 @@ Function Showcase Gallery
 			
 			
 			const slidesRoot = document.querySelector('.clapat-sync-slider .clapat-sync-slider-wrapper .clapat-sync-slider-viewport');
-			const slidesList = slidesRoot.querySelectorAll('.clapat-sync-slider .clapat-sync-slide');
-			
-			let slidesHeight = 0;
-			
-			for (const clapatSyncSlide of slidesList) {
-				slidesHeight += clapatSyncSlide.offsetHeight;
+
+			console.log('DEBUG - slidesRoot found:', slidesRoot);
+
+			if (!slidesRoot) {
+				console.error('DEBUG - ERROR: slidesRoot not found! Cannot proceed with cloning.');
+				return;
 			}
-			
-			let iterCloning = Math.floor(window.innerHeight / slidesHeight);
-			
-			iterCloning *= 2;
-			
-			if (iterCloning >= 1) {
-				iterCloning--;
-				
-				if ((window.innerHeight % slidesHeight) > 0) {
-					iterCloning++;
-				}
-				
-				for (let i = 0; i < iterCloning; i++) {
-					for (const clapatSyncSlide of slidesList) {
-						let cloneSlide = clapatSyncSlide.cloneNode(true);
-						slidesRoot.appendChild(cloneSlide);
+
+			const slidesList = slidesRoot.querySelectorAll('.clapat-sync-slider .clapat-sync-slide');
+			const originalSyncSlideCount = slidesList.length; // Store original count before any cloning
+			console.log('DEBUG - slidesList length:', originalSyncSlideCount);
+
+			let slidesWidth = 0;
+
+			for (const clapatSyncSlide of slidesList) {
+				slidesWidth += clapatSyncSlide.offsetWidth;
+			}
+
+			console.log('DEBUG - Total slidesWidth:', slidesWidth);
+			console.log('DEBUG - window.innerWidth:', window.innerWidth);
+
+			if (slidesWidth === 0) {
+				console.warn('DEBUG - WARNING: slidesWidth is 0, skipping cloning');
+				return;
+			}
+
+			// Calculate how many times slides need to be cloned to fill viewport for horizontal infinite scroll
+			// When slides are wider than viewport, we still need at least 2 clone sets for smooth infinite scroll
+			let iterCloning = Math.floor(window.innerWidth / slidesWidth);
+
+			// If slides are wider than viewport (iterCloning = 0), create at least 2 clone sets for seamless loop
+			if (iterCloning === 0) {
+				iterCloning = 2;
+				console.log('DEBUG - Slides wider than viewport, forcing minimum 2 clone sets for infinite scroll');
+			} else {
+				iterCloning *= 2;
+
+				if (iterCloning >= 1) {
+					iterCloning--;
+
+					if ((window.innerWidth % slidesWidth) > 0) {
+						iterCloning++;
 					}
+				}
+			}
+
+			// Ensure total slides (original + cloned) is always even for proper alignment
+			const originalSlideCount = slidesList.length;
+			let totalAfterCloning = originalSlideCount * (iterCloning + 1);
+
+			// If total would be odd, add one more iteration to make it even
+			if (totalAfterCloning % 2 !== 0) {
+				iterCloning++;
+				totalAfterCloning = originalSlideCount * (iterCloning + 1);
+			}
+
+			console.log('DEBUG - Original slides:', originalSlideCount);
+			console.log('DEBUG - iterCloning:', iterCloning);
+			console.log('DEBUG - Total slides after cloning:', totalAfterCloning);
+
+			for (let i = 0; i < iterCloning; i++) {
+				for (const clapatSyncSlide of slidesList) {
+					let cloneSlide = clapatSyncSlide.cloneNode(true);
+					slidesRoot.appendChild(cloneSlide);
 				}
 			}
 			
@@ -2171,9 +2211,23 @@ Function Showcase Gallery
 			
 			const syncSliderCloneTranslate = document.querySelectorAll('.clapat-slider-wrapper.showcase-gallery .clapat-sync-slider-wrapper > .clapat-sync-slider-viewport');
 			const titleWrapper = document.querySelector('.clapat-sync-slider-wrapper');
-			
+
+			// Use the original sync slide count (captured before cloning) for yPercent calculation
+			// This equals the number of main horizontal slides (1:1 ratio)
+			// originalSyncSlideCount was captured at the start before any cloning occurred
+
+			// Calculate yPercent based on original slide count, not viewport count
+			// This ensures each horizontal slide change corresponds to proper vertical title change
+			// Formula: Move through (n-1)/n of total height to show all n slides
+			const preciseYPercent = -((originalSyncSlideCount - 1) / originalSyncSlideCount * 100);
+
+			console.log('DEBUG - Original sync slide count:', originalSyncSlideCount);
+			console.log('DEBUG - Total viewports:', syncSliderCloneTranslate.length);
+			console.log('DEBUG - Calculated yPercent:', preciseYPercent);
+			console.log('DEBUG - Title wrapper height:', titleWrapper.offsetHeight);
+
 			slider.tl
-				.fromTo('.clapat-slider-wrapper.showcase-gallery .clapat-sync-slider-wrapper', {yPercent: 0 },{ yPercent: -(100 - (100 / syncSliderCloneTranslate.length))},0)
+				.fromTo('.clapat-slider-wrapper.showcase-gallery .clapat-sync-slider-wrapper', {yPercent: 0 }, { yPercent: preciseYPercent }, 0)
 				.fromTo('.hover-reveal', {y: 0}, {y: + (titleWrapper.offsetHeight/2)}, 0)
     
 
@@ -2846,53 +2900,31 @@ Function Showcase Gallery
 			
 		}
 
-        // Continuous auto-scroll for the portfolio ClaPat slider (edge-to-edge, pauses on hover/interaction)
+        // Continuous auto-scroll for the portfolio ClaPat slider (infinite horizontal scroll, pauses on hover/interaction)
         (function() {
             const el = document.getElementById('clapat-webgl-slider');
             if (!el) return;
+
+            // Check if slider has the infinite-scroll-slider class
+            if (!el.classList.contains('infinite-scroll-slider')) return;
+
             const instance = el.clapat_slider || (el.closest && el.closest('.clapat-slider-wrapper') && el.closest('.clapat-slider-wrapper').clapat_slider);
             if (!instance) return;
-            // Speed in pixels per second (adjustable). Set to 0.6 to be slower than 1 (very gentle scroll).
-            instance.autoScrollSpeed = 0.2; // px/sec
-            // add ticker to increment the target continuously (creates smooth infinite scroll)
+
+            // Speed in pixels per second (adjustable). Lower = slower, smoother scroll
+            instance.autoScrollSpeed = 0.3; // px/sec - adjusted for smooth continuous scroll
+
+            // Add ticker to increment the target continuously (creates smooth infinite scroll)
             instance._autoScrollTicker = gsap.ticker.add((time, deltaTime) => {
                 if (!instance.enabled || instance.state.flags.dragging || document.body.classList.contains('disable-scroll')) return;
                 instance.state.target -= instance.autoScrollSpeed * deltaTime; // deltaTime is in seconds
             });
-            // pause on hover / interaction
+
+            // Pause on hover / interaction for better UX
             el.addEventListener('mouseenter', () => instance.enabled = false);
             el.addEventListener('mouseleave', () => instance.enabled = true);
             el.addEventListener('mousedown', () => instance.enabled = false);
             document.addEventListener('mouseup', () => instance.enabled = true);
-
-            // Portfolio scroll buttons: temporary boost in speed/direction when clicked
-            const leftBtn = document.getElementById('portfolio-scroll-left');
-            const rightBtn = document.getElementById('portfolio-scroll-right');
-            const applyBoost = (boostValue, duration = 200) => {
-                if (!instance) return;
-                const prev = instance.autoScrollSpeed;
-                instance.autoScrollSpeed = boostValue;
-                // restore after duration
-                setTimeout(() => {
-                    if (instance) instance.autoScrollSpeed = prev;
-                }, duration);
-            };
-
-            if (leftBtn) leftBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                // negative boost reverses direction for a short time (0.5s)
-                applyBoost(-2, 200);
-                // add a quick nudge so the scroll visibly moves left immediately
-                if (instance && instance.state) gsap.to(instance.state, { duration: 0.5, target: instance.state.target + 400, ease: "power2.out" });
-            });
-
-            if (rightBtn) rightBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                // positive boost increases forward speed (0.5s)
-                applyBoost(2, 200);
-                // nudge to the right
-                if (instance && instance.state) gsap.to(instance.state, { duration: 0.5, target: instance.state.target - 400, ease: "power2.out" });
-            });
         })();
 
 /*---------------------------------------------------*/
