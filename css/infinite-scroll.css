@@ -254,7 +254,7 @@
    ============================================ */
 
 .card-image.front-elevation {
-    background-image: url('../images/Project_Overview/Fv1-Front-Shot-The-Woods.png');
+    background-image: url('../images/Project_Overview/Front-Elevation.png');
 }
 
 .card-image.rear-elevation {
@@ -266,15 +266,15 @@
 }
 
 .card-image.ground-floor {
-    background-image: url('../images/Project_Overview/TWK-Ground-Floor.png');
+    background-image: url('../images/Project_Overview/Ground-Floor.png');
 }
 
 .card-image.first-floor {
-    background-image: url('../images/Project_Overview/TWK-First-Floor.png');
+    background-image: url('../images/Project_Overview/First-Floor.png');
 }
 
 .card-image.second-floor {
-    background-image: url('../images/Project_Overview/TWK-Second-Floor.png');
+    background-image: url('../images/Project_Overview/Second-Floor.png');
 }
 
 /* ============================================

@@ -11,7 +11,7 @@ const projects = [
         year: '',
         title: 'Front Elevation',
         imageClass: 'front-elevation',
-        mockupImage: 'images/Project_Overview/icons-project-overview/Front-Elevation-8.png'
+        mockupImage: 'images/Project_Overview/Icons-Project-Overview/Front-Elevation-8.png'
     },
     {
         year: '',
@@ -191,22 +191,23 @@ function boostScroll(direction) {
         clearTimeout(state.boostTimeout);
         state.boostTimeout = null;
     }
-    
+
     // Update button states
     scrollLeftBtn.classList.remove('active');
     scrollRightBtn.classList.remove('active');
-    
-    // Set boosted speed
-    state.targetSpeed = CONFIG.normalSpeed * CONFIG.boostMultiplier;
-    
+
     if (direction === 'left') {
-        state.direction = -1;
+        // Left button: Reverse direction temporarily (scroll backwards)
+        state.direction = 1; // Reverse to right (opposite of normal -1)
+        state.targetSpeed = CONFIG.normalSpeed * CONFIG.boostMultiplier;
         scrollLeftBtn.classList.add('active');
     } else if (direction === 'right') {
-        state.direction = 1;
+        // Right button: Keep normal direction but increase speed
+        state.direction = -1; // Keep normal left direction
+        state.targetSpeed = CONFIG.normalSpeed * CONFIG.boostMultiplier;
         scrollRightBtn.classList.add('active');
     }
-    
+
     // Return to normal after boost duration (only if not holding)
     if (!state.isHolding) {
         state.boostTimeout = setTimeout(() => {
