@@ -11,7 +11,7 @@ const projects = [
         year: '',
         title: 'Front Elevation',
         imageClass: 'front-elevation',
-        mockupImage: 'images/Project_Overview/Icons-Project-Overview/Front-Elevation-8.png'
+        mockupImage: 'images/Project_Overview/icons-project-overview/Front-Elevation-8.png'
     },
     {
         year: '',
