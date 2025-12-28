@@ -198,8 +198,8 @@
 
 /* Card Mockup */
 .card-mockup {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     align-self: flex-end;
     border-radius: 6px;
     overflow: hidden;

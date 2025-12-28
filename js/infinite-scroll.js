@@ -11,37 +11,37 @@ const projects = [
         year: '',
         title: 'Front Elevation',
         imageClass: 'front-elevation',
-        mockupImage: '../images/Project_Overview/icons-project-overview/Front-Elevation-8.png'
+        mockupImage: 'images/Project_Overview/icons-project-overview/Front-Elevation-8.png'
     },
     {
         year: '',
         title: 'Rear Elevation',
         imageClass: 'rear-elevation',
-        mockupImage: '../images/Project_Overview/icons-project-overview/Rear-Elevation-8.png'
+        mockupImage: 'images/Project_Overview/icons-project-overview/Rear-Elevation-8.png'
     },
     {
         year: '',
         title: 'Site Layout',
         imageClass: 'site-layout',
-        mockupImage: '../images/Project_Overview/icons-project-overview/Site-Layout-8.png'
+        mockupImage: 'images/Project_Overview/icons-project-overview/Site-Layout-8.png'
     },
     {
         year: '',
         title: 'Ground Floor Layout',
         imageClass: 'ground-floor',
-        mockupImage: '../images/Project_Overview/icons-project-overview/Ground-Floor-8.png'
+        mockupImage: 'images/Project_Overview/icons-project-overview/Ground-Floor-8.png'
     },
     {
         year: '',
         title: 'First Floor Layout',
         imageClass: 'first-floor',
-        mockupImage: '../images/Project_Overview/icons-project-overview/First-Floor-8.png'
+        mockupImage: 'images/Project_Overview/icons-project-overview/First-Floor-8.png'
     },
     {
         year: '',
         title: 'Second Floor Layout',
         imageClass: 'second-floor',
-        mockupImage: '../images/Project_Overview/icons-project-overview/Second-Floor-8.png'
+        mockupImage: 'images/Project_Overview/icons-project-overview/Second-Floor-8.png'
     }
 ];
 
