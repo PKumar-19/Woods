@@ -2,7 +2,15 @@
 .book-call-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:99999;font-family:Montserrat,system-ui,Arial;background:transparent}
 .book-call-modal.show{display:flex}
 .book-call-overlay{position:absolute;inset:0;background:rgba(6,8,10,0.62);backdrop-filter:blur(6px);cursor:pointer;opacity:0;animation:fadeIn .18s forwards}
-.book-call-dialog{position:relative;max-width:560px;width:94%;background:#fff;border-radius:14px;padding:22px;box-shadow:0 26px 60px rgba(10,10,10,.36);transform:translateY(12px);opacity:0;animation:popIn .22s .06s forwards;overflow:hidden}
+.book-call-dialog {
+    position:relative;
+    max-width:560px;
+    width:94%;
+    /* background:#fff; */
+    border-radius:14px;
+    padding:22px;
+    box-shadow: 0 26px 60px rgba(31, 53, 51, 0.28);
+    transform:translateY(12px);opacity:0;animation:popIn .22s .06s forwards;overflow:hidden}
 .book-call-close{position:absolute;right:12px;top:12px;border:0;background:transparent;font-size:20px;cursor:pointer;color:#666}
 .book-call-inner h2{margin:0 0 8px;font-size:20px;color:#1f3533}
 .book-call-sub{margin:0 0 14px;color:#666}

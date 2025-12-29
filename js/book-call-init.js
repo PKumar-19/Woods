@@ -27,15 +27,28 @@
     '<p class="bc-privacy">We will reply from <strong>sales@thewoodskasauli.com</strong> — your email will be used to contact you.</p>' +
     '</div></div></div>';
 
+  // Inline critical CSS as fallback
+  var inlineCSS = '.book-call-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:99999;font-family:Montserrat,system-ui,Arial;background:transparent}.book-call-modal.show{display:flex}.book-call-overlay{position:absolute;inset:0;background:rgba(6,8,10,0.62);backdrop-filter:blur(6px);cursor:pointer;opacity:0;animation:fadeIn .18s forwards}.book-call-dialog{position:relative;max-width:560px;width:94%;background:#fff;border-radius:14px;padding:22px;box-shadow:0 26px 60px rgba(10,10,10,.36);transform:translateY(12px);opacity:0;animation:popIn .22s .06s forwards;overflow:hidden}.book-call-close{position:absolute;right:12px;top:12px;border:0;background:transparent;font-size:20px;cursor:pointer;color:#666}.book-call-inner h2{margin:0 0 8px;font-size:20px;color:#1f3533}.book-call-sub{margin:0 0 14px;color:#666}.bc-row{margin-bottom:12px}.bc-field{display:block;font-size:13px;color:#333}.bc-field input,.bc-field textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #e9e9e9;margin-top:6px;font-size:14px;box-sizing:border-box}.bc-captcha{display:flex;align-items:center;gap:8px;color:#1f3533;font-weight:600}.bc-captcha input{width:60px}.actions{display:flex;gap:10px;align-items:center}.bc-submit{background:#1f3533;color:#fff;border:0;padding:10px 16px;border-radius:999px;cursor:pointer}.bc-secondary{background:transparent;border:1px solid #e5e5e5;padding:8px 14px;border-radius:999px;cursor:pointer}.bc-status{margin-top:8px;color:#0b6;min-height:18px}.bc-status.error{color:#b00}.bc-privacy{margin-top:12px;font-size:12px;color:#777}@keyframes popIn{to{transform:none;opacity:1}}@keyframes fadeIn{to{opacity:1}}';
+
   function insertCSS(){
     if(cssInserted) return;
-    if(document.querySelector('link[href="'+cssPath+'"]')){ cssInserted = true; return; }
-    var l = document.createElement('link');
-    l.rel = 'stylesheet';
-    l.href = cssPath;
-    document.head.appendChild(l);
+    // Try external CSS first
+    if(!document.querySelector('link[href*="book-call.css"]')){
+      var l = document.createElement('link');
+      l.rel = 'stylesheet';
+      l.href = cssPath;
+      document.head.appendChild(l);
+      console.log('[BookCall] External CSS link inserted');
+    }
+    // Also inject inline CSS as fallback (ensures it works even if external fails)
+    if(!document.getElementById('book-call-inline-css')){
+      var style = document.createElement('style');
+      style.id = 'book-call-inline-css';
+      style.textContent = inlineCSS;
+      document.head.appendChild(style);
+      console.log('[BookCall] Inline CSS inserted');
+    }
     cssInserted = true;
-    console.log('[BookCall] CSS inserted');
   }
 
   function insertModal(){
@@ -115,24 +128,41 @@
   }
 
   function attachHandlers(){
-    // Target buttons - NOT including download-brochure-btn as it has its own handler
+    // Target buttons - using event delegation for reliability
     var selectors = ['.why-kasauli-button', '.tourism-action-button', '.book-call-btn'];
-    var totalFound = 0;
 
+    // Use event delegation on document for maximum reliability
+    document.addEventListener('click', function(e){
+      var target = e.target;
+      // Check if clicked element or its parent matches our selectors
+      for(var i = 0; i < selectors.length; i++){
+        if(target.matches && target.matches(selectors[i])){
+          e.preventDefault();
+          e.stopPropagation();
+          console.log('[BookCall] Button clicked via delegation:', target);
+          openModal();
+          return false;
+        }
+        // Also check parent elements (in case button has child elements)
+        var parent = target.closest ? target.closest(selectors[i]) : null;
+        if(parent){
+          e.preventDefault();
+          e.stopPropagation();
+          console.log('[BookCall] Button clicked via delegation (parent):', parent);
+          openModal();
+          return false;
+        }
+      }
+    }, true); // Capture phase
+
+    // Also attach directly to buttons as backup
     selectors.forEach(function(sel){
       var buttons = document.querySelectorAll(sel);
       console.log('[BookCall] Found ' + buttons.length + ' buttons for: ' + sel);
       buttons.forEach(function(btn){
-        totalFound++;
-        // Remove any existing onclick
-        btn.onclick = null;
-        // Add click listener
-        btn.addEventListener('click', handleButtonClick, true); // Use capture phase
-        console.log('[BookCall] Handler attached to:', btn);
+        btn.addEventListener('click', handleButtonClick, true);
       });
     });
-
-    console.log('[BookCall] Total handlers attached: ' + totalFound);
 
     // Auto-open via query string
     if(window.location.search.indexOf('bookcall=1') !== -1){
