@@ -107,7 +107,7 @@
         data.name = (formEl.querySelector('#bc-name').value||'').trim();
         data.email = (formEl.querySelector('#bc-email').value||'').trim();
         data.phone = (formEl.querySelector('#bc-phone').value||'').trim();
-        data.message = (formEl.querySelector('#bc-message').value||'').trim();
+        // data.message = (formEl.querySelector('#bc-message').value||'').trim();
         captcha = (formEl.querySelector('#bc-captcha').value||'').trim();
         expected = formEl.querySelector('#bc-captcha').dataset.expected;
       } else {
