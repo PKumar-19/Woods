@@ -20,8 +20,8 @@
 .bc-field input:focus,.bc-field textarea:focus{outline:none;box-shadow:0 6px 18px rgba(31,53,51,0.08);transform:translateY(-1px)}
 .bc-captcha{display:flex;align-items:center;gap:8px;color:#1f3533;font-weight:600}
 .actions{display:flex;gap:10px;align-items:center}
-.bc-submit{background:#1f3533;color:#fff;border:0;padding:10px 16px;border-radius:999px;cursor:pointer;box-shadow:0 8px 18px rgba(31,53,51,0.12)}
-.bc-secondary{background:transparent;border:1px solid #e5e5e5;padding:8px 14px;border-radius:999px;cursor:pointer}
+.bc-submit{background:#1f3533;color:#fff;border:0;padding:10px 16px;border-radius:999px;cursor:pointer;box-shadow:0 8px 18px rgba(31, 53, 51, 0.28);}
+.bc-secondary{background:transparent;padding:8px 14px;border-radius:999px;cursor:pointer}
 .bc-status{margin-top:8px;color:#0b6;min-height:18px}
 .bc-status.error{color:#b00}
 .bc-privacy{margin-top:12px;font-size:12px;color:#777}
