@@ -16,36 +16,24 @@
     '<h2 id="bookCallTitle">Investment Opportunity</h2>' +
     '<p class="book-call-sub">Discover luxury living at The Woods Kasauli</p>' +
     '<form id="bookCallForm" novalidate>' +
-    '<div class="bc-row"><label class="bc-field">Name<input type="text" id="bc-name" name="name" required minlength="2" placeholder="What\'s your name"></label></div>' +
-    '<div class="bc-row"><label class="bc-field">Email<input type="email" id="bc-email" name="email" required placeholder="you@domain.com"></label></div>' +
-    '<div class="bc-row"><label class="bc-field">Contact Number<input type="tel" id="bc-phone" name="phone" required placeholder="+91 70000 00000"></label></div>' +
+    '<div class="bc-row"><label class="bc-field">Name<input type="text" id="bc-name" name="name" required minlength="2"></label></div>' +
+    '<div class="bc-row"><label class="bc-field">Email<input type="email" id="bc-email" name="email" required></label></div>' +
+    '<div class="bc-row"><label class="bc-field">Contact Number<input type="tel" id="bc-phone" name="phone" required></label></div>' +
     '<div class="bc-row bc-captcha"><span>Captcha:</span><span id="bc-c1"></span><span class="plus">+</span><span id="bc-c2"></span><span class="equals">=</span><input id="bc-captcha" name="captcha" inputmode="numeric" required placeholder="Answer" /></div>' +
-    '<div class="bc-row actions"><button type="submit" id="bc-submit" class="bc-submit">Book Call</button><button type="button" class="bc-secondary" data-action="close">Cancel</button></div>' +
+    '<div class="bc-row actions"><button type="submit" id="bc-submit" class="bc-submit">Book Call</button>' +
     '<div id="bc-status" class="bc-status" role="status" aria-live="polite"></div>' +
     '</form>' +
-    '<p class="bc-privacy">We will reply from <strong>sales@thewoodskasauli.com</strong> — your email will be used to contact you.</p>' +
     '</div></div></div>';
-
-  // Inline critical CSS as fallback (synced with css/book-call.css)
-  var inlineCSS = '.book-call-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:99999;font-family:Montserrat,system-ui,Arial;background:transparent}.book-call-modal.show{display:flex}.book-call-overlay{position:absolute;inset:0;background:rgba(6,8,10,0.62);backdrop-filter:blur(6px);cursor:pointer;opacity:0;animation:fadeIn .18s forwards}.book-call-dialog{position:relative;max-width:560px;width:94%;background-color:rgba(31,53,51,0.6);backdrop-filter:blur(10px);border-radius:14px;padding:22px;box-shadow:0 26px 60px rgba(31,53,51,0.28);transform:translateY(12px);opacity:0;animation:popIn .22s .06s forwards;overflow:hidden}.book-call-close{position:absolute;right:12px;top:12px;border:0;background:transparent;font-size:20px;cursor:pointer;color:#666}.book-call-inner h2{margin:0 0 8px;font-size:20px;color:#1f3533;text-align:center}.book-call-sub{margin:0 0 14px;color:#f2eae3;text-align:center}.bc-row{margin-bottom:12px}.bc-field{display:block;font-size:13px;color:#333}.bc-field input,.bc-field textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #e9e9e9;margin-top:6px;font-size:14px;box-sizing:border-box;transition:box-shadow .12s ease,transform .12s ease}.bc-field input:focus,.bc-field textarea:focus{outline:none;box-shadow:0 6px 18px rgba(31,53,51,0.08);transform:translateY(-1px)}.bc-captcha{display:flex;align-items:center;gap:8px;color:#1f3533;font-weight:600}.actions{display:flex;gap:10px;align-items:center}.bc-submit{background:#1f3533;color:#fff;border:0;padding:10px 16px;border-radius:999px;cursor:pointer;box-shadow:0 8px 18px rgba(31,53,51,0.28)}.bc-secondary{background:transparent;padding:8px 14px;border-radius:999px;cursor:pointer}.bc-status{margin-top:8px;color:#0b6;min-height:18px}.bc-status.error{color:#b00}.bc-privacy{margin-top:12px;font-size:12px;color:#777}@keyframes popIn{to{transform:none;opacity:1}}@keyframes fadeIn{to{opacity:1}}@media(prefers-reduced-motion:reduce){.book-call-overlay,.book-call-dialog{animation:none}}';
 
   function insertCSS(){
     if(cssInserted) return;
-    // Try external CSS first
+    // Load CSS from external file only
     if(!document.querySelector('link[href*="book-call.css"]')){
       var l = document.createElement('link');
       l.rel = 'stylesheet';
       l.href = cssPath;
       document.head.appendChild(l);
       console.log('[BookCall] External CSS link inserted');
-    }
-    // Also inject inline CSS as fallback (ensures it works even if external fails)
-    if(!document.getElementById('book-call-inline-css')){
-      var style = document.createElement('style');
-      style.id = 'book-call-inline-css';
-      style.textContent = inlineCSS;
-      document.head.appendChild(style);
-      console.log('[BookCall] Inline CSS inserted');
     }
     cssInserted = true;
   }
