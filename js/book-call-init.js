@@ -13,13 +13,12 @@
     '<div class="book-call-dialog" role="document">' +
     '<button class="book-call-close" data-action="close" aria-label="Close popup">\u2715</button>' +
     '<div class="book-call-inner">' +
-    '<h2 id="bookCallTitle">Book a Call</h2>' +
-    '<p class="book-call-sub">Schedule a quick call with our sales team — we will reach out to you shortly.</p>' +
+    '<h2 id="bookCallTitle">Investment Opportunity</h2>' +
+    '<p class="book-call-sub">Discover luxury living at The Woods Kasauli</p>' +
     '<form id="bookCallForm" novalidate>' +
     '<div class="bc-row"><label class="bc-field">Name<input type="text" id="bc-name" name="name" required minlength="2" placeholder="What\'s your name"></label></div>' +
     '<div class="bc-row"><label class="bc-field">Email<input type="email" id="bc-email" name="email" required placeholder="you@domain.com"></label></div>' +
     '<div class="bc-row"><label class="bc-field">Contact Number<input type="tel" id="bc-phone" name="phone" required placeholder="+91 70000 00000"></label></div>' +
-    '<div class="bc-row"><label class="bc-field">Message (optional)<textarea id="bc-message" name="message" rows="3" placeholder="A preferred time or short note"></textarea></label></div>' +
     '<div class="bc-row bc-captcha"><span>Captcha:</span><span id="bc-c1"></span><span class="plus">+</span><span id="bc-c2"></span><span class="equals">=</span><input id="bc-captcha" name="captcha" inputmode="numeric" required placeholder="Answer" /></div>' +
     '<div class="bc-row actions"><button type="submit" id="bc-submit" class="bc-submit">Book Call</button><button type="button" class="bc-secondary" data-action="close">Cancel</button></div>' +
     '<div id="bc-status" class="bc-status" role="status" aria-live="polite"></div>' +
