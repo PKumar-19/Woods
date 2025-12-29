@@ -40,27 +40,35 @@
     }
   }
 
-  // POST to contact.php
-  function postToContactPHP(data, statusEl, isModal){
-    var fd = new FormData();
-    fd.append('name', data.name);
-    fd.append('email', data.email);
-    fd.append('comments', data.phone); // phone goes in comments field
-    fd.append('message', data.message || '');
+  // Google Apps Script Web App URL
+  var GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwGTyOUzEUtAXnRKQ5jYqjKdy0gPZIkKuvuh-cVnsEo9u-qyDvOOR_x_YCZzICzXMu9vQ/exec';
 
-    fetch('contact.php', { method: 'POST', body: fd })
-      .then(function(resp){ return resp.text(); })
-      .then(function(text){
-        var ok = /success|thank|sent/i.test(text);
-        if(ok){
-          showStatus(statusEl,'Thanks — request received. We will contact you shortly.');
-          if(isModal){
-            setTimeout(function(){
-              if(global.BookCallModal && global.BookCallModal.close) global.BookCallModal.close();
-            }, 1500);
-          }
-        } else {
-          showStatus(statusEl,'Message could not be sent. Please try again.', true);
+  // POST to Google Apps Script
+  function postToGoogleScript(data, statusEl, isModal){
+    var payload = {
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      message: data.message || '',
+      pageUrl: window.location.href
+    };
+
+    fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors', // Required for Google Apps Script
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    })
+      .then(function(){
+        // With no-cors mode, we can't read the response
+        // but if we get here without an error, the request was sent
+        showStatus(statusEl,'Thanks — request received. We will contact you shortly.');
+        if(isModal){
+          setTimeout(function(){
+            if(global.BookCallModal && global.BookCallModal.close) global.BookCallModal.close();
+          }, 1500);
         }
       })
       .catch(function(){
@@ -124,7 +132,7 @@
       showStatus(statusEl, 'Sending...', false);
 
       // Submit to contact.php
-      postToContactPHP(data, statusEl, isModal);
+      postToGoogleScript(data, statusEl, isModal);
     });
   }
 

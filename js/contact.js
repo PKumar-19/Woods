@@ -1,35 +1,93 @@
 /*--------------------------------------------------
 Function Contact Formular
----------------------------------------------------*/	
+---------------------------------------------------*/
+
+	function ContactForm() {
 		
-	function ContactForm() {	
-	
 		if( $('#contact-formular').length > 0 ){
-			
-			$('#contactform').submit(function(){
-				var action = $(this).attr('action');
-				$("#message").slideUp(750,function() {
+
+			$('#contactform').submit(function(e){
+				e.preventDefault();
+
+				// Google Apps Script Web App URL
+				// IMPORTANT: Replace this with your deployed Google Apps Script URL
+				const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwGTyOUzEUtAXnRKQ5jYqjKdy0gPZIkKuvuh-cVnsEo9u-qyDvOOR_x_YCZzICzXMu9vQ/exec';
+
+				// Simple captcha validation (1 + 3 = 4)
+				const verifyValue = $('#verify').val();
+				if (verifyValue !== '4') {
+					$('#message').html('<div class="error_message">Please enter the correct captcha answer.</div>');
+					$('#message').slideDown('slow');
+					return false;
+				}
+
+				// Prepare form data for Google Apps Script
+				const formData = {
+					name: $('#name').val(),
+					email: $('#email').val(),
+					phone: $('#phone').val() || '', // Phone field (if exists)
+					message: $('#comments').val(),
+					pageUrl: window.location.href
+				};
+
+				// Validate required fields
+				if (!formData.name || !formData.email) {
+					$('#message').html('<div class="error_message">Please fill in your name and email.</div>');
+					$('#message').slideDown('slow');
+					return false;
+				}
+
+				// Validate email format
+				const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+				if (!emailRegex.test(formData.email)) {
+					$('#message').html('<div class="error_message">Please enter a valid email address.</div>');
+					$('#message').slideDown('slow');
+					return false;
+				}
+
+				$("#message").slideUp(750, function() {
 					$('#message').hide();
-					$('#submit').attr('disabled','disabled');		
-					$.post(action, {
-						name: $('#name').val(),
-						email: $('#email').val(),
-						comments: $('#comments').val(),
-						verify: $('#verify').val()
-					},
-					function(data){
-						document.getElementById('message').innerHTML = data;
+					$('#submit').attr('disabled', 'disabled');
+					$('#submit').val('Sending...');
+
+					// Send data to Google Apps Script
+					fetch(GOOGLE_SCRIPT_URL, {
+						method: 'POST',
+						mode: 'no-cors', // Required for Google Apps Script
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify(formData)
+					})
+					.then(response => {
+						// With no-cors mode, we can't read the response
+						// but if we get here without an error, the request was sent
+						$('#message').html('<div class="success_message">Thank you! Your message has been sent successfully. We will get back to you soon.</div>');
 						$('#message').slideDown('slow');
-						$('#contactform img.loader').fadeOut('slow',function(){$(this).remove()});
 						$('#submit').removeAttr('disabled');
-						if(data.match('success') != null) $('#contactform').slideUp('slow');		
-					}
-				);		
-				});		
-				return false;		
-			});		
+						$('#submit').val('Send Mail');
+
+						// Clear the form
+						$('#contactform')[0].reset();
+
+						// Optionally hide the form after success
+						setTimeout(function() {
+							$('#contactform').slideUp('slow');
+						}, 3000);
+					})
+					.catch(error => {
+						console.error('Error:', error);
+						$('#message').html('<div class="error_message">Sorry, there was an error sending your message. Please try again later.</div>');
+						$('#message').slideDown('slow');
+						$('#submit').removeAttr('disabled');
+						$('#submit').val('Send Mail');
+					});
+				});
+
+				return false;
+			});
 		}
-		
+
 
 	}//End ContactForm	
 
