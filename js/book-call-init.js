@@ -19,7 +19,6 @@
     '<div class="bc-row"><label class="bc-field">Name<input type="text" id="bc-name" name="name" required minlength="2"></label></div>' +
     '<div class="bc-row"><label class="bc-field">Email<input type="email" id="bc-email" name="email" required></label></div>' +
     '<div class="bc-row"><label class="bc-field">Contact Number<input type="tel" id="bc-phone" name="phone" required></label></div>' +
-    '<div class="bc-row bc-captcha"><span>Captcha:</span><span id="bc-c1"></span><span class="plus">+</span><span id="bc-c2"></span><span class="equals">=</span><input id="bc-captcha" name="captcha" inputmode="numeric" required placeholder="Answer" /></div>' +
     '<div class="bc-row actions"><button type="submit" id="bc-submit" class="bc-submit">Book Call</button>' +
     '<div id="bc-status" class="bc-status" role="status" aria-live="polite"></div>' +
     '</form>' +
