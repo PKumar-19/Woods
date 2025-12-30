@@ -53,13 +53,16 @@
       pageUrl: window.location.href
     };
 
+    // Use URLSearchParams for form-encoded data (works with no-cors)
+    var formBody = new URLSearchParams(payload).toString();
+
     fetch(GOOGLE_SCRIPT_URL, {
       method: 'POST',
       mode: 'no-cors', // Required for Google Apps Script
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/x-www-form-urlencoded'
       },
-      body: JSON.stringify(payload)
+      body: formBody
     })
       .then(function(){
         // With no-cors mode, we can't read the response
@@ -107,9 +110,9 @@
         data.name = (formEl.querySelector('#bc-name').value||'').trim();
         data.email = (formEl.querySelector('#bc-email').value||'').trim();
         data.phone = (formEl.querySelector('#bc-phone').value||'').trim();
-        // data.message = (formEl.querySelector('#bc-message').value||'').trim();
-        captcha = (formEl.querySelector('#bc-captcha').value||'').trim();
-        expected = formEl.querySelector('#bc-captcha').dataset.expected;
+        // No captcha for modal form
+        captcha = null;
+        expected = null;
       } else {
         data.name = (formEl.querySelector('[name="name"]').value||'').trim();
         data.email = (formEl.querySelector('[name="email"]').value||'').trim();
