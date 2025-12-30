@@ -894,6 +894,12 @@ html,body {
 	  }
 	}
 
+	@media (min-width: 412px) {
+		.portfolio-scroll-section {
+			min-height: 40vh;
+		}
+	}
+
 
 	/* Small spacer and isolation for the middle hero so it doesn't visually overlap */
 	.hero-middle-section {

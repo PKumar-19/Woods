@@ -877,7 +877,7 @@
     }
 
     .kasauli-title-center {
-        padding-top: 50%;
+        padding-top: 90%;
         padding-bottom: 15px;
         height: 70vh;
         /* Keep centered initially - JS will animate to left on dock */

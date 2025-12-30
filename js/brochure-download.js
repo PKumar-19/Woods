@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
         downloadBtn.addEventListener('click', function(e) {
             e.preventDefault();
 
-            const brochurePath = 'brochure/The Woods Kasauli - Vertical.pdf';
+            const brochurePath = 'brochure/The-Wood-Kasauli-Design.pdf';
             const link = document.createElement('a');
             link.href = brochurePath;
             link.download = 'The Woods Kasauli - Vertical.pdf';
