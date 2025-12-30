@@ -124,10 +124,9 @@
 }
 
 .bc-row.actions {
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    width: 100%;
+    text-align: center !important;
+    display: block !important;
+    width: 100% !important;
     margin-top: 16px
 }
 
@@ -139,8 +138,8 @@
     border-radius: 999px;
     cursor: pointer;
     box-shadow: 0 8px 18px rgba(31, 53, 51, 0.28);
-    margin: 0 auto;
-    display: block
+    margin: 0 auto !important;
+    display: inline-block !important
 }
 
 .bc-secondary {
