@@ -84,7 +84,9 @@
     margin-top: 6px;
     font-size: 14px;
     box-sizing: border-box;
-    transition: box-shadow .12s ease, transform .12s ease
+    transition: box-shadow .12s ease, transform .12s ease;
+    color: #f2eae3;
+    background: rgba(31, 53, 51, 0.4)
 }
 
 .bc-field input:focus,
@@ -101,6 +103,11 @@
     color: #f2eae3;
     font-weight: 600;
     border-bottom: 1px solid #f2eae3;
+}
+
+.bc-captcha input {
+    color: #f2eae3;
+    background: rgba(31, 53, 51, 0.4)
 }
 
 .bc-captcha input::placeholder {
@@ -133,13 +140,16 @@
 }
 
 .bc-status {
-    margin-top: 8px;
-    color: #0b6;
-    min-height: 18px
+    margin-top: 12px;
+    color: #7edb7e;
+    min-height: 18px;
+    text-align: center;
+    font-size: 14px;
+    width: 100%
 }
 
 .bc-status.error {
-    color: #b00
+    color: #ff6b6b
 }
 
 .bc-privacy {
