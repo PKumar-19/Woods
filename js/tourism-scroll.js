@@ -281,7 +281,7 @@ window.addEventListener("load", () => {
 
       // With transformOrigin "center top", the center stays aligned during scaling
       // We need to move the hero center to align with the label center
-      const targetX = labelCenterX - heroCenterX;
+      const targetX = labelCenterX - heroCenterX - 8;
 
       // Calculate target Y to position below INVEST IN with appropriate spacing
       const targetY = labelRect.bottom - heroRect.top + 5;

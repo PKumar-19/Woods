@@ -537,12 +537,13 @@
         flex: none;
         /* Keep centered initially - JS will animate to left on dock */
         justify-content: center;
-        text-align: center;
+        text-align: left;
     }
 
     .kasauli-text {
         margin: 0;
-        padding-bottom: 0;
+        padding-bottom: 5px;
+        font-size: 170px;
     }
 
     .kasauli_serenity_section {
@@ -791,6 +792,11 @@
         align-items: flex-start;
         text-align: left;
     }
+
+    #tourism-dock-point {
+        padding-bottom: 10px;
+        margin-left: -150px;
+    }
 }
 
 .serenity-image-box {
@@ -848,6 +854,10 @@
         width: 100%;
         max-width: 500px;
     }
+
+    .serenity-image-box::after {
+        right: -20px;
+    }
 }
 
 @media (max-width: 768px) {
@@ -888,6 +898,7 @@
     .kasauli-text {
         margin: 0;
         padding-bottom: 0;
+        font-size: 60px;
     }
 
     .kasauli_serenity_section {
@@ -941,5 +952,9 @@
     .serenity-image-box {
         max-width: 100%;
         padding: clamp(5px, 2vw, 10px);
+    }
+
+    .serenity-image-box::after {
+        right: 0;
     }
 }
