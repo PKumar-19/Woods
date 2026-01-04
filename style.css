@@ -877,7 +877,7 @@ html,body {
 	/* Scoped styles for the Portfolio Scroll section to avoid overflow/stacking issues */
 	.portfolio-scroll-section {
 		/* keep same spacing as row_padding_top/bottom to preserve layout */
-		padding-top: 9vw;
+		/* padding-top: 9vw; */
 		/* padding-bottom: 3vw; */
 		/* ensure the section fills at least one viewport height so following sections start below the fixed hero */
 		min-height: 100vh;
@@ -890,15 +890,21 @@ html,body {
 
 	@media (min-width: 1080px) {
 	  .portfolio-scroll-section {
-	    margin-bottom: -250px !important; /* negative margin works */ /* or whatever you want instead */
+	    /* margin-bottom: -138px !important; */ /* negative margin works */ /* or whatever you want instead */
 	  }
 	}
 
 	@media (min-width: 412px) {
 		.portfolio-scroll-section {
-			min-height: 40vh;
+			min-height: 58vh;
 		}
 	}
+
+	@media (max-width: 410px) {
+		.portfolio-scroll-section {
+			min-height: 58vh;
+		}
+	}e
 
 
 	/* Small spacer and isolation for the middle hero so it doesn't visually overlap */
@@ -4488,4 +4494,33 @@ html,body {
 
 @media only screen and (max-width: 900px) {
 
+}
+
+/* Amenities Title Overlay for First Slide */
+.slide-amenities-title {
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 3vw;
+    font-weight: 500;
+	font-style: 'Montserrat', sans-serif;
+    color: #f2eae3;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    z-index: 10;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+@media only screen and (max-width: 1024px) {
+    .slide-amenities-title {
+        font-size: 4vw;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .slide-amenities-title {
+        font-size: 5vw;
+        top: 3%;
+    }
 }

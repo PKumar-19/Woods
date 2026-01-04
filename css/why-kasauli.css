@@ -127,7 +127,7 @@
   top: -2.2em;
   left: 50%;
   transform: translateX(-50%);
-  font-size: clamp(10px, 1.6vw, 28px);
+  font-size: clamp(20px, 2.6vw, 38px);
   font-weight: 400;
   letter-spacing: 3px;
   color: rgba(255,255,255,0.95);
@@ -814,7 +814,7 @@
     content: '';
     position: absolute;
     bottom: 0;
-    right: 50px;
+    right: 75px;
     width: 50%;
     height: 50%;
     background-color: #d4c5b9;
@@ -889,7 +889,7 @@
     .kasauli-title-center {
         padding-top: 90%;
         padding-bottom: 15px;
-        height: 70vh;
+        height: 40vh;
         /* Keep centered initially - JS will animate to left on dock */
         justify-content: center;
         text-align: center;

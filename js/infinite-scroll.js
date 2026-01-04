@@ -68,6 +68,7 @@ const state = {
     halfWidth: 0,
     isHolding: false,
     isPaused: false,
+    lightboxOpen: false,     // Track if lightbox is open
     lastTime: 0,
     animationId: null,
     boostTimeout: null
@@ -323,12 +324,16 @@ function initScrollControls() {
     });
     scrollRightBtn.addEventListener('touchcancel', endHold);
     
-    // Pause on hover
+    // Pause on hover (only if lightbox is not open)
     scrollTrack.addEventListener('mouseenter', () => {
-        state.isPaused = true;
+        if (!state.lightboxOpen) {
+            state.isPaused = true;
+        }
     });
     scrollTrack.addEventListener('mouseleave', () => {
-        state.isPaused = false;
+        if (!state.lightboxOpen) {
+            state.isPaused = false;
+        }
     });
     
     return true;
@@ -362,9 +367,240 @@ function initInfiniteScroll() {
     });
 }
 
+/* ============================================
+   IMAGE LIGHTBOX FUNCTIONALITY
+   ============================================ */
+
+// Map imageClass to actual image URLs
+const imageClassToUrl = {
+    'front-elevation': 'images/Project_Overview/Front-Elevation.png',
+    'rear-elevation': 'images/Project_Overview/Rear-Elevation.png',
+    'site-layout': 'images/Portfolio_Scroll_Section/Site-Plans.png',
+    'ground-floor': 'images/Portfolio_Scroll_Section/Ground-Floor-Plans.png',
+    'first-floor': 'images/Portfolio_Scroll_Section/First-Floor-Plans.png',
+    'second-floor': 'images/Portfolio_Scroll_Section/Second-Floor-Plans.png'
+};
+
+let imageLightbox = null;
+let lightboxImage = null;
+let lightboxImageWrapper = null;
+let lightboxClose = null;
+let landscapeContainer = null;
+let lastClickedCard = null;
+let isAnimating = false;
+
+/**
+ * Get the position of an element relative to the landscape container
+ */
+function getRelativePosition(element, container) {
+    const elementRect = element.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+
+    return {
+        left: elementRect.left - containerRect.left,
+        top: elementRect.top - containerRect.top,
+        width: elementRect.width,
+        height: elementRect.height
+    };
+}
+
+/**
+ * Open lightbox with specified image and animate from card position
+ */
+function openLightbox(imageUrl, clickedCard) {
+    if (!imageLightbox || !lightboxImage || !lightboxImageWrapper || !landscapeContainer || isAnimating) return;
+
+    isAnimating = true;
+    lastClickedCard = clickedCard;
+
+    // Stop the scroller completely
+    state.isPaused = true;
+    state.lightboxOpen = true;
+
+    // Get card position relative to landscape container
+    const cardPos = getRelativePosition(clickedCard, landscapeContainer);
+    const containerRect = landscapeContainer.getBoundingClientRect();
+
+    // Calculate final centered position - responsive based on screen size
+    const isMobile = window.innerWidth <= 480;
+    const isTablet = window.innerWidth <= 768;
+
+    let widthRatio, maxWidth, paddingY;
+    if (isMobile) {
+        widthRatio = 0.92;
+        maxWidth = 400;
+        paddingY = 20;
+    } else if (isTablet) {
+        widthRatio = 0.90;
+        maxWidth = 800;
+        paddingY = 30;
+    } else {
+        widthRatio = 0.85;
+        maxWidth = 1200;
+        paddingY = 40;
+    }
+
+    const finalWidth = Math.min(containerRect.width * widthRatio, maxWidth);
+    // Calculate height based on container height minus padding
+    const finalHeight = containerRect.height - (paddingY * 2);
+    const finalLeft = (containerRect.width - finalWidth) / 2;
+    const finalTop = paddingY;
+
+    // Set initial position (at the card location, below the container)
+    lightboxImageWrapper.style.transition = 'none';
+    lightboxImageWrapper.style.left = cardPos.left + 'px';
+    lightboxImageWrapper.style.top = (cardPos.top + containerRect.height) + 'px'; // Start from below (scroll section)
+    lightboxImageWrapper.style.width = cardPos.width + 'px';
+    lightboxImageWrapper.style.height = cardPos.height + 'px';
+    lightboxImageWrapper.style.opacity = '1';
+
+    // Load image
+    lightboxImage.src = imageUrl;
+
+    // Show lightbox backdrop
+    imageLightbox.classList.add('active');
+
+    // Trigger reflow to ensure initial position is applied
+    lightboxImageWrapper.offsetHeight;
+
+    // Animate to final position
+    requestAnimationFrame(() => {
+        lightboxImageWrapper.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+        lightboxImageWrapper.style.left = finalLeft + 'px';
+        lightboxImageWrapper.style.top = finalTop + 'px';
+        lightboxImageWrapper.style.width = finalWidth + 'px';
+        lightboxImageWrapper.style.height = finalHeight + 'px';
+    });
+
+    // Animation complete
+    setTimeout(() => {
+        isAnimating = false;
+    }, 1000);
+}
+
+/**
+ * Close the lightbox with animation back to card
+ */
+function closeLightbox() {
+    if (!imageLightbox || !lightboxImageWrapper || !landscapeContainer || isAnimating) return;
+
+    isAnimating = true;
+
+    // Hide close button immediately
+    imageLightbox.classList.remove('active');
+
+    // If we have the original card, animate back to it
+    if (lastClickedCard) {
+        const cardPos = getRelativePosition(lastClickedCard, landscapeContainer);
+        const containerRect = landscapeContainer.getBoundingClientRect();
+
+        // Animate back to card position (going down to scroll section)
+        lightboxImageWrapper.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+        lightboxImageWrapper.style.left = cardPos.left + 'px';
+        lightboxImageWrapper.style.top = (cardPos.top + containerRect.height) + 'px';
+        lightboxImageWrapper.style.width = cardPos.width + 'px';
+        lightboxImageWrapper.style.height = cardPos.height + 'px';
+        lightboxImageWrapper.style.opacity = '0';
+    }
+
+    // Clean up after animation
+    setTimeout(() => {
+        lightboxImage.src = '';
+        lightboxImageWrapper.style.transition = 'none';
+        lastClickedCard = null;
+        isAnimating = false;
+
+        // Resume scroll animation
+        state.lightboxOpen = false;
+        state.isPaused = false;
+    }, 500);
+}
+
+/**
+ * Get image URL from card-image element
+ */
+function getImageUrlFromCard(cardImage) {
+    // Check for imageClass
+    for (const [className, url] of Object.entries(imageClassToUrl)) {
+        if (cardImage.classList.contains(className)) {
+            return url;
+        }
+    }
+
+    // Fallback: try to get background-image from computed style
+    const bgImage = window.getComputedStyle(cardImage).backgroundImage;
+    if (bgImage && bgImage !== 'none') {
+        // Extract URL from background-image: url("...")
+        const match = bgImage.match(/url\(["']?([^"')]+)["']?\)/);
+        if (match) return match[1];
+    }
+
+    // Check for img inside
+    const img = cardImage.querySelector('img');
+    if (img && img.src) return img.src;
+
+    return null;
+}
+
+/**
+ * Initialize lightbox functionality
+ */
+function initLightbox() {
+    imageLightbox = document.getElementById('imageLightbox');
+    lightboxImage = document.getElementById('lightboxImage');
+    lightboxImageWrapper = document.querySelector('.lightbox-image-wrapper');
+    lightboxClose = document.getElementById('lightboxClose');
+    landscapeContainer = document.querySelector('.landscape-image-container');
+
+    if (!imageLightbox || !lightboxImage || !lightboxImageWrapper || !landscapeContainer) {
+        console.warn('Lightbox elements not found');
+        return;
+    }
+
+    // Close button click
+    if (lightboxClose) {
+        lightboxClose.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeLightbox();
+        });
+    }
+
+    // Click on backdrop (empty space) to close
+    imageLightbox.addEventListener('click', (e) => {
+        if (e.target === imageLightbox) {
+            closeLightbox();
+        }
+    });
+
+    // Escape key to close
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && imageLightbox.classList.contains('active')) {
+            closeLightbox();
+        }
+    });
+
+    // Add click listeners to card images (use event delegation on scroll track)
+    if (scrollTrack) {
+        scrollTrack.addEventListener('click', (e) => {
+            const cardImage = e.target.closest('.card-image');
+            if (cardImage) {
+                e.stopPropagation();
+                const imageUrl = getImageUrlFromCard(cardImage);
+                if (imageUrl) {
+                    openLightbox(imageUrl, cardImage);
+                }
+            }
+        });
+    }
+}
+
 // Auto-initialize when DOM is loaded
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initInfiniteScroll);
+    document.addEventListener('DOMContentLoaded', () => {
+        initInfiniteScroll();
+        initLightbox();
+    });
 } else {
     initInfiniteScroll();
+    initLightbox();
 }

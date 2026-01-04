@@ -156,13 +156,13 @@ window.addEventListener("load", () => {
   // For mobile/tablet: the animation should complete within the kasauli-title-center height
   function getScrollTriggerSettings() {
     if (isMobile) {
-      // Mobile: animation completes within first 35% of section scroll
-      return { start: "top top", end: "35% top", scrub: 0.5 };
+      // Mobile: animation completes within first 12% of section scroll
+      return { start: "top top", end: "12% top", scrub: 2.0 };
     } else if (isTablet) {
       // Tablet: animation completes within first 30% of section scroll
-      return { start: "top top", end: "30% top", scrub: 0.5 };
+      return { start: "top top", end: "30% top", scrub: 2.0 };
     }
-    return { start: "top top", end: "bottom bottom", scrub: 1.2 };
+    return { start: "top top", end: "bottom bottom", scrub: 2.0 };
   }
 
   const scrollSettings = getScrollTriggerSettings();
