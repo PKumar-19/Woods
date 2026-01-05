@@ -1137,49 +1137,66 @@ Function Scroll Effects
 			});
 			
 			window.addEventListener('resize', setClippedImageWrapperProperties);
-  
-			gsap.to(clippedImageGradient, {
-				scrollTrigger: {
+
+			// Check if mobile - disable scroll animation on mobile screens
+			var isMobile = window.innerWidth <= 768;
+
+			if (isMobile) {
+				// On mobile: set the map to its final expanded state immediately (no animation)
+				gsap.set(clippedImage, {
+					clipPath: 'inset(0% 0% round 10px)',
+					scale: 1,
+					y: 0,
+					opacity: 1
+				});
+				gsap.set(clippedImageGradient, { opacity: 0, display: 'none' });
+				gsap.set(clippedImageContent, { paddingTop: 20 });
+				gsap.set(clippedImageWrapper, { height: 'auto' });
+			} else {
+				// Desktop: enable scroll-triggered animation
+				gsap.to(clippedImageGradient, {
+					scrollTrigger: {
+						trigger: clippedImagePin,
+						start: function() {
+							const startPin = 0;
+							return "top +=" + startPin;
+						},
+						end: function() {
+							const endPin = clippedImageContent.offsetHeight;
+							return "+=" + endPin;
+						},
+						scrub: true,
+					},
+					opacity:1,
+					y:2
+				});
+
+				var clippedImageAnimation = gsap.to(clippedImage, {
+					clipPath: 'inset(0% 0% round 10px)',
+					scale: 1,
+					y:0,
+					opacity:1,
+					duration: 1,
+					ease: 'Linear.easeNone'
+				});
+
+				var clippedImageScene = ScrollTrigger.create({
 					trigger: clippedImagePin,
 					start: function() {
-						const startPin = 0;
+						const startPin = (window.innerHeight - clippedImagePin.offsetHeight) / 2;
 						return "top +=" + startPin;
-					},					
+					},
 					end: function() {
 						const endPin = clippedImageContent.offsetHeight;
 						return "+=" + endPin;
 					},
+					animation: clippedImageAnimation,
 					scrub: true,
-				},
-				opacity:1,
-				y:2
-			});
-			
-			var clippedImageAnimation = gsap.to(clippedImage, {
-				clipPath: 'inset(0% 0% round 10px)',
-				scale: 1,
-				y:0,				
-				opacity:1,
-				duration: 1,
-				ease: 'Linear.easeNone'
-			});
-			
-			var clippedImageScene = ScrollTrigger.create({
-				trigger: clippedImagePin,
-			  	start: function() {
-					const startPin = (window.innerHeight - clippedImagePin.offsetHeight) / 2;
-					return "top +=" + startPin;
-				},
-				end: function() {
-					const endPin = clippedImageContent.offsetHeight;
-					return "+=" + endPin;
-				},
-				animation: clippedImageAnimation,
-				scrub: true,
-				pin: true,
-				pinSpacing: false,
-			});
-  
+					pin: true,
+					pinSpacing: false,
+				});
+			}
+
 		});
 		
 		

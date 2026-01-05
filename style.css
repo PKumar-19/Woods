@@ -882,10 +882,13 @@ html,body {
 		/* ensure the section fills at least one viewport height so following sections start below the fixed hero */
 		min-height: 100vh;
 		/* provide a local stacking context and ensure normal flow */
-		position: relative; 
+		position: relative;
 		/* allow content beneath to be visible and not clipped by the parent */
 		overflow: visible !important;
 		box-sizing: border-box;
+		/* Explicit reset to prevent extra space above */
+		padding-top: 0;
+		margin-top: 0;
 	}
 
 	@media (min-width: 1080px) {
@@ -904,7 +907,7 @@ html,body {
 		.portfolio-scroll-section {
 			min-height: 58vh;
 		}
-	}e
+	}
 
 
 	/* Small spacer and isolation for the middle hero so it doesn't visually overlap */

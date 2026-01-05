@@ -2686,26 +2686,34 @@
 			display:block;
 			border-radius:8px;
 		}
-		/* Adjust clipped-image container: allow initial clipped state and scale so animations run on mobile */
+		/* Mobile: disable scroll animation - show map fully expanded with reduced height */
 		.clipped-image {
 			width: calc(100vw - 32px) !important;
-			height: auto !important;
-			/* Keep same clipping as desktop (but slightly reduced margins for small screens) */
-			clip-path: inset(8% 6% round 10px) !important;
-			-webkit-transform: scale(0.7) translateY(0) !important;
-			transform: scale(0.7) translateY(0) !important;
+			height: 250px !important;
+			/* Show map fully expanded on mobile - no clipping */
+			clip-path: inset(0% 0% round 10px) !important;
+			-webkit-transform: scale(1) translateY(0) !important;
+			transform: scale(1) translateY(0) !important;
 			padding: 0;
+			padding-top: 20px;
 			margin: 0 auto;
 			overflow: hidden;
+			opacity: 1 !important;
 		}
 		.clipped-image-wrapper {
 			height: auto !important;
-			padding-bottom: 20px;
+			padding-bottom: 10px;
 			overflow: visible;
 		}
-		.clipped-image-gradient { display:none !important; }
-		.clipped-image-content { padding-top: 20px !important; }
+		.clipped-image-pin {
+			position: relative !important;
+			transform: none !important;
+		}
+		.clipped-image-gradient { display: none !important; opacity: 0 !important; }
+		.clipped-image-content { display: none !important; }
 		.clipped-image #map_canvas { position: relative !important; }
+		.clipped-image .map-embed-wrapper { height: 250px !important; }
+		.clipped-image iframe { height: 250px !important; }
 	}
 
 	/* Ensure map is above clipped-image overlays so tiles are visible */

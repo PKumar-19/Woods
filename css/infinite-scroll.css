@@ -295,6 +295,10 @@
     padding: 60px 20px;
     text-align: center;
     background-color: #f2eae3;
+    /* Reset any inherited margins/margins */
+    margin: 0;
+    margin-top: 0;
+    box-sizing: border-box;
 }
 
 .portfolio-section-title h2 {
@@ -338,7 +342,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    display: flex;
+    display: none; /* Hidden by default - prevents any flash */
     align-items: center;
     justify-content: center;
     backdrop-filter: blur(0px);
@@ -351,7 +355,21 @@
     cursor: pointer;
 }
 
+/* Hide lightbox image when no src is set - prevents broken image icon */
+.lightbox-image:not([src]),
+.lightbox-image[src=""] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+}
+
+/* Hide lightbox wrapper contents when not active */
+.image-lightbox:not(.active) .lightbox-image-wrapper {
+    display: none !important;
+}
+
 .image-lightbox.active {
+    display: flex; /* Show when active */
     opacity: 1;
     visibility: visible;
     backdrop-filter: blur(15px);
