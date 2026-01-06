@@ -1,0 +1,239 @@
+/*------------------------------------------------------------------
+Print Styles for The Woods Kasauli
+Ensures all content is visible and properly formatted when printing
+-------------------------------------------------------------------*/
+
+@media print {
+    /* Reset all animations and transforms */
+    *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    /* Ensure body is scrollable and visible */
+    html, body {
+        overflow: visible !important;
+        height: auto !important;
+        width: 100% !important;
+        background: white !important;
+        color: black !important;
+        font-size: 12pt !important;
+    }
+
+    /* Remove fixed positioning */
+    .bg-gif-woods,
+    .header-gradient,
+    .clapat-header,
+    #hero,
+    .social-sticky-left {
+        position: relative !important;
+        height: auto !important;
+    }
+
+    /* Hide elements that don't print well */
+    .preloader-wrap,
+    #magic-cursor,
+    .cd-cover-layer,
+    #clone-image,
+    #rotate-device,
+    .scroll-down,
+    .scroll-btn,
+    .edge-gradient,
+    .lightbox-close,
+    .image-lightbox,
+    video,
+    .bg-video-woods,
+    .tourism-bg-video,
+    .social-sticky-left,
+    .scroll-indicator,
+    #backtotop,
+    .header-gradient-woods,
+    .book-call-trigger,
+    .book-call-modal {
+        display: none !important;
+    }
+
+    /* Show all content sections */
+    #content-scroll,
+    #main,
+    #main-content,
+    #main-page-content,
+    .content-row,
+    .tourism-hero-section,
+    .tourism-main-container,
+    .kasauli-title-center,
+    .kasauli_serenity_section,
+    .serenity-content,
+    .serenity-text-box,
+    .serenity-image-box,
+    .tourism-white-card-box,
+    .tourism-grid-wrapper,
+    .tourism-info-card,
+    .snap-slider-holder,
+    .portfolio-scroll-section,
+    .scroll-wrapper,
+    .scroll-container,
+    .scroll-track,
+    .project-card,
+    .hero-middle-section,
+    .beronet-hero-container,
+    .faq-wrapper-woods,
+    .faq-container-woods,
+    .faq-card {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        height: auto !important;
+        overflow: visible !important;
+        position: relative !important;
+        transform: none !important;
+    }
+
+    /* Reset flex containers to block for print */
+    .serenity-content,
+    .tourism-grid-wrapper,
+    .beronet-hero-container {
+        display: block !important;
+    }
+
+    /* Ensure images are visible */
+    img {
+        max-width: 100% !important;
+        height: auto !important;
+        display: block !important;
+        page-break-inside: avoid;
+    }
+
+    /* Show all FAQ answers */
+    .faq-answer {
+        display: block !important;
+        max-height: none !important;
+        overflow: visible !important;
+    }
+
+    /* Show all snap slides */
+    .snap-slide,
+    .snap-slide-caption,
+    .thumb-slide {
+        display: block !important;
+        opacity: 1 !important;
+    }
+
+    /* Reset scroll track for print */
+    .scroll-track {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        transform: none !important;
+        width: 100% !important;
+    }
+
+    .project-card {
+        width: 45% !important;
+        margin: 2% !important;
+        page-break-inside: avoid;
+    }
+
+    /* Typography for print */
+    h1, h2, h3, h4, h5, h6 {
+        color: black !important;
+        page-break-after: avoid;
+    }
+
+    p, li {
+        color: #333 !important;
+    }
+
+    /* Links */
+    a {
+        color: #333 !important;
+        text-decoration: underline !important;
+    }
+
+    /* Section backgrounds */
+    .content-row,
+    .tourism-hero-section,
+    .portfolio-scroll-section,
+    .hero-middle-section {
+        background: white !important;
+    }
+
+    .tourism-white-card-box,
+    .tourism-info-card {
+        background: #f5f5f5 !important;
+        border: 1px solid #ddd !important;
+    }
+
+    /* Kasauli text styling for print */
+    .kasauli-text {
+        color: black !important;
+        text-shadow: none !important;
+        font-size: 24pt !important;
+    }
+
+    .serenity-label,
+    .serenity-subtext {
+        color: black !important;
+        text-shadow: none !important;
+    }
+
+    /* Rotator - show active item only */
+    .serenity-rotator .serenity-subtext {
+        display: none !important;
+    }
+
+    .serenity-rotator .serenity-subtext.active {
+        display: inline !important;
+        position: static !important;
+    }
+
+    /* Image rotator - show active image only */
+    .serenity-image-rotator .rot-image {
+        display: none !important;
+    }
+
+    .serenity-image-rotator .rot-image.active {
+        display: block !important;
+        position: static !important;
+    }
+
+    /* Page breaks */
+    .content-row,
+    .tourism-hero-section {
+        page-break-before: auto;
+        page-break-after: auto;
+        page-break-inside: avoid;
+    }
+
+    /* Footer styling */
+    #footer-container {
+        background: white !important;
+        color: black !important;
+    }
+
+    .copyright,
+    .copyright a {
+        color: black !important;
+    }
+
+    /* Map - show placeholder */
+    .map-embed-wrapper {
+        border: 1px solid #ddd !important;
+        background: #f5f5f5 !important;
+        min-height: 200px !important;
+    }
+
+    .map-embed-wrapper iframe {
+        display: none !important;
+    }
+
+    .map-embed-wrapper::after {
+        content: "Map - Visit thewoodskasauli.com for interactive map" !important;
+        display: block !important;
+        padding: 20px !important;
+        text-align: center !important;
+        color: #666 !important;
+    }
+}

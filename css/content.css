@@ -792,8 +792,8 @@
     transform: translateY(0) !important;
 }
 
-/* Also ensure scroll-content and preloader don't get unusually large heights */
-.scroll-content, .preloader-wrap, #content-scroll {
+/* Also ensure preloader doesn't get unusually large heights */
+.preloader-wrap {
     max-height: 100vh !important;
     height: auto !important;
     overflow: visible !important;

@@ -629,52 +629,98 @@ Function Page Load
 		
 		
 		if (!$('body').hasClass("disable-ajaxload")) {
-			
-			
+
+
 			var perfData = performance.getEntriesByType('navigation')[0] || performance.timing;
 			var EstimatedTime = -(perfData.loadEventEnd - perfData.startTime);
 			var time = Math.min(Math.max(((EstimatedTime / 100) % 50) * 1000, 5000), 20000);
 			var timeSeconds = time/1000 - 1.5
-			window.preloaderTimeout = time; 
-			
-			var tl = gsap.timeline({				
-				paused: true,			
+			window.preloaderTimeout = time;
+
+			var tl = gsap.timeline({
+				paused: true,
 			});
-		
+
 			tl.to('.percentage-first span', {
 				y: 0,
 				duration: 1.5,
 				ease: 'expo.out',
-		
+
 			}, timeSeconds - 1)
-		
+
+			// Stop at 99 (yPercent -900 = digit 9, since spans go 0-9-0 with 11 elements)
 			tl.to('.number_2', {
 				yPercent: -900,
 				duration: timeSeconds - 1,
 				ease: 'expo.inOut'
 			}, .75)
-		
+
 			tl.to('.number_3', {
 				yPercent: -900,
 				duration: timeSeconds - 1,
 				ease: 'expo.inOut'
-		
+
 			}, 1)
-		
+
 			tl.play()
-			
-			gsap.to($(".percentage, .percentage-first"), {duration: 0.5, delay:timeSeconds, opacity: 0, y: - $('.percentage-wrapper').height(),  ease: 'expo.inOut' });
-			gsap.to($(".percentage-last span"), {duration: 1.2, delay:timeSeconds, opacity: 1, y: 0,  ease: 'expo.inOut', onComplete: function() {
-				gsap.to($(".percentage-last"), {duration: 0.5, opacity: 0, y:-30});
-			}});
-			
-			
-			// Fading Out Loadbar on Finised
-			setTimeout(function(){				
-				initOnFirstLoad();						  
+
+			// Function to complete the preloader (go from 99 to 100)
+			function completePreloader() {
+				gsap.to($(".percentage, .percentage-first"), {duration: 0.5, opacity: 0, y: - $('.percentage-wrapper').height(),  ease: 'expo.inOut' });
+				gsap.to($(".percentage-last span"), {duration: 1.2, opacity: 1, y: 0,  ease: 'expo.inOut', onComplete: function() {
+					gsap.to($(".percentage-last"), {duration: 0.5, opacity: 0, y:-30});
+				}});
+
+				// Initialize page content
+				setTimeout(function(){
+					initOnFirstLoad();
+				}, 500);
+			}
+
+			// Wait for all JS to be ready before completing preloader
+			// Check if critical scripts are loaded
+			function checkJSReady() {
+				var isReady = true;
+
+				// Check if GSAP is ready
+				if (typeof gsap === 'undefined') isReady = false;
+
+				// Check if ScrollTrigger is ready
+				if (typeof ScrollTrigger === 'undefined') isReady = false;
+
+				// Check if imagesLoaded is ready
+				if (typeof imagesLoaded === 'undefined') isReady = false;
+
+				// Check if infinite scroll is initialized (portfolioModal should exist)
+				if (typeof window.portfolioLightboxReady === 'undefined') isReady = false;
+
+				return isReady;
+			}
+
+			// Poll for JS ready state, but ensure minimum time has passed
+			var jsReadyCheckInterval;
+			var minTimeElapsed = false;
+
+			setTimeout(function() {
+				minTimeElapsed = true;
 			}, time);
-		
-		} else {			
+
+			jsReadyCheckInterval = setInterval(function() {
+				if (minTimeElapsed && checkJSReady()) {
+					clearInterval(jsReadyCheckInterval);
+					completePreloader();
+				}
+			}, 100);
+
+			// Fallback: complete after max wait time (time + 3 seconds)
+			setTimeout(function() {
+				if (jsReadyCheckInterval) {
+					clearInterval(jsReadyCheckInterval);
+					completePreloader();
+				}
+			}, time + 3000);
+
+		} else {
 			initOnFirstLoad();
 		}
 		

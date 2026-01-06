@@ -93,9 +93,9 @@
   z-index: 5 !important;
 }
 
-/* Keep header above the fixed video but not so high it blocks all content */
+/* Keep header fixed above the video on all devices */
 .clapat-header-woods {
-  position: relative !important;
+  position: fixed !important;
   z-index: 100 !important;
   background: transparent !important;
 }

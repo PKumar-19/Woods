@@ -61,11 +61,13 @@ Function Scroll Effects
 			
 		
 		
-		let enableSmoothScrollMobile = true;
+		// IMPORTANT: Disable smooth scroll on mobile to prevent jerky scrolling
+		// The Smooth Scrollbar library causes performance issues on touch devices
+		let enableSmoothScrollMobile = false;
 		if( isMobile() ){
-			
+
 			if( !enableSmoothScrollMobile ){
-				
+
 				document.body.classList.remove("smooth-scroll");
 			}
 		}

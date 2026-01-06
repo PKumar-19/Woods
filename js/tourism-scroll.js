@@ -109,10 +109,22 @@ window.addEventListener("load", () => {
 
   show(0);
   const interval = 2500;
-  setInterval(() => {
+
+  // Store interval ID for cleanup on page unload
+  const rotatorIntervalId = setInterval(() => {
     idx = (idx + 1) % count;
     show(idx);
   }, interval);
+
+  // Cleanup interval when page is hidden or unloaded to prevent memory leaks
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      clearInterval(rotatorIntervalId);
+    }
+  });
+  window.addEventListener('beforeunload', () => {
+    clearInterval(rotatorIntervalId);
+  });
   
   const heroWord = document.getElementById("tourism-hero-title");
   console.log("heroWord:", heroWord);
@@ -146,11 +158,15 @@ window.addEventListener("load", () => {
 
   /* MAIN SCROLL TIMELINE */
   // Use explicit scroller when available to avoid depending on defaults
+  // On mobile, smooth-scroll is disabled, so we use native window scrolling
   const scrollerEl = document.querySelector('#content-scroll');
   const windowWidth = window.innerWidth;
   const isMobile = windowWidth <= 480;
   const isTablet = windowWidth > 480 && windowWidth <= 1024;
   const isMobileOrTablet = windowWidth <= 1024;
+
+  // Check if smooth-scroll is active (it's disabled on mobile in common.js)
+  const hasSmoothScroll = document.body.classList.contains('smooth-scroll');
 
   // Get responsive scroll trigger settings
   // For mobile/tablet: the animation should complete within the kasauli-title-center height
@@ -191,7 +207,8 @@ window.addEventListener("load", () => {
       console.log("tourism-scroll onToggle, isActive:", self.isActive),
   };
 
-  if (scrollerEl) scrollTriggerConfig.scroller = scrollerEl;
+  // Only use custom scroller if smooth-scroll is active (not on mobile)
+  if (scrollerEl && hasSmoothScroll) scrollTriggerConfig.scroller = scrollerEl;
 
   const tl = gsap.timeline({ scrollTrigger: scrollTriggerConfig });
 
@@ -200,27 +217,36 @@ window.addEventListener("load", () => {
     !!tl.scrollTrigger
   );
 
+  // Debounced ScrollTrigger refresh to prevent excessive calls
+  let refreshTimeout = null;
+  const debouncedRefresh = () => {
+    if (refreshTimeout) clearTimeout(refreshTimeout);
+    refreshTimeout = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 100);
+  };
+
   // Refresh after images and media load (reduces intermittent layout-shift issues)
   if (typeof imagesLoaded !== 'undefined') {
     const targetForImages = scrollerEl || document;
     imagesLoaded(targetForImages, () => {
       console.log('tourism-scroll: images loaded, refreshing ScrollTrigger');
-      ScrollTrigger.refresh();
+      debouncedRefresh();
 
-      // additional delayed refreshes to handle late layout shifts (videos, fonts, heavy images)
-      setTimeout(() => ScrollTrigger.refresh(), 500);
-      setTimeout(() => ScrollTrigger.refresh(), 1000);
-      setTimeout(() => ScrollTrigger.refresh(), 2000);
+      // Single delayed refresh to handle late layout shifts (consolidated from multiple calls)
+      setTimeout(() => debouncedRefresh(), 1000);
     });
   }
 
-  // Refresh on window resize/orientation
-  window.addEventListener('resize', () => ScrollTrigger.refresh());
+  // Debounced resize handler to prevent excessive refreshes
+  let resizeTimeout = null;
+  window.addEventListener('resize', () => {
+    if (resizeTimeout) clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => ScrollTrigger.refresh(), 150);
+  });
 
-  // Extra refreshes after load to mitigate intermittent cases where media loads late
-  setTimeout(() => ScrollTrigger.refresh(), 500);
-  setTimeout(() => ScrollTrigger.refresh(), 1000);
-  setTimeout(() => ScrollTrigger.refresh(), 2000);
+  // Single delayed refresh after load (consolidated from 3 calls to 1)
+  setTimeout(() => debouncedRefresh(), 800);
 
   // Direct debug ScrollTrigger to verify ScrollTrigger receives updates even if timeline doesn't
   ScrollTrigger.create({
@@ -228,7 +254,7 @@ window.addEventListener("load", () => {
     trigger: "#tourism-hero",
     start: scrollSettings.start,
     end: scrollSettings.end,
-    scroller: scrollerEl || undefined,
+    scroller: hasSmoothScroll ? scrollerEl : undefined,
     // markers: true,
     onUpdate: function (self) {
       console.log("tourism-debug onUpdate:", self.progress);
@@ -337,13 +363,8 @@ window.addEventListener("load", () => {
     0
   );
 
-  // Ensure measurements are recalculated on resize/orientation changes
-  window.addEventListener('orientationchange', () => ScrollTrigger.refresh());
-  window.addEventListener('resize', () => {
-    // small debounce
-    clearTimeout(window._tourismResizeTimeout);
-    window._tourismResizeTimeout = setTimeout(() => ScrollTrigger.refresh(), 120);
-  });
+  // Orientation change triggers refresh (resize handler already added above with debounce)
+  window.addEventListener('orientationchange', () => debouncedRefresh());
 
   /* ROTATING WORDS (commented out intentionally) */
   /*
@@ -388,11 +409,17 @@ window.addEventListener("load", () => {
   const serenityRotatorEl = document.querySelector('.serenity-rotator');
 
   if (serenityLabelEl && serenityRotatorEl) {
-    // Set initial state - hidden until scroll reveals them
-    gsap.set([serenityLabelEl, serenityRotatorEl], {
-      opacity: 0,
-      y: 30
-    });
+    // On mobile/tablet, don't hide these elements initially since:
+    // 1. The docking animation completes quickly and syncs with reveal
+    // 2. Prevents "flash of invisible content" when cache is cleared
+    // 3. Better UX - content is visible even if JS takes time to load
+    if (!isMobileOrTablet) {
+      // Only on desktop: Set initial state - hidden until scroll reveals them
+      gsap.set([serenityLabelEl, serenityRotatorEl], {
+        opacity: 0,
+        y: 30
+      });
+    }
 
     if (isMobileOrTablet) {
       // For mobile/tablet: sync reveal with the docking animation using same trigger
@@ -413,7 +440,7 @@ window.addEventListener("load", () => {
         trigger: '.kasauli_serenity_section',
         start: 'top 70%',
         end: 'bottom 30%',
-        scroller: scrollerEl || undefined,
+        scroller: hasSmoothScroll ? scrollerEl : undefined,
         // markers: true, // uncomment for debugging
         onEnter: () => {
           gsap.to([serenityLabelEl, serenityRotatorEl], {

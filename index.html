@@ -35,6 +35,7 @@
     <link href="css/infinite-scroll.css" rel="stylesheet" />
     <link href="css/background-color-switch.css" rel="stylesheet" />
     <link href="css/logo-working.css" rel="stylesheet" />
+    <link href="css/print.css" rel="stylesheet" media="print" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..900&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet"> -->
@@ -377,19 +378,6 @@
                                                 <img src="images/Portfolio_Scroll_Section/Landscape-Image-Villas-Low-Res.png"
                                                      alt="Villas Landscape"
                                                      class="landscape-image">
-
-                                                <!-- Image Lightbox -->
-                                                <div class="image-lightbox" id="imageLightbox">
-                                                    <div class="lightbox-image-wrapper">
-                                                        <button class="lightbox-close" id="lightboxClose" aria-label="Close">
-                                                            <svg viewBox="0 0 24 24">
-                                                                <line x1="18" y1="6" x2="6" y2="18"></line>
-                                                                <line x1="6" y1="6" x2="18" y2="18"></line>
-                                                            </svg>
-                                                        </button>
-                                                        <img alt="Enlarged view" class="lightbox-image" id="lightboxImage">
-                                                    </div>
-                                                </div>
                                             </div>
 
                                             <section class="scroll-wrapper">
@@ -1261,7 +1249,21 @@
     </div>
     <div id="rotate-device"></div>
 
-
+    <!-- Portfolio Image Lightbox Modal (popup card style) -->
+    <div class="portfolio-lightbox-modal" id="portfolioLightboxModal" aria-hidden="true">
+        <div class="portfolio-lightbox-overlay"></div>
+        <div class="portfolio-lightbox-dialog">
+            <button class="portfolio-lightbox-close" id="portfolioLightboxClose" data-action="close" aria-label="Close">
+                <svg viewBox="0 0 24 24" width="20" height="20">
+                    <line x1="18" y1="6" x2="6" y2="18" stroke="currentColor" stroke-width="2"></line>
+                    <line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" stroke-width="2"></line>
+                </svg>
+            </button>
+            <div class="portfolio-lightbox-content">
+                <img alt="Enlarged view" class="portfolio-lightbox-image" id="portfolioLightboxImage">
+            </div>
+        </div>
+    </div>
 
     <script src="js/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -1648,13 +1650,13 @@
         });
       }
 
-      // Destroy auto-init and reinit with debug
+      // Destroy auto-init and reinit (debug disabled for production)
     if (bgDetector) bgDetector.destroy();
-    
+
     setupColorDetection({
-        debug: true,           // Shows debug panel
-        luminanceThreshold: 0.45,  // Adjust if needed
-        updateInterval: 80
+        debug: false,          // Set to true for debugging
+        luminanceThreshold: 0.45,
+        updateInterval: 100    // Slightly slower for better performance
     });
 
       function startVideoDetectionLoop(){
@@ -1694,13 +1696,26 @@
         stopVideoDetectionLoop();
       }, true);
 
+      // Check if any videos are actually playing before starting detection loop
+      function checkAndStartVideoLoop() {
+        var vids = document.querySelectorAll('video');
+        for(var i=0; i<vids.length; i++){
+          if(!vids[i].paused && vids[i].videoWidth > 0){
+            startVideoDetectionLoop();
+            return;
+          }
+        }
+      }
+
       if(document.readyState === 'complete' || document.readyState === 'interactive'){
         setTimeout(function(){ detectAndApply(); }, 10);
-        startVideoDetectionLoop();
+        // Only start video loop if videos are actually playing
+        setTimeout(checkAndStartVideoLoop, 500);
       } else {
-        document.addEventListener('DOMContentLoaded', function(){ 
+        document.addEventListener('DOMContentLoaded', function(){
           setTimeout(detectAndApply, 10);
-          startVideoDetectionLoop();
+          // Only start video loop if videos are actually playing
+          setTimeout(checkAndStartVideoLoop, 500);
         }, {once:true});
       }
       window.addEventListener('resize', function(){ clearTimeout(window._logoTimer); window._logoTimer = setTimeout(scheduleDetect, 120); });

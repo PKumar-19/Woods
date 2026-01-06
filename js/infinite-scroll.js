@@ -7,18 +7,18 @@
  * Project Data
  */
 const projects = [
-    {
-        year: '',
-        title: 'Front Elevation',
-        imageClass: 'front-elevation',
-        mockupImage: 'images/Project_Overview/icons-project-overview/Front-Elevation-8.png'
-    },
-    {
-        year: '',
-        title: 'Rear Elevation',
-        imageClass: 'rear-elevation',
-        mockupImage: 'images/Project_Overview/icons-project-overview/Rear-Elevation-8.png'
-    },
+    // {
+    //     year: '',
+    //     title: 'Front Elevation',
+    //     imageClass: 'front-elevation',
+    //     mockupImage: 'images/Project_Overview/icons-project-overview/Front-Elevation-8.png'
+    // },
+    // {
+    //     year: '',
+    //     title: 'Rear Elevation',
+    //     imageClass: 'rear-elevation',
+    //     mockupImage: 'images/Project_Overview/icons-project-overview/Rear-Elevation-8.png'
+    // },
     {
         year: '',
         title: 'Site Layout',
@@ -368,7 +368,8 @@ function initInfiniteScroll() {
 }
 
 /* ============================================
-   IMAGE LIGHTBOX FUNCTIONALITY
+   PORTFOLIO LIGHTBOX MODAL FUNCTIONALITY
+   (Popup card style like Book A Call form)
    ============================================ */
 
 // Map imageClass to actual image URLs
@@ -381,139 +382,58 @@ const imageClassToUrl = {
     'second-floor': 'images/Portfolio_Scroll_Section/Second-Floor-Plans.png'
 };
 
-let imageLightbox = null;
-let lightboxImage = null;
-let lightboxImageWrapper = null;
-let lightboxClose = null;
-let landscapeContainer = null;
-let lastClickedCard = null;
-let isAnimating = false;
+let portfolioModal = null;
+let portfolioModalImage = null;
+let portfolioModalOverlay = null;
+let portfolioModalClose = null;
 
 /**
- * Get the position of an element relative to the landscape container
+ * Open portfolio lightbox modal with specified image
  */
-function getRelativePosition(element, container) {
-    const elementRect = element.getBoundingClientRect();
-    const containerRect = container.getBoundingClientRect();
-
-    return {
-        left: elementRect.left - containerRect.left,
-        top: elementRect.top - containerRect.top,
-        width: elementRect.width,
-        height: elementRect.height
-    };
-}
-
-/**
- * Open lightbox with specified image and animate from card position
- */
-function openLightbox(imageUrl, clickedCard) {
-    if (!imageLightbox || !lightboxImage || !lightboxImageWrapper || !landscapeContainer || isAnimating) return;
-
-    isAnimating = true;
-    lastClickedCard = clickedCard;
+function openPortfolioModal(imageUrl) {
+    if (!portfolioModal || !portfolioModalImage) return;
 
     // Stop the scroller completely
     state.isPaused = true;
     state.lightboxOpen = true;
 
-    // Get card position relative to landscape container
-    const cardPos = getRelativePosition(clickedCard, landscapeContainer);
-    const containerRect = landscapeContainer.getBoundingClientRect();
+    // Set the image source
+    portfolioModalImage.src = imageUrl;
 
-    // Calculate final centered position - responsive based on screen size
-    const isMobile = window.innerWidth <= 480;
-    const isTablet = window.innerWidth <= 768;
+    // Show the modal
+    portfolioModal.classList.add('show');
+    portfolioModal.setAttribute('aria-hidden', 'false');
 
-    let widthRatio, maxWidth, paddingY;
-    if (isMobile) {
-        widthRatio = 0.92;
-        maxWidth = 400;
-        paddingY = 20;
-    } else if (isTablet) {
-        widthRatio = 0.90;
-        maxWidth = 800;
-        paddingY = 30;
-    } else {
-        widthRatio = 0.85;
-        maxWidth = 1200;
-        paddingY = 40;
-    }
-
-    const finalWidth = Math.min(containerRect.width * widthRatio, maxWidth);
-    // Calculate height based on container height minus padding
-    const finalHeight = containerRect.height - (paddingY * 2);
-    const finalLeft = (containerRect.width - finalWidth) / 2;
-    const finalTop = paddingY;
-
-    // Set initial position (at the card location, below the container)
-    lightboxImageWrapper.style.transition = 'none';
-    lightboxImageWrapper.style.left = cardPos.left + 'px';
-    lightboxImageWrapper.style.top = (cardPos.top + containerRect.height) + 'px'; // Start from below (scroll section)
-    lightboxImageWrapper.style.width = cardPos.width + 'px';
-    lightboxImageWrapper.style.height = cardPos.height + 'px';
-    lightboxImageWrapper.style.opacity = '1';
-
-    // Load image
-    lightboxImage.src = imageUrl;
-
-    // Show lightbox backdrop
-    imageLightbox.classList.add('active');
-
-    // Trigger reflow to ensure initial position is applied
-    lightboxImageWrapper.offsetHeight;
-
-    // Animate to final position
-    requestAnimationFrame(() => {
-        lightboxImageWrapper.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-        lightboxImageWrapper.style.left = finalLeft + 'px';
-        lightboxImageWrapper.style.top = finalTop + 'px';
-        lightboxImageWrapper.style.width = finalWidth + 'px';
-        lightboxImageWrapper.style.height = finalHeight + 'px';
-    });
-
-    // Animation complete
-    setTimeout(() => {
-        isAnimating = false;
-    }, 1000);
+    // Prevent body scroll while modal is open
+    document.body.style.overflow = 'hidden';
 }
 
 /**
- * Close the lightbox with animation back to card
+ * Close the portfolio lightbox modal with animation
  */
-function closeLightbox() {
-    if (!imageLightbox || !lightboxImageWrapper || !landscapeContainer || isAnimating) return;
+function closePortfolioModal() {
+    if (!portfolioModal) return;
 
-    isAnimating = true;
+    // Add closing class for exit animation
+    portfolioModal.classList.add('closing');
 
-    // Hide close button immediately
-    imageLightbox.classList.remove('active');
-
-    // If we have the original card, animate back to it
-    if (lastClickedCard) {
-        const cardPos = getRelativePosition(lastClickedCard, landscapeContainer);
-        const containerRect = landscapeContainer.getBoundingClientRect();
-
-        // Animate back to card position (going down to scroll section)
-        lightboxImageWrapper.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
-        lightboxImageWrapper.style.left = cardPos.left + 'px';
-        lightboxImageWrapper.style.top = (cardPos.top + containerRect.height) + 'px';
-        lightboxImageWrapper.style.width = cardPos.width + 'px';
-        lightboxImageWrapper.style.height = cardPos.height + 'px';
-        lightboxImageWrapper.style.opacity = '0';
-    }
-
-    // Clean up after animation
+    // After animation completes, hide the modal
     setTimeout(() => {
-        lightboxImage.src = '';
-        lightboxImageWrapper.style.transition = 'none';
-        lastClickedCard = null;
-        isAnimating = false;
+        portfolioModal.classList.remove('show', 'closing');
+        portfolioModal.setAttribute('aria-hidden', 'true');
+
+        // Clear the image source
+        if (portfolioModalImage) {
+            portfolioModalImage.src = '';
+        }
+
+        // Restore body scroll
+        document.body.style.overflow = '';
 
         // Resume scroll animation
         state.lightboxOpen = false;
         state.isPaused = false;
-    }, 500);
+    }, 250);
 }
 
 /**
@@ -543,39 +463,38 @@ function getImageUrlFromCard(cardImage) {
 }
 
 /**
- * Initialize lightbox functionality
+ * Initialize portfolio lightbox modal functionality
  */
 function initLightbox() {
-    imageLightbox = document.getElementById('imageLightbox');
-    lightboxImage = document.getElementById('lightboxImage');
-    lightboxImageWrapper = document.querySelector('.lightbox-image-wrapper');
-    lightboxClose = document.getElementById('lightboxClose');
-    landscapeContainer = document.querySelector('.landscape-image-container');
+    portfolioModal = document.getElementById('portfolioLightboxModal');
+    portfolioModalImage = document.getElementById('portfolioLightboxImage');
+    portfolioModalOverlay = document.querySelector('.portfolio-lightbox-overlay');
+    portfolioModalClose = document.getElementById('portfolioLightboxClose');
 
-    if (!imageLightbox || !lightboxImage || !lightboxImageWrapper || !landscapeContainer) {
-        console.warn('Lightbox elements not found');
+    if (!portfolioModal || !portfolioModalImage) {
+        console.warn('Portfolio lightbox modal elements not found');
         return;
     }
 
     // Close button click
-    if (lightboxClose) {
-        lightboxClose.addEventListener('click', (e) => {
+    if (portfolioModalClose) {
+        portfolioModalClose.addEventListener('click', (e) => {
             e.stopPropagation();
-            closeLightbox();
+            closePortfolioModal();
         });
     }
 
-    // Click on backdrop (empty space) to close
-    imageLightbox.addEventListener('click', (e) => {
-        if (e.target === imageLightbox) {
-            closeLightbox();
-        }
-    });
+    // Click on overlay (backdrop) to close
+    if (portfolioModalOverlay) {
+        portfolioModalOverlay.addEventListener('click', () => {
+            closePortfolioModal();
+        });
+    }
 
     // Escape key to close
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && imageLightbox.classList.contains('active')) {
-            closeLightbox();
+        if (e.key === 'Escape' && portfolioModal.classList.contains('show')) {
+            closePortfolioModal();
         }
     });
 
@@ -587,7 +506,7 @@ function initLightbox() {
                 e.stopPropagation();
                 const imageUrl = getImageUrlFromCard(cardImage);
                 if (imageUrl) {
-                    openLightbox(imageUrl, cardImage);
+                    openPortfolioModal(imageUrl);
                 }
             }
         });
@@ -599,8 +518,12 @@ if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
         initInfiniteScroll();
         initLightbox();
+        // Signal that portfolio lightbox is ready for preloader
+        window.portfolioLightboxReady = true;
     });
 } else {
     initInfiniteScroll();
     initLightbox();
+    // Signal that portfolio lightbox is ready for preloader
+    window.portfolioLightboxReady = true;
 }

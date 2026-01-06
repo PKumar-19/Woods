@@ -7,7 +7,14 @@
 .scroll-wrapper {
     position: relative;
     width: 100%;
+    min-height: 90vh;
     background-image: url('../images/Project_Overview/Project_Overview_Scroll.png');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 /* Container */
@@ -22,6 +29,7 @@
     display: flex;
     gap: 24px;
     width: max-content;
+    height: 60vh;
     /* Hardware acceleration for smooth animation */
     will-change: transform;
     backface-visibility: hidden;
@@ -130,8 +138,8 @@
     border-radius: 12px;
     padding: 16px;
     margin: 0 0.5%;
-    min-width: 750px;
-    height: 280px;
+    min-width: 50vw;
+    height: 60vh;
     flex-shrink: 0;
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -333,103 +341,153 @@
 }
 
 /* ============================================
-   IMAGE LIGHTBOX/MODAL
+   PORTFOLIO IMAGE LIGHTBOX MODAL (Popup Card Style)
    ============================================ */
 
-.image-lightbox {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: none; /* Hidden by default - prevents any flash */
+.portfolio-lightbox-modal {
+    position: fixed;
+    inset: 0;
+    display: none;
     align-items: center;
     justify-content: center;
-    backdrop-filter: blur(0px);
-    -webkit-backdrop-filter: blur(0px);
-    /* background: rgba(12, 12, 12, 0); */
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.5s ease, visibility 0.5s ease, backdrop-filter 0.5s ease, background 0.5s ease;
-    z-index: 100;
+    z-index: 99999;
+    font-family: Montserrat, system-ui, Arial;
+    background: transparent;
+}
+
+.portfolio-lightbox-modal.show {
+    display: flex;
+}
+
+.portfolio-lightbox-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(6, 8, 10, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     cursor: pointer;
+    opacity: 0;
+    animation: portfolioFadeIn 0.25s forwards;
+}
+
+.portfolio-lightbox-dialog {
+    position: relative;
+    max-width: 90vw;
+    max-height: 85vh;
+    width: auto;
+    height: auto;
+    background-color: rgba(31, 53, 51, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: 0 26px 60px rgba(31, 53, 51, 0.28);
+    transform: translateY(20px) scale(0.95);
+    opacity: 0;
+    animation: portfolioPopIn 0.3s 0.1s forwards;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.portfolio-lightbox-close {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    width: 40px;
+    height: 40px;
+    border: 0;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    color: #f2eae3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.portfolio-lightbox-close:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(1.1);
+}
+
+.portfolio-lightbox-close svg {
+    width: 18px;
+    height: 18px;
+}
+
+.portfolio-lightbox-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.portfolio-lightbox-image {
+    max-width: 100%;
+    max-height: 80vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+    display: block;
 }
 
 /* Hide lightbox image when no src is set - prevents broken image icon */
-.lightbox-image:not([src]),
-.lightbox-image[src=""] {
+.portfolio-lightbox-image:not([src]),
+.portfolio-lightbox-image[src=""] {
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
 }
 
-/* Hide lightbox wrapper contents when not active */
-.image-lightbox:not(.active) .lightbox-image-wrapper {
-    display: none !important;
+@keyframes portfolioPopIn {
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
 }
 
-.image-lightbox.active {
-    display: flex; /* Show when active */
-    opacity: 1;
-    visibility: visible;
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    /* background: rgba(12, 12, 12, 0.85); */
+@keyframes portfolioFadeIn {
+    to {
+        opacity: 1;
+    }
 }
 
-.lightbox-image-wrapper {
-    position: absolute;
-    cursor: default;
-    /* Will be positioned dynamically via JS */
-    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    transform-origin: center center;
+/* Closing animations */
+.portfolio-lightbox-modal.closing .portfolio-lightbox-overlay {
+    animation: portfolioFadeOut 0.25s forwards;
 }
 
-.lightbox-image {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    border-radius: 8px;
-    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+.portfolio-lightbox-modal.closing .portfolio-lightbox-dialog {
+    animation: portfolioPopOut 0.25s forwards;
 }
 
-.lightbox-close {
-    position: absolute;
-    top: -15px;
-    right: -15px;
-    width: 40px;
-    height: 40px;
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease, opacity 0.3s ease;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    z-index: 101;
-    opacity: 0;
+@keyframes portfolioFadeOut {
+    to {
+        opacity: 0;
+    }
 }
 
-.image-lightbox.active .lightbox-close {
-    opacity: 1;
-    transition-delay: 0.3s;
+@keyframes portfolioPopOut {
+    to {
+        transform: translateY(20px) scale(0.95);
+        opacity: 0;
+    }
 }
 
-.lightbox-close:hover {
-    background: rgba(255, 255, 255, 0.25);
-    border-color: rgba(255, 255, 255, 0.5);
-    transform: scale(1.1);
-}
-
-.lightbox-close svg {
-    width: 18px;
-    height: 18px;
-    stroke: rgba(255, 255, 255, 0.9);
-    stroke-width: 2;
-    fill: none;
+@media (prefers-reduced-motion: reduce) {
+    .portfolio-lightbox-overlay,
+    .portfolio-lightbox-dialog {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
 }
 
 /* Make card-image clickable */
@@ -481,6 +539,11 @@
 
 /* Tablet breakpoint */
 @media (max-width: 1024px) {
+    /* Scroll wrapper height for tablets */
+    .scroll-wrapper {
+        min-height: 90vh;
+    }
+
     /* Landscape image - fixed height with aspect ratio preserved (clipped) */
     .landscape-image-container {
         height: 35vh;
@@ -505,9 +568,14 @@
 
 /* Mobile breakpoint */
 @media (max-width: 768px) {
+    /* Scroll wrapper height for mobile */
+    .scroll-wrapper {
+        min-height: 90vh;
+    }
+
     .project-card {
-        min-width: 360px;
-        height: 220px;
+        min-width: 50vw;
+        height: 60vh;
         padding: 12px;
         gap: 16px;
     }
@@ -571,38 +639,27 @@
         width: 60px;
     }
 
-    /* Lightbox responsive */
-    .image-lightbox {
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
+    /* Portfolio lightbox modal responsive */
+    .portfolio-lightbox-dialog {
+        max-width: 95vw;
+        max-height: 90vh;
+        padding: 12px;
     }
 
-    .image-lightbox.active {
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
+    .portfolio-lightbox-image {
+        max-height: 75vh;
     }
 
-    .lightbox-image-wrapper {
-        max-width: 95%;
-        max-height: 95%;
-        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    .portfolio-lightbox-close {
+        width: 36px;
+        height: 36px;
+        right: 10px;
+        top: 10px;
     }
 
-    .lightbox-image {
-        max-height: 55vh;
-        border-radius: 6px;
-    }
-
-    .lightbox-close {
-        top: -10px;
-        right: -10px;
-        width: 35px;
-        height: 35px;
-    }
-
-    .lightbox-close svg {
-        width: 14px;
-        height: 14px;
+    .portfolio-lightbox-close svg {
+        width: 16px;
+        height: 16px;
     }
 
     /* Smaller custom cursor on mobile */
@@ -615,6 +672,11 @@
 
 /* Small mobile breakpoint */
 @media (max-width: 480px) {
+    /* Scroll wrapper height for small mobile */
+    .scroll-wrapper {
+        min-height: 90vh;
+    }
+
     .portfolio-section-title {
         padding: 30px 0px;
     }
@@ -624,8 +686,8 @@
     }
 
     .project-card {
-        min-width: 300px;
-        height: 180px;
+        min-width: 80vw;
+        height: 50vh;
         padding: 10px;
         gap: 12px;
     }
@@ -656,21 +718,28 @@
         height: 50px;
     }
 
-    .lightbox-image {
-        max-height: 45vh;
-        border-radius: 4px;
+    /* Portfolio lightbox modal small mobile */
+    .portfolio-lightbox-dialog {
+        max-width: 96vw;
+        padding: 10px;
+        border-radius: 10px;
     }
 
-    .lightbox-close {
-        top: -8px;
-        right: -8px;
-        width: 30px;
-        height: 30px;
+    .portfolio-lightbox-image {
+        max-height: 70vh;
+        border-radius: 6px;
     }
 
-    .lightbox-close svg {
-        width: 12px;
-        height: 12px;
+    .portfolio-lightbox-close {
+        width: 32px;
+        height: 32px;
+        right: 8px;
+        top: 8px;
+    }
+
+    .portfolio-lightbox-close svg {
+        width: 14px;
+        height: 14px;
     }
 
     .card-image::after {

@@ -569,7 +569,7 @@
     position: relative;
     z-index: 8;
     width: 100%;
-    margin-top: clamp(40px, 8vw, 100px);
+    margin-top: clamp(150px, 30vw, 400px);
     margin-bottom: clamp(40px, 8vw, 100px);
 }
 
@@ -887,23 +887,39 @@
     }
 
     .kasauli-title-center {
-        padding-top: 90%;
+        /* Reduced padding to prevent overlap with serenity section */
+        padding-top: 40px;
         padding-bottom: 15px;
-        height: 40vh;
+        min-height: 100px;
+        height: auto;
         /* Keep centered initially - JS will animate to left on dock */
         justify-content: center;
         text-align: center;
+        /* Ensure proper stacking */
+        position: relative;
+        z-index: 10;
     }
 
     .kasauli-text {
         margin: 0;
         padding-bottom: 0;
-        font-size: 60px;
+        font-size: 50px;
+        /* Ensure text doesn't overflow into other sections */
+        position: relative;
     }
 
+    /* Ensure serenity section has proper spacing from kasauli title */
     .kasauli_serenity_section {
-        margin-top: 15px;
-        margin-bottom: 20px;
+        position: relative;
+        z-index: 5;
+        /* Add top margin to ensure proper separation */
+        margin-top: 30px !important;
+    }
+
+    /* Initial state before JS loads - ensure visibility on load */
+    .serenity-label,
+    .serenity-rotator {
+        opacity: 1;
     }
 
     .serenity-content {
