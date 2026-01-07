@@ -2925,6 +2925,11 @@ for accurate position calculations after all resources load
 
 		console.log('InitContentAnimations: Starting...');
 
+		// Mark custom animations as ready for WoodsAnimations
+		if (typeof WoodsAnimations !== 'undefined' && WoodsAnimations.ReadyState) {
+			WoodsAnimations.ReadyState.setModuleReady('customAnimations');
+		}
+
 		// Determine the scroller element for smooth-scroll
 		var scrollerElement = document.body.classList.contains("smooth-scroll")
 			? document.querySelector('#content-scroll')
@@ -2944,6 +2949,8 @@ for accurate position calculations after all resources load
 				var hasAnimation = gsap.utils.toArray('.has-animation');
 				console.log('InitContentAnimations: Found ' + hasAnimation.length + ' .has-animation elements');
 
+				// Use hybrid approach: GSAP ScrollTrigger for scroll detection,
+				// but jQuery-compatible class-based animation for the actual reveal
 				hasAnimation.forEach(function(hAnimation) {
 					var delayValue = parseInt(hAnimation.getAttribute("data-delay")) || 0;
 
@@ -2951,7 +2958,15 @@ for accurate position calculations after all resources load
 						trigger: hAnimation,
 						start: "top 85%",
 						onEnter: function() {
+							// Add animated class - CSS handles the transition
 							hAnimation.classList.add('animated');
+
+							// Optional: Use jQuery for delay handling if WoodsAnimations is available
+							if (typeof WoodsAnimations !== 'undefined' && WoodsAnimations.Animate && delayValue > 0) {
+								// jQuery handles the delayed class addition more reliably
+								$(hAnimation).removeClass('animated');
+								WoodsAnimations.Animate.addClassWithDelay(hAnimation, 'animated', delayValue);
+							}
 						},
 					};
 
@@ -2960,6 +2975,7 @@ for accurate position calculations after all resources load
 						scrollTriggerConfig.scroller = scrollerElement;
 					}
 
+					// GSAP animates opacity and transform for smooth hardware-accelerated animation
 					gsap.to(hAnimation, {
 						scrollTrigger: scrollTriggerConfig,
 						opacity: 1,
@@ -3006,6 +3022,9 @@ for accurate position calculations after all resources load
 				setTimeout(function() {
 					ScrollTrigger.refresh();
 					console.log('InitContentAnimations: Complete');
+
+					// Trigger custom event for other scripts to know animations are ready
+					$(document).trigger('contentAnimations:ready');
 				}, 200);
 
 			}, 500);

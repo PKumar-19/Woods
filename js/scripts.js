@@ -678,8 +678,14 @@ Function Page Load
 			}
 
 			// Wait for all JS to be ready before completing preloader
-			// Check if critical scripts are loaded
+			// Uses WoodsAnimations.ReadyState if available, with fallback
 			function checkJSReady() {
+				// Use centralized ready state if WoodsAnimations is loaded
+				if (typeof WoodsAnimations !== 'undefined' && WoodsAnimations.ReadyState) {
+					return WoodsAnimations.ReadyState.isAllReady();
+				}
+
+				// Fallback: check individual scripts
 				var isReady = true;
 
 				// Check if GSAP is ready
@@ -700,22 +706,54 @@ Function Page Load
 			// Poll for JS ready state, but ensure minimum time has passed
 			var jsReadyCheckInterval;
 			var minTimeElapsed = false;
+			var preloaderCompleted = false;
 
 			setTimeout(function() {
 				minTimeElapsed = true;
 			}, time);
 
-			jsReadyCheckInterval = setInterval(function() {
+			// Use requestAnimationFrame for smoother checking (reduces CPU usage)
+			function checkAndComplete() {
+				if (preloaderCompleted) return;
+
 				if (minTimeElapsed && checkJSReady()) {
+					preloaderCompleted = true;
+					if (jsReadyCheckInterval) {
+						clearInterval(jsReadyCheckInterval);
+						jsReadyCheckInterval = null;
+					}
+					completePreloader();
+				} else if (!preloaderCompleted) {
+					requestAnimationFrame(checkAndComplete);
+				}
+			}
+
+			// Start checking with both interval (reliability) and rAF (efficiency)
+			jsReadyCheckInterval = setInterval(function() {
+				if (preloaderCompleted) {
 					clearInterval(jsReadyCheckInterval);
+					return;
+				}
+				if (minTimeElapsed && checkJSReady()) {
+					preloaderCompleted = true;
+					clearInterval(jsReadyCheckInterval);
+					jsReadyCheckInterval = null;
 					completePreloader();
 				}
 			}, 100);
 
+			// Also use rAF for more responsive detection
+			requestAnimationFrame(checkAndComplete);
+
 			// Fallback: complete after max wait time (time + 3 seconds)
 			setTimeout(function() {
-				if (jsReadyCheckInterval) {
-					clearInterval(jsReadyCheckInterval);
+				if (!preloaderCompleted) {
+					preloaderCompleted = true;
+					if (jsReadyCheckInterval) {
+						clearInterval(jsReadyCheckInterval);
+						jsReadyCheckInterval = null;
+					}
+					console.warn('Preloader: Force completing after max wait time');
 					completePreloader();
 				}
 			}, time + 3000);
