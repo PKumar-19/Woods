@@ -513,17 +513,105 @@ function initLightbox() {
     }
 }
 
+/* ============================================
+   PORTFOLIO SECTION TITLE - SCROLL ANIMATION
+   Word-by-word horizontal loading when scrolling down
+   ============================================ */
+
+let portfolioTitleObserver = null;
+let lastScrollY = 0;
+let scrollDirection = 'down'; // Track scroll direction globally
+
+/**
+ * Wrap each word in a span for individual animation
+ */
+function wrapWordsInSpans(element) {
+    const text = element.textContent;
+    const words = text.split(/\s+/);
+
+    element.innerHTML = words.map((word, index) =>
+        `<span class="word" style="transition-delay: ${index * 0.1}s">${word}</span>`
+    ).join(' ');
+}
+
+/**
+ * Initialize scroll-triggered animation for portfolio section title
+ * Only animates when scrolling DOWN into view
+ */
+function initPortfolioTitleAnimation() {
+    const portfolioTitle = document.querySelector('.portfolio-section-title');
+    if (!portfolioTitle) return;
+
+    const h2 = portfolioTitle.querySelector('h2');
+    if (!h2) return;
+
+    // Wrap words in spans for individual animation
+    wrapWordsInSpans(h2);
+
+    // Track scroll direction
+    lastScrollY = window.scrollY || window.pageYOffset;
+
+    // Use smooth scroll container if available, otherwise window
+    const scrollerEl = document.querySelector('#content-scroll');
+    const hasSmoothScroll = document.body.classList.contains('smooth-scroll');
+    const scrollTarget = (scrollerEl && hasSmoothScroll) ? scrollerEl : window;
+
+    const updateScrollDirection = () => {
+        const currentScrollY = scrollTarget === window
+            ? (window.scrollY || window.pageYOffset)
+            : scrollerEl.scrollTop;
+
+        if (currentScrollY > lastScrollY + 5) {
+            scrollDirection = 'down';
+        } else if (currentScrollY < lastScrollY - 5) {
+            scrollDirection = 'up';
+        }
+        lastScrollY = currentScrollY;
+    };
+
+    scrollTarget.addEventListener('scroll', updateScrollDirection, { passive: true });
+
+    // Create Intersection Observer
+    portfolioTitleObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && scrollDirection === 'down') {
+                // Scrolling down into view - animate in word by word
+                entry.target.classList.add('animate-in');
+            }
+            // When scrolling up or out of view, keep the current state (stays visible)
+        });
+    }, {
+        threshold: 0.2, // Trigger when 20% visible
+        rootMargin: '0px 0px -30px 0px' // Slight offset from bottom
+    });
+
+    // Observe the title element
+    portfolioTitleObserver.observe(portfolioTitle);
+
+    // Check if already in view on page load (for refreshes mid-page)
+    const rect = portfolioTitle.getBoundingClientRect();
+    const isInView = rect.top < window.innerHeight && rect.bottom > 0;
+    if (isInView) {
+        // Already visible - animate immediately
+        setTimeout(() => {
+            portfolioTitle.classList.add('animate-in');
+        }, 100);
+    }
+}
+
 // Auto-initialize when DOM is loaded
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
         initInfiniteScroll();
         initLightbox();
+        initPortfolioTitleAnimation();
         // Signal that portfolio lightbox is ready for preloader
         window.portfolioLightboxReady = true;
     });
 } else {
     initInfiniteScroll();
     initLightbox();
+    initPortfolioTitleAnimation();
     // Signal that portfolio lightbox is ready for preloader
     window.portfolioLightboxReady = true;
 }

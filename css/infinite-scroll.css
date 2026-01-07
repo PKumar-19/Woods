@@ -319,6 +319,20 @@
     letter-spacing: 0.5px;
 }
 
+/* Word-by-word horizontal animation */
+.portfolio-section-title h2 .word {
+    display: inline-block;
+    opacity: 0;
+    transform: translateX(-30px);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+/* Animated state - words slide in from left */
+.portfolio-section-title.animate-in h2 .word {
+    opacity: 1;
+    transform: translateX(0);
+}
+
 /* ============================================
    LANDSCAPE IMAGE ABOVE SCROLL
    ============================================ */
