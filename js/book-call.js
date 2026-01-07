@@ -14,6 +14,7 @@
     var closeEls = modal.querySelectorAll('[data-action="close"]');
     function close(){ modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); }
     function open(){
+      modal.style.display = ''; // Remove inline display:none (FOUC prevention)
       modal.classList.add('show');
       modal.setAttribute('aria-hidden','false');
       // Reset form and regenerate captcha on open

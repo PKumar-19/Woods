@@ -38,13 +38,14 @@ Primary use:	Showcase Portfolio
 		min-height:100%;
 		width:100%;
 		color:#777;
-		background-color:#000;
+		background-color:#1f3533;
 		letter-spacing:-0.15px;
 		user-select: none; /* supported by Chrome and Opera */
 		-webkit-user-select: none; /* Safari */
 		-khtml-user-select: none; /* Konqueror HTML */
 		-moz-user-select: none; /* Firefox */
-		-ms-user-select: none; /* Internet Explorer/Edge */		
+		-ms-user-select: none; /* Internet Explorer/Edge */
+		overscroll-behavior: none; /* Prevent overscroll/bounce effect */
 	}
 
 html,body {

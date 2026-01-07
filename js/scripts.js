@@ -678,8 +678,14 @@ Function Page Load
 			}
 
 			// Wait for all JS to be ready before completing preloader
-			// Check if critical scripts are loaded
+			// Uses WoodsAnimations.ReadyState if available, with fallback
 			function checkJSReady() {
+				// Use centralized ready state if WoodsAnimations is loaded
+				if (typeof WoodsAnimations !== 'undefined' && WoodsAnimations.ReadyState) {
+					return WoodsAnimations.ReadyState.isAllReady();
+				}
+
+				// Fallback: check individual scripts
 				var isReady = true;
 
 				// Check if GSAP is ready
@@ -700,22 +706,54 @@ Function Page Load
 			// Poll for JS ready state, but ensure minimum time has passed
 			var jsReadyCheckInterval;
 			var minTimeElapsed = false;
+			var preloaderCompleted = false;
 
 			setTimeout(function() {
 				minTimeElapsed = true;
 			}, time);
 
-			jsReadyCheckInterval = setInterval(function() {
+			// Use requestAnimationFrame for smoother checking (reduces CPU usage)
+			function checkAndComplete() {
+				if (preloaderCompleted) return;
+
 				if (minTimeElapsed && checkJSReady()) {
+					preloaderCompleted = true;
+					if (jsReadyCheckInterval) {
+						clearInterval(jsReadyCheckInterval);
+						jsReadyCheckInterval = null;
+					}
+					completePreloader();
+				} else if (!preloaderCompleted) {
+					requestAnimationFrame(checkAndComplete);
+				}
+			}
+
+			// Start checking with both interval (reliability) and rAF (efficiency)
+			jsReadyCheckInterval = setInterval(function() {
+				if (preloaderCompleted) {
 					clearInterval(jsReadyCheckInterval);
+					return;
+				}
+				if (minTimeElapsed && checkJSReady()) {
+					preloaderCompleted = true;
+					clearInterval(jsReadyCheckInterval);
+					jsReadyCheckInterval = null;
 					completePreloader();
 				}
 			}, 100);
 
+			// Also use rAF for more responsive detection
+			requestAnimationFrame(checkAndComplete);
+
 			// Fallback: complete after max wait time (time + 3 seconds)
 			setTimeout(function() {
-				if (jsReadyCheckInterval) {
-					clearInterval(jsReadyCheckInterval);
+				if (!preloaderCompleted) {
+					preloaderCompleted = true;
+					if (jsReadyCheckInterval) {
+						clearInterval(jsReadyCheckInterval);
+						jsReadyCheckInterval = null;
+					}
+					console.warn('Preloader: Force completing after max wait time');
 					completePreloader();
 				}
 			}, time + 3000);
@@ -2998,12 +3036,12 @@ Function Showcase Gallery
 						trigger: snapSliderHolder,
 						start: 'top 100%',
 						end: '+=100%',
-						scrub: true,
+						scrub: 0.5,
 					},
 				}
 			);
-			
-			
+
+
 			gsap.fromTo(snapSlidesImgMask,
 				{ opacity: 1},
 				{
@@ -3014,7 +3052,7 @@ Function Showcase Gallery
 						trigger: snapSliderHolder,
 						start: 'bottom 100%',
 						end: '+=100%',
-						scrub: true,
+						scrub: 0.5,
 					},
 				}
 			);
@@ -3065,9 +3103,9 @@ Function Showcase Gallery
 				start: "top top",
 				end: () => "+=" + innerHeight * (snapSlides.length - 1),
 				pin: snapThumbsWrapper,
-				scrub: true,
+				scrub: 0.5,
 			});
-		
+
 			gsap.fromTo(
 				snapThumbs,
 				{ y: 0 },
@@ -3075,23 +3113,23 @@ Function Showcase Gallery
 					y: -snapThumbs[0].offsetHeight * (snapThumbs.length - 1),
 					scrollTrigger: {
 						trigger: snapSliderHolder,
-						scrub: true,
+						scrub: 0.5,
 						start: "top top",
 						end: "+=" + innerHeight * (snapSlides.length - 1),
 					},
 					ease: "none",
 				}
 			);
-		
+
 			// Pin and animate captions
 			ScrollTrigger.create({
 				trigger: snapCaptionWrapper,
 				start: "top top",
 				end: () => "+=" + innerHeight * (snapSlides.length - 1),
 				pin: true,
-				scrub: true,
+				scrub: 0.5,
 			});
-		
+
 			gsap.fromTo(
 				snapCaptions,
 				{ y: 0 },
@@ -3099,7 +3137,7 @@ Function Showcase Gallery
 					y: -snapCaptions[0].offsetHeight * (snapCaptions.length - 1),
 					scrollTrigger: {
 						trigger: snapSliderHolder,
-						scrub: true,
+						scrub: 0.5,
 						start: "top top",
 						end: "+=" + innerHeight * (snapSlides.length - 1),
 					},
@@ -3118,9 +3156,9 @@ Function Showcase Gallery
 				end: "+=" + innerHeight * (snapSlides.length - 1),
 				snap: {
 					snapTo: snapPoints,
-					duration: { min: 0.2, max: 0.7 },
-					delay: 0,
-					ease: "power4.inOut",
+					duration: { min: 0.4, max: 1.0 },
+					delay: 0.05,
+					ease: "power2.inOut",
 				},
 			});
 		
@@ -3129,22 +3167,22 @@ Function Showcase Gallery
 				const imageWrappers = slide.querySelectorAll(".img-mask");
 				const isLastSlide = i === snapSlides.length - 1;
 				const isFirstSlide = i === 0;
-		
+
 				gsap.fromTo(
 					imageWrappers,
-					{ y: isFirstSlide ? 0 : -window.innerHeight },
+					{ y: isFirstSlide ? 0 : -window.innerHeight * 0.5 },
 					{
-						y: isLastSlide ? 0 : window.innerHeight,
+						y: isLastSlide ? 0 : window.innerHeight * 0.5,
 						scrollTrigger: {
 							trigger: slide,
-							scrub: true,
+							scrub: 0.5,
 							start: isFirstSlide ? "top top" : "top bottom",
 							end: isLastSlide ? "top top" : undefined,
 						},
 						ease: "none",
 					}
 				);
-		
+
 				if (snapThumbImg[i]) {
 					gsap.fromTo(
 						snapThumbImg[i],
@@ -3153,7 +3191,7 @@ Function Showcase Gallery
 							y: isLastSlide ? 0 : snapThumbImg[i].offsetHeight / 2,
 							scrollTrigger: {
 								trigger: slide,
-								scrub: true,
+								scrub: 0.5,
 								start: isFirstSlide ? "top top" : "top bottom",
 								end: isLastSlide ? "top top" : undefined,
 							},
