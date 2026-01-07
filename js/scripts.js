@@ -3036,7 +3036,7 @@ Function Showcase Gallery
 						trigger: snapSliderHolder,
 						start: 'top 100%',
 						end: '+=100%',
-						scrub: 0.8,
+						scrub: 0.5,
 					},
 				}
 			);
@@ -3052,7 +3052,7 @@ Function Showcase Gallery
 						trigger: snapSliderHolder,
 						start: 'bottom 100%',
 						end: '+=100%',
-						scrub: 0.8,
+						scrub: 0.5,
 					},
 				}
 			);
@@ -3103,7 +3103,7 @@ Function Showcase Gallery
 				start: "top top",
 				end: () => "+=" + innerHeight * (snapSlides.length - 1),
 				pin: snapThumbsWrapper,
-				scrub: 0.8,
+				scrub: 0.5,
 			});
 
 			gsap.fromTo(
@@ -3113,7 +3113,7 @@ Function Showcase Gallery
 					y: -snapThumbs[0].offsetHeight * (snapThumbs.length - 1),
 					scrollTrigger: {
 						trigger: snapSliderHolder,
-						scrub: 0.8,
+						scrub: 0.5,
 						start: "top top",
 						end: "+=" + innerHeight * (snapSlides.length - 1),
 					},
@@ -3127,7 +3127,7 @@ Function Showcase Gallery
 				start: "top top",
 				end: () => "+=" + innerHeight * (snapSlides.length - 1),
 				pin: true,
-				scrub: 0.8,
+				scrub: 0.5,
 			});
 
 			gsap.fromTo(
@@ -3137,7 +3137,7 @@ Function Showcase Gallery
 					y: -snapCaptions[0].offsetHeight * (snapCaptions.length - 1),
 					scrollTrigger: {
 						trigger: snapSliderHolder,
-						scrub: 0.8,
+						scrub: 0.5,
 						start: "top top",
 						end: "+=" + innerHeight * (snapSlides.length - 1),
 					},
@@ -3156,9 +3156,9 @@ Function Showcase Gallery
 				end: "+=" + innerHeight * (snapSlides.length - 1),
 				snap: {
 					snapTo: snapPoints,
-					duration: { min: 0.2, max: 0.7 },
-					delay: 0,
-					ease: "power4.inOut",
+					duration: { min: 0.4, max: 1.0 },
+					delay: 0.05,
+					ease: "power2.inOut",
 				},
 			});
 		
@@ -3170,12 +3170,12 @@ Function Showcase Gallery
 
 				gsap.fromTo(
 					imageWrappers,
-					{ y: isFirstSlide ? 0 : -window.innerHeight },
+					{ y: isFirstSlide ? 0 : -window.innerHeight * 0.5 },
 					{
-						y: isLastSlide ? 0 : window.innerHeight,
+						y: isLastSlide ? 0 : window.innerHeight * 0.5,
 						scrollTrigger: {
 							trigger: slide,
-							scrub: 0.8,
+							scrub: 0.5,
 							start: isFirstSlide ? "top top" : "top bottom",
 							end: isLastSlide ? "top top" : undefined,
 						},
@@ -3191,7 +3191,7 @@ Function Showcase Gallery
 							y: isLastSlide ? 0 : snapThumbImg[i].offsetHeight / 2,
 							scrollTrigger: {
 								trigger: slide,
-								scrub: 0.8,
+								scrub: 0.5,
 								start: isFirstSlide ? "top top" : "top bottom",
 								end: isLastSlide ? "top top" : undefined,
 							},
