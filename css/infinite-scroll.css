@@ -714,7 +714,7 @@
     .card-image.ground-floor,
     .card-image.first-floor,
     .card-image.second-floor {
-        width: 160px;
+        width: 250px;
         min-width: 45%;
     }
 
