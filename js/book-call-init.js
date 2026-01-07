@@ -8,7 +8,8 @@
   var cssInserted = false;
 
   // Modal HTML template (inlined to avoid fetch issues with file:// protocol)
-  var modalHTML = '<div id="bookCallModal" class="book-call-modal" aria-hidden="true" role="dialog" aria-modal="true">' +
+  // IMPORTANT: style="display:none" prevents FOUC before CSS loads
+  var modalHTML = '<div id="bookCallModal" class="book-call-modal" aria-hidden="true" role="dialog" aria-modal="true" style="display:none">' +
     '<div class="book-call-overlay" data-action="close"></div>' +
     '<div class="book-call-dialog" role="document">' +
     '<button class="book-call-close" data-action="close" aria-label="Close popup">\u2715</button>' +
