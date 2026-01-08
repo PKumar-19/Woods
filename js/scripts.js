@@ -354,36 +354,67 @@ Function Shuffle Elements Function
 		
 		
 		var hasShuffle = gsap.utils.toArray('.has-shuffle');
+
+		// Determine scroller for smooth-scroll pages
+		var shuffleScrollerElement = document.body.classList.contains("smooth-scroll")
+			? document.querySelector('#content-scroll')
+			: null;
+
 		hasShuffle.forEach(function(shuffleTitle, index) {
-			
-			var words = shuffleTitle.innerText.split(' '); 
-			shuffleTitle.innerHTML = '';        
-			
+
+			var words = shuffleTitle.innerText.split(' ');
+			shuffleTitle.innerHTML = '';
+
 			words.forEach(function(word, wordIndex) {
 				var span = document.createElement('span');
 				span.classList.add('shuffle-word');
 				span.setAttribute('data-text', word);
 				span.innerText = word;
 				shuffleTitle.appendChild(span);
-				
+
 				gsap.set(span, { opacity: 0 });
-		
+
 				if (wordIndex < words.length - 1) {
 					shuffleTitle.appendChild(document.createTextNode(' '));
-				}               
-				
+				}
+
 			});
-			
+
 			var delayValue = parseInt(shuffleTitle.getAttribute("data-delay")) || 0;
-			gsap.to(shuffleTitle, {
-				scrollTrigger: {
+
+			// Check if element is already in viewport - animate immediately
+			var rect = shuffleTitle.getBoundingClientRect();
+			var isInViewport = rect.top < window.innerHeight * 0.85;
+
+			if (isInViewport) {
+				// Element is above the fold, animate immediately after a short delay
+				setTimeout(function() {
+					if (!shuffleTitle.classList.contains('animated')) {
+						var spans = shuffleTitle.querySelectorAll('span');
+						spans.forEach(function(span, spanIndex) {
+							var spanDelay = spanIndex * 0.1;
+							setTimeout(function() {
+								shuffleFunctions.startShuffle(span, {
+									velocity: 60,
+									shuffleIterations: 8,
+									childSelector: 'span'
+								});
+								gsap.to(span, { opacity: 1, duration: 0.4 });
+							}, spanDelay * 1000);
+						});
+						shuffleTitle.classList.add('animated');
+					}
+				}, 500 + delayValue);
+			} else {
+				// Element is below fold, use ScrollTrigger
+				var scrollTriggerConfig = {
 					trigger: shuffleTitle,
 					start: "top 85%",
 					onEnter: function() {
 						if (!shuffleTitle.classList.contains('animated')) {
 							var spans = shuffleTitle.querySelectorAll('span');
 							spans.forEach(function(span, spanIndex) {
-								var spanDelay = spanIndex * 0.1; 
+								var spanDelay = spanIndex * 0.1;
 								setTimeout(function() {
 									shuffleFunctions.startShuffle(span, {
 										velocity: 60,
@@ -391,15 +422,24 @@ Function Shuffle Elements Function
 										childSelector: 'span'
 									});
 									gsap.to(span, { opacity: 1, duration: 0.4 });
-								}, spanDelay * 1000); 
+								}, spanDelay * 1000);
 							});
 							shuffleTitle.classList.add('animated');
 						}
 					}
-				},
-				delay: delayValue / 1000
-			});
-			
+				};
+
+				// Add scroller if using smooth-scroll
+				if (shuffleScrollerElement) {
+					scrollTriggerConfig.scroller = shuffleScrollerElement;
+				}
+
+				gsap.to(shuffleTitle, {
+					scrollTrigger: scrollTriggerConfig,
+					delay: delayValue / 1000
+				});
+			}
+
 		});
 		
 		
@@ -3014,7 +3054,7 @@ Function Showcase Gallery
 /*---------------------------------------------------*/
 		
 		if( $('.snap-slider-holder').length > 0 ){
-			
+
 			// Selectors and utilities
 			const snapSliderHolder = document.querySelector(".snap-slider-holder");
 			const snapSlides = gsap.utils.toArray(".snap-slide");
@@ -3024,10 +3064,19 @@ Function Showcase Gallery
 			const snapThumbsWrapper = document.querySelector(".snap-slider-thumbs");
 			const snapThumbs = gsap.utils.toArray(".thumb-slide");
 			const snapThumbImg = gsap.utils.toArray(".thumb-slide img");
-			
-			
+
+			// Determine scroller for smooth-scroll pages
+			const snapScrollerElement = document.body.classList.contains("smooth-scroll")
+				? document.querySelector('#content-scroll')
+				: null;
+
+			// Set initial opacity to 1 so images are visible by default
+			// Animation will still work but won't cause invisible images if it fails
+			gsap.set(snapSlidesImgMask, { opacity: 1 });
+
+			// Fade in animation (subtle enhancement, not required for visibility)
 			gsap.fromTo(snapSlidesImgMask,
-				{ opacity: 0.1},
+				{ opacity: 0.7 },
 				{
 					duration: 1,
 					opacity: 1,
@@ -3037,22 +3086,24 @@ Function Showcase Gallery
 						start: 'top 100%',
 						end: '+=100%',
 						scrub: 0.5,
+						scroller: snapScrollerElement || undefined,
 					},
 				}
 			);
 
 
 			gsap.fromTo(snapSlidesImgMask,
-				{ opacity: 1},
+				{ opacity: 1 },
 				{
 					duration: 1,
-					opacity: 0.1,
+					opacity: 0.7,
 					ease: "sine.out",
 					scrollTrigger: {
 						trigger: snapSliderHolder,
 						start: 'bottom 100%',
 						end: '+=100%',
 						scrub: 0.5,
+						scroller: snapScrollerElement || undefined,
 					},
 				}
 			);
@@ -3071,12 +3122,13 @@ Function Showcase Gallery
 			$('.snap-slide').each(function () {
 				const $this = $(this);
 				const index = $this.index();
-		
+
 				gsap.to($this, {
 					scrollTrigger: {
 						trigger: $this,
 						start: "top 50%",
 						end: "+=" + innerHeight,
+						scroller: snapScrollerElement || undefined,
 						onEnter: () => {
 							$(".snap-slider-captions").children().children().eq(index).addClass("in-view");
 							toggleVideo($this, true);
@@ -3096,7 +3148,7 @@ Function Showcase Gallery
 					},
 				});
 			});
-		
+
 			// Pin and animate thumbnails
 			ScrollTrigger.create({
 				trigger: snapSlides,
@@ -3104,6 +3156,7 @@ Function Showcase Gallery
 				end: () => "+=" + innerHeight * (snapSlides.length - 1),
 				pin: snapThumbsWrapper,
 				scrub: 0.5,
+				scroller: snapScrollerElement || undefined,
 			});
 
 			gsap.fromTo(
@@ -3116,6 +3169,7 @@ Function Showcase Gallery
 						scrub: 0.5,
 						start: "top top",
 						end: "+=" + innerHeight * (snapSlides.length - 1),
+						scroller: snapScrollerElement || undefined,
 					},
 					ease: "none",
 				}
@@ -3128,6 +3182,7 @@ Function Showcase Gallery
 				end: () => "+=" + innerHeight * (snapSlides.length - 1),
 				pin: true,
 				scrub: 0.5,
+				scroller: snapScrollerElement || undefined,
 			});
 
 			gsap.fromTo(
@@ -3140,6 +3195,7 @@ Function Showcase Gallery
 						scrub: 0.5,
 						start: "top top",
 						end: "+=" + innerHeight * (snapSlides.length - 1),
+						scroller: snapScrollerElement || undefined,
 					},
 					ease: "none",
 				}

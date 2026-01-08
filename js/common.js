@@ -2937,97 +2937,161 @@ for accurate position calculations after all resources load
 
 		console.log('InitContentAnimations: scrollerElement =', scrollerElement);
 
+		// Track if setup has been done to prevent duplicate calls
+		var setupDone = false;
+
+		function setupAnimationTriggers() {
+			if (setupDone) return;
+			setupDone = true;
+
+			console.log('InitContentAnimations: Setting up .has-animation triggers');
+
+			var hasAnimation = gsap.utils.toArray('.has-animation');
+			console.log('InitContentAnimations: Found ' + hasAnimation.length + ' .has-animation elements');
+
+			// Use hybrid approach: GSAP ScrollTrigger for scroll detection,
+			// but jQuery-compatible class-based animation for the actual reveal
+			hasAnimation.forEach(function(hAnimation) {
+				var delayValue = parseInt(hAnimation.getAttribute("data-delay")) || 0;
+
+				// Check if element is already in viewport (above the fold)
+				var rect = hAnimation.getBoundingClientRect();
+				var isInViewport = rect.top < window.innerHeight * 0.85;
+
+				// If element is already in viewport, animate immediately
+				if (isInViewport) {
+					setTimeout(function() {
+						hAnimation.classList.add('animated');
+						gsap.to(hAnimation, {
+							opacity: 1,
+							y: 0,
+							duration: 0.5,
+							ease: Power2.easeOut,
+							delay: delayValue / 1000,
+						});
+					}, 100 + delayValue);
+					return; // Skip ScrollTrigger for above-fold elements
+				}
+
+				var scrollTriggerConfig = {
+					trigger: hAnimation,
+					start: "top 85%",
+					onEnter: function() {
+						// Add animated class - CSS handles the transition
+						hAnimation.classList.add('animated');
+
+						// Optional: Use jQuery for delay handling if WoodsAnimations is available
+						if (typeof WoodsAnimations !== 'undefined' && WoodsAnimations.Animate && delayValue > 0) {
+							// jQuery handles the delayed class addition more reliably
+							$(hAnimation).removeClass('animated');
+							WoodsAnimations.Animate.addClassWithDelay(hAnimation, 'animated', delayValue);
+						}
+					},
+				};
+
+				// Add scroller if using smooth-scroll
+				if (scrollerElement) {
+					scrollTriggerConfig.scroller = scrollerElement;
+				}
+
+				// GSAP animates opacity and transform for smooth hardware-accelerated animation
+				gsap.to(hAnimation, {
+					scrollTrigger: scrollTriggerConfig,
+					opacity: 1,
+					y:0,
+					duration: 0.5,
+					ease:Power2.easeOut,
+					delay: delayValue / 1000,
+				});
+			});
+
+			var hasAnimationButton = gsap.utils.toArray('.button-box.has-animation');
+			hasAnimationButton.forEach(function(hAnimationButton) {
+				var delayValue = parseInt(hAnimationButton.getAttribute("data-delay")) || 0;
+
+				var buttonBorder = hAnimationButton.querySelector('.button-border');
+
+				if (!buttonBorder) return; // Skip if button-border doesn't exist
+
+				// Check if element is already in viewport (above the fold)
+				var rect = hAnimationButton.getBoundingClientRect();
+				var isInViewport = rect.top < window.innerHeight * 0.85;
+
+				// If element is already in viewport, animate immediately
+				if (isInViewport) {
+					setTimeout(function() {
+						buttonBorder.classList.add('animated');
+						gsap.to(buttonBorder, {
+							opacity: 1,
+							width: "auto",
+							duration: 0.7,
+							ease: Power2.easeOut,
+							delay: delayValue / 1000,
+						});
+					}, 100 + delayValue);
+					return;
+				}
+
+				var scrollTriggerConfig = {
+					trigger: hAnimationButton,
+					start: "top 85%",
+					onEnter: function() {
+						buttonBorder.classList.add('animated');
+					},
+				};
+
+				// Add scroller if using smooth-scroll
+				if (scrollerElement) {
+					scrollTriggerConfig.scroller = scrollerElement;
+				}
+
+				gsap.to(buttonBorder, {
+					scrollTrigger: scrollTriggerConfig,
+					opacity: 1,
+					width:"auto",
+					duration: 0.7,
+					ease:Power2.easeOut,
+					delay: delayValue / 1000,
+				});
+			});
+
+			// Final refresh after all triggers are created
+			console.log('InitContentAnimations: Triggers created, performing final refresh');
+			setTimeout(function() {
+				ScrollTrigger.refresh();
+				console.log('InitContentAnimations: Complete');
+
+				// Trigger custom event for other scripts to know animations are ready
+				$(document).trigger('contentAnimations:ready');
+			}, 200);
+		}
+
+		// Try imagesLoaded first, but with a fallback timeout
+		var imagesLoadedTimeout = null;
+		var imagesLoadedFired = false;
+
+		// Set a fallback timeout in case imagesLoaded never fires
+		imagesLoadedTimeout = setTimeout(function() {
+			if (!imagesLoadedFired) {
+				console.log('InitContentAnimations: imagesLoaded timeout, proceeding anyway');
+				imagesLoadedFired = true;
+				setupAnimationTriggers();
+			}
+		}, 3000); // 3 second fallback
+
 		// Wait for imagesLoaded to finish before setting up animations
 		// This ensures layout is stable before calculating ScrollTrigger positions
 		imagesLoaded('body', function() {
+			if (imagesLoadedFired) return; // Already handled by timeout
+			imagesLoadedFired = true;
+			clearTimeout(imagesLoadedTimeout);
+
 			console.log('InitContentAnimations: Images loaded, waiting for layout stabilization');
 
 			// Wait for layout to fully stabilize after images load
 			setTimeout(function() {
-				console.log('InitContentAnimations: Setting up .has-animation triggers');
-
-				var hasAnimation = gsap.utils.toArray('.has-animation');
-				console.log('InitContentAnimations: Found ' + hasAnimation.length + ' .has-animation elements');
-
-				// Use hybrid approach: GSAP ScrollTrigger for scroll detection,
-				// but jQuery-compatible class-based animation for the actual reveal
-				hasAnimation.forEach(function(hAnimation) {
-					var delayValue = parseInt(hAnimation.getAttribute("data-delay")) || 0;
-
-					var scrollTriggerConfig = {
-						trigger: hAnimation,
-						start: "top 85%",
-						onEnter: function() {
-							// Add animated class - CSS handles the transition
-							hAnimation.classList.add('animated');
-
-							// Optional: Use jQuery for delay handling if WoodsAnimations is available
-							if (typeof WoodsAnimations !== 'undefined' && WoodsAnimations.Animate && delayValue > 0) {
-								// jQuery handles the delayed class addition more reliably
-								$(hAnimation).removeClass('animated');
-								WoodsAnimations.Animate.addClassWithDelay(hAnimation, 'animated', delayValue);
-							}
-						},
-					};
-
-					// Add scroller if using smooth-scroll
-					if (scrollerElement) {
-						scrollTriggerConfig.scroller = scrollerElement;
-					}
-
-					// GSAP animates opacity and transform for smooth hardware-accelerated animation
-					gsap.to(hAnimation, {
-						scrollTrigger: scrollTriggerConfig,
-						opacity: 1,
-						y:0,
-						duration: 0.5,
-						ease:Power2.easeOut,
-						delay: delayValue / 1000,
-					});
-				});
-
-				var hasAnimationButton = gsap.utils.toArray('.button-box.has-animation');
-				hasAnimationButton.forEach(function(hAnimationButton) {
-					var delayValue = parseInt(hAnimationButton.getAttribute("data-delay")) || 0;
-
-					var buttonBorder = hAnimationButton.querySelector('.button-border');
-
-					if (!buttonBorder) return; // Skip if button-border doesn't exist
-
-					var scrollTriggerConfig = {
-						trigger: hAnimationButton,
-						start: "top 85%",
-						onEnter: function() {
-							buttonBorder.classList.add('animated');
-						},
-					};
-
-					// Add scroller if using smooth-scroll
-					if (scrollerElement) {
-						scrollTriggerConfig.scroller = scrollerElement;
-					}
-
-					gsap.to(buttonBorder, {
-						scrollTrigger: scrollTriggerConfig,
-						opacity: 1,
-						width:"auto",
-						duration: 0.7,
-						ease:Power2.easeOut,
-						delay: delayValue / 1000,
-					});
-				});
-
-				// Final refresh after all triggers are created
-				console.log('InitContentAnimations: Triggers created, performing final refresh');
-				setTimeout(function() {
-					ScrollTrigger.refresh();
-					console.log('InitContentAnimations: Complete');
-
-					// Trigger custom event for other scripts to know animations are ready
-					$(document).trigger('contentAnimations:ready');
-				}, 200);
-
-			}, 500);
+				setupAnimationTriggers();
+			}, 300);
 		});
 
 	}// End Init Content Animations

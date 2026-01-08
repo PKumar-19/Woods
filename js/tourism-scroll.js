@@ -479,6 +479,45 @@ window.addEventListener("load", () => {
           });
         }
       });
+
+      // Fallback: if element is already visible in viewport, show it immediately
+      // This handles cases where ScrollTrigger doesn't fire due to race conditions
+      setTimeout(() => {
+        const sectionRect = document.querySelector('.kasauli_serenity_section');
+        if (sectionRect) {
+          const rect = sectionRect.getBoundingClientRect();
+          if (rect.top < window.innerHeight && rect.bottom > 0) {
+            gsap.to([serenityLabelEl, serenityRotatorEl], {
+              opacity: 1,
+              y: 0,
+              duration: 0.8,
+              ease: 'power2.out',
+              stagger: 0.15
+            });
+          }
+        }
+      }, 2000);
     }
   }
+
+  // Fallback for "Why" and "Kasauli" text visibility
+  // Ensure these elements are visible even if scroll animation doesn't trigger
+  setTimeout(() => {
+    const whyEl = document.getElementById('why');
+    const kasauliEl = document.getElementById('tourism-hero-title');
+
+    // If we're at the top of the page (tourism section not scrolled), ensure visibility
+    if (whyEl && kasauliEl) {
+      const tourismSection = document.getElementById('tourism-hero');
+      if (tourismSection) {
+        const rect = tourismSection.getBoundingClientRect();
+        // If section is above the viewport (user hasn't scrolled to it yet)
+        if (rect.top > window.innerHeight) {
+          // Reset to initial visible state
+          gsap.set(whyEl, { opacity: 1, y: 0 });
+          gsap.set(kasauliEl, { opacity: 1, scale: 1, x: 0, y: 0 });
+        }
+      }
+    }
+  }, 1500);
 });
