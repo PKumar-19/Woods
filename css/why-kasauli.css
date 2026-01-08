@@ -47,7 +47,7 @@
   position: absolute;
   inset: 0;
   background-size: cover;
-  background-position: center top;
+  background-position: center center;
   background-repeat: no-repeat;
   /* Fallback background color while image loads */
   background-color: #3a5a4a;
@@ -437,7 +437,8 @@
     .tourism-hero-section {
         min-height: auto !important;
         height: auto !important;
-        padding: 40px 15px;
+        /* Reduced top padding to remove gap at top */
+        padding: 0 15px 40px 15px;
         overflow: hidden;
         display: flex;
         flex-direction: column;
@@ -903,7 +904,8 @@
 
 @media (max-width: 480px) {
     .tourism-hero-section {
-        padding: 30px 10px;
+        /* Reduced top padding to remove gap at top */
+        padding: 0 10px 30px 10px;
     }
 
     .kasauli-title-center {
