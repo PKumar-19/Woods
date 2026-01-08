@@ -480,6 +480,8 @@
         margin-bottom: 20px;
         position: relative;
         flex: none;
+        /* Higher z-index to prevent kasauli text overlap when scrolling up */
+        z-index: 20;
     }
 
     .serenity-content {
@@ -551,6 +553,8 @@
         margin-bottom: 30px;
         position: relative;
         flex: none;
+        /* Higher z-index to prevent kasauli text overlap when scrolling up */
+        z-index: 20;
     }
 
     .serenity-content {
@@ -606,6 +610,9 @@
     letter-spacing: 2px;
     text-transform: uppercase;
     margin-bottom: clamp(4px, 0.3vw, 15px);
+    /* Ensure label stays above docking kasauli text during scroll */
+    position: relative;
+    z-index: 15;
 }
 
 .serenity-main {
@@ -639,6 +646,8 @@
     min-width: 8ch;
     /* reduce the gap between the main line and the rotating word */
     margin-top: clamp(0px, 0.6vw, 6px);
+    /* Ensure rotator stays above docking kasauli text during scroll */
+    z-index: 15;
 }
 .serenity-rotator .serenity-subtext {
     display: inline-block;
@@ -911,7 +920,8 @@
     /* Ensure serenity section has proper spacing from kasauli title */
     .kasauli_serenity_section {
         position: relative;
-        z-index: 5;
+        /* Higher z-index than kasauli-title-center (10) to prevent overlap when scrolling up */
+        z-index: 20;
         /* Add top margin to ensure proper separation */
         margin-top: 30px !important;
     }
