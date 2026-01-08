@@ -201,14 +201,14 @@ window.addEventListener("load", () => {
       );
       // Update text immediately without delay for better sync
       heroWord.textContent = docked ? "Kasauli's" : "Kasauli";
-      heroWord.style.opacity = "1";
 
-      // On mobile/tablet: adjust z-index to prevent overlap when scrolling back up
-      // When docked (progress > 0.5), kasauli text should be above serenity section
-      // When undocking (scrolling up, progress < 0.5), kasauli text should be behind
+      // On mobile/tablet: hide text during transition to prevent overlap
+      // Only show when fully docked (>0.5) or fully undocked (<0.1)
       if (isMobileOrTablet) {
-        heroWord.style.zIndex = docked ? "100" : "1";
-        heroWord.style.marginBottom = docked ? "0" : "20px";
+        const isTransitioning = self.progress > 0.1 && self.progress < 0.5;
+        heroWord.style.opacity = isTransitioning ? "0" : "1";
+      } else {
+        heroWord.style.opacity = "1";
       }
     },
     onToggle: (self) =>
