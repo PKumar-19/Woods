@@ -208,6 +208,7 @@ window.addEventListener("load", () => {
       // When undocking (scrolling up, progress < 0.5), kasauli text should be behind
       if (isMobileOrTablet) {
         heroWord.style.zIndex = docked ? "100" : "1";
+        heroWord.style.marginBottom = docked ? "0" : "20px";
       }
     },
     onToggle: (self) =>
