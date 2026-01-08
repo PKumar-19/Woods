@@ -202,6 +202,13 @@ window.addEventListener("load", () => {
       // Update text immediately without delay for better sync
       heroWord.textContent = docked ? "Kasauli's" : "Kasauli";
       heroWord.style.opacity = "1";
+
+      // On mobile/tablet: adjust z-index to prevent overlap when scrolling back up
+      // When docked (progress > 0.5), kasauli text should be above serenity section
+      // When undocking (scrolling up, progress < 0.5), kasauli text should be behind
+      if (isMobileOrTablet) {
+        heroWord.style.zIndex = docked ? "100" : "1";
+      }
     },
     onToggle: (self) =>
       console.log("tourism-scroll onToggle, isActive:", self.isActive),
