@@ -202,14 +202,11 @@ window.addEventListener("load", () => {
       // Update text immediately without delay for better sync
       heroWord.textContent = docked ? "Kasauli's" : "Kasauli";
 
-      // On mobile/tablet: hide text during transition to prevent overlap
-      // Only show when fully docked (>0.5) or fully undocked (<0.1)
-      if (isMobileOrTablet) {
-        const isTransitioning = self.progress > 0.1 && self.progress < 0.5;
-        heroWord.style.opacity = isTransitioning ? "0" : "1";
-      } else {
-        heroWord.style.opacity = "1";
-      }
+      // On mobile/tablet: keep text visible but use z-index layering to prevent overlap
+      // The serenity-rotator has z-index: 15, so keeping Kasauli at z-index: 1 ensures
+      // it passes behind the rotator if they overlap during the docking animation
+      // This allows the docking animation to be visible while preventing ugly overlap
+      heroWord.style.opacity = "1";
     },
     onToggle: (self) =>
       console.log("tourism-scroll onToggle, isActive:", self.isActive),
