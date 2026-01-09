@@ -42,7 +42,7 @@
   }
 
   // Google Apps Script Web App URL
-  var GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwGB5lZpoUTCDUyfUnFJTdCqrFpOKZd1z1Y5cYaLzhayBmkcD6BKCvqmphohjgTsuLS/exec';
+  var GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxVnTBqnGyz9Rb7zGxXdbTPPhtYzrOwllzvCpdThmBEC_ndt7M51r0pEXHLjgS8INte6g/exec';
 
   // POST to Google Apps Script
   function postToGoogleScript(data, statusEl, isModal){
@@ -72,7 +72,12 @@
         if(isModal){
           setTimeout(function(){
             if(global.BookCallModal && global.BookCallModal.close) global.BookCallModal.close();
-          }, 1500);
+          }, 2500);
+        } else {
+          // Hide success message after 5 seconds for non-modal forms
+          setTimeout(function(){
+            showStatus(statusEl, '', false);
+          }, 5000);
         }
       })
       .catch(function(){

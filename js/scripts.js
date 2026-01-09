@@ -13,6 +13,7 @@ jQuery(function ($) {
 		ShowcaseHighlights();
 		ShowcaseGallery();
 		if (typeof ShowcaseSnapSlider === 'function') { ShowcaseSnapSlider(); } else { console.warn('ShowcaseSnapSlider not defined'); }
+		ContactForm();
 		ContactMap();
 		CustomFunction();
 		ShuffleElementsFunction();

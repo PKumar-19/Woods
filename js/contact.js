@@ -2,20 +2,40 @@
 Function Contact Formular
 ---------------------------------------------------*/
 
+	// Generate dynamic captcha for contact form
+	function generateContactCaptcha() {
+		var verifySum = $('.verify-sum');
+		if (verifySum.length > 0) {
+			var num1 = Math.floor(Math.random() * 9) + 1; // 1-9
+			var num2 = Math.floor(Math.random() * 9) + 1; // 1-9
+			var items = verifySum.find('li');
+			if (items.length >= 3) {
+				$(items[0]).text(num1);
+				$(items[2]).text(num2);
+			}
+			// Store expected answer
+			verifySum.data('expected', num1 + num2);
+		}
+	}
+
 	function ContactForm() {
-		
+
 		if( $('#contact-formular').length > 0 ){
+
+			// Generate captcha on page load
+			generateContactCaptcha();
 
 			$('#contactform').submit(function(e){
 				e.preventDefault();
 
 				// Google Apps Script Web App URL
 				// IMPORTANT: Replace this with your deployed Google Apps Script URL
-				const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwGB5lZpoUTCDUyfUnFJTdCqrFpOKZd1z1Y5cYaLzhayBmkcD6BKCvqmphohjgTsuLS/exec';
+				const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxVnTBqnGyz9Rb7zGxXdbTPPhtYzrOwllzvCpdThmBEC_ndt7M51r0pEXHLjgS8INte6g/exec';
 
-				// Simple captcha validation (1 + 3 = 4)
+				// Dynamic captcha validation
 				const verifyValue = $('#verify').val();
-				if (verifyValue !== '4') {
+				const expectedValue = $('.verify-sum').data('expected');
+				if (parseInt(verifyValue, 10) !== expectedValue) {
 					$('#message').html('<div class="error_message">Please enter the correct captcha answer.</div>');
 					$('#message').slideDown('slow');
 					return false;
@@ -50,14 +70,16 @@ Function Contact Formular
 					$('#submit').attr('disabled', 'disabled');
 					$('#submit').val('Sending...');
 
-					// Send data to Google Apps Script
+					// Send data to Google Apps Script using form-encoded data (works with no-cors)
+					var formBody = new URLSearchParams(formData).toString();
+
 					fetch(GOOGLE_SCRIPT_URL, {
 						method: 'POST',
 						mode: 'no-cors', // Required for Google Apps Script
 						headers: {
-							'Content-Type': 'application/json',
+							'Content-Type': 'application/x-www-form-urlencoded',
 						},
-						body: JSON.stringify(formData)
+						body: formBody
 					})
 					.then(response => {
 						// With no-cors mode, we can't read the response
@@ -70,10 +92,13 @@ Function Contact Formular
 						// Clear the form
 						$('#contactform')[0].reset();
 
-						// Optionally hide the form after success
+						// Regenerate captcha for next submission
+						generateContactCaptcha();
+
+						// Hide success message after 5 seconds
 						setTimeout(function() {
-							$('#contactform').slideUp('slow');
-						}, 3000);
+							$('#message').slideUp('slow');
+						}, 5000);
 					})
 					.catch(error => {
 						console.error('Error:', error);
