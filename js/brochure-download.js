@@ -7,12 +7,22 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
 
             const brochurePath = 'brochure/The-Wood-Kasauli-Design.pdf';
-            const link = document.createElement('a');
-            link.href = brochurePath;
-            link.download = 'The Woods Kasauli - Vertical.pdf';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+
+            // Check if desktop (viewport width > 1024px)
+            const isDesktop = window.innerWidth > 1024;
+
+            if (isDesktop) {
+                // Desktop: open PDF in new tab
+                window.open(brochurePath, '_blank');
+            } else {
+                // Mobile/Tablet: download the file
+                const link = document.createElement('a');
+                link.href = brochurePath;
+                link.download = 'The Woods Kasauli - Vertical.pdf';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
         });
     }
 });

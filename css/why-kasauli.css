@@ -45,11 +45,20 @@
 .tourism-hero-section.has-parallax { background: none; }
 .tourism-parallax-layer {
   position: absolute;
-  inset: 0;
+  /* Extend beyond section bounds to prevent gaps */
+  top: -50px;
+  left: -50px;
+  right: -50px;
+  bottom: -50px;
+  margin-top: -70px;
+  padding-bottom: 70px;
   background-size: cover;
   background-position: center center;
+  background-repeat: no-repeat;
+  /* Fallback background color matching sky/mountain tones */
+  background-color: #6b8a7a;
   will-change: transform;
-  transform: translate3d(0,0,0);
+  transform: translate3d(0,0,0) scale(1.02);
   transition: transform 0.6s cubic-bezier(.22,.61,.36,1);
   z-index: 0;
   pointer-events: none;
@@ -434,7 +443,8 @@
     .tourism-hero-section {
         min-height: auto !important;
         height: auto !important;
-        padding: 40px 15px;
+        /* Reduced top padding to remove gap at top */
+        padding: 30% 15px 40px 15px;
         overflow: hidden;
         display: flex;
         flex-direction: column;
@@ -464,15 +474,19 @@
 
     .kasauli-title-center {
         height: auto;
-        padding-top: 20px;
+        padding-top: 35%;
         padding-bottom: 10px;
         position: relative;
         flex: none;
+        /* Lower z-index so kasauli text stays behind serenity section */
+        z-index: 1;
     }
 
     .kasauli-text {
         margin: 0;
         padding-bottom: 0;
+        /* Lower z-index so it stays behind serenity content when animating */
+        z-index: 1;
     }
 
     .kasauli_serenity_section {
@@ -480,6 +494,8 @@
         margin-bottom: 20px;
         position: relative;
         flex: none;
+        /* Higher z-index to stay above kasauli text during scroll animation */
+        z-index: 50;
     }
 
     .serenity-content {
@@ -531,19 +547,23 @@
 
     .kasauli-title-center {
         height: 60vh;
-        padding-top: 40px;
+        padding-top: 35%;
         padding-bottom: 20px;
         position: relative;
         flex: none;
         /* Keep centered initially - JS will animate to left on dock */
         justify-content: center;
         text-align: left;
+        /* Lower z-index so kasauli text stays behind serenity section */
+        z-index: 1;
     }
 
     .kasauli-text {
         margin: 0;
         padding-bottom: 5px;
         font-size: 170px;
+        /* Lower z-index so it stays behind serenity content when animating */
+        z-index: 1;
     }
 
     .kasauli_serenity_section {
@@ -551,6 +571,8 @@
         margin-bottom: 30px;
         position: relative;
         flex: none;
+        /* Higher z-index to stay above kasauli text during scroll animation */
+        z-index: 50;
     }
 
     .serenity-content {
@@ -606,6 +628,9 @@
     letter-spacing: 2px;
     text-transform: uppercase;
     margin-bottom: clamp(4px, 0.3vw, 15px);
+    /* Ensure label stays above docking kasauli text during scroll */
+    position: relative;
+    z-index: 15;
 }
 
 .serenity-main {
@@ -639,6 +664,8 @@
     min-width: 8ch;
     /* reduce the gap between the main line and the rotating word */
     margin-top: clamp(0px, 0.6vw, 6px);
+    /* Ensure rotator stays above docking kasauli text during scroll */
+    z-index: 15;
 }
 .serenity-rotator .serenity-subtext {
     display: inline-block;
@@ -814,7 +841,7 @@
     content: '';
     position: absolute;
     bottom: 0;
-    right: 75px;
+    right: 50px;
     width: 50%;
     height: 50%;
     background-color: #d4c5b9;
@@ -883,7 +910,8 @@
 
 @media (max-width: 480px) {
     .tourism-hero-section {
-        padding: 30px 10px;
+        /* Reduced top padding to remove gap at top */
+        padding: 30% 10px 30px 10px;
     }
 
     .kasauli-title-center {
@@ -895,9 +923,9 @@
         /* Keep centered initially - JS will animate to left on dock */
         justify-content: center;
         text-align: center;
-        /* Ensure proper stacking */
+        /* Ensure proper stacking - lower than serenity section */
         position: relative;
-        z-index: 10;
+        z-index: 1;
     }
 
     .kasauli-text {
@@ -906,12 +934,15 @@
         font-size: 50px;
         /* Ensure text doesn't overflow into other sections */
         position: relative;
+        /* Lower z-index so it stays behind serenity content when animating */
+        z-index: 1;
     }
 
     /* Ensure serenity section has proper spacing from kasauli title */
     .kasauli_serenity_section {
         position: relative;
-        z-index: 5;
+        /* Higher z-index to stay above kasauli text during scroll animation */
+        z-index: 50;
         /* Add top margin to ensure proper separation */
         margin-top: 30px !important;
     }

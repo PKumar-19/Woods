@@ -36,6 +36,8 @@
     <link href="css/background-color-switch.css" rel="stylesheet" />
     <link href="css/logo-working.css" rel="stylesheet" />
     <link href="css/print.css" rel="stylesheet" media="print" />
+    <!-- Preload critical background image for tourism section -->
+    <link rel="preload" href="images/invest-in-kasauli/The-Woods-Kasauli-Image.png" as="image" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..900&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet"> -->
@@ -1020,7 +1022,7 @@
                         
                                                 <div id="message"></div>
                         
-                                                <form method="post" action="contact.php" name="contactform" id="contactform">
+                                                <form method="post" action="#" name="contactform" id="contactform">
                                                     <div class="name-box">
                                                         <input name="name" type="text" id="name" size="30" value=""
                                                             placeholder="What's Your Name"><label class="input_label"></label>
@@ -1291,6 +1293,7 @@
     <script src="js/infinite-scroll.js"></script>
     <script src="js/background-color-change.js"></script>
     <script src="js/bg-video-detector-fix.js"></script>
+    <script src="js/animation-fallback.js"></script>
 
     <!-- Hero caption: one-time, robust trigger to start the masked reveal animation -->
     <script>
