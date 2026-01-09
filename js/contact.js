@@ -87,7 +87,7 @@ Function Contact Formular
 						$('#message').html('<div class="success_message">Thank you! Your message has been sent successfully. We will get back to you soon.</div>');
 						$('#message').slideDown('slow');
 						$('#submit').removeAttr('disabled');
-						$('#submit').val('Send Mail');
+						$('#submit').val('Get a Quote');
 
 						// Clear the form
 						$('#contactform')[0].reset();
@@ -105,7 +105,7 @@ Function Contact Formular
 						$('#message').html('<div class="error_message">Sorry, there was an error sending your message. Please try again later.</div>');
 						$('#message').slideDown('slow');
 						$('#submit').removeAttr('disabled');
-						$('#submit').val('Send Mail');
+						$('#submit').val('Get a Quote');
 					});
 				});
 
