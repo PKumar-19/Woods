@@ -155,9 +155,9 @@
 
 /* Card Image */
 .card-image {
-    width: 200px;
+    width: 300px;
     height: 90%;
-    min-width: 50%;
+    min-width: 55%;
     border-radius: 8px;
     overflow: hidden;
     background-repeat: no-repeat;
@@ -217,6 +217,7 @@
     align-items: center;
     justify-content: center;
     position: relative;
+    padding-bottom: 60px;
 }
 
 /* Custom mockup image */
@@ -273,8 +274,8 @@
 .card-image.ground-floor,
 .card-image.first-floor,
 .card-image.second-floor {
-    width: 350px;
-    min-width: 60%;
+    width: 450px;
+    min-width: 65%;
     background-size: contain;
 }
 
@@ -343,7 +344,24 @@
     margin: 0;
     overflow: hidden;
     position: relative;
-    background-color: #0c0c0c;
+    /* background-color: #0c0c0c; */
+}
+
+/* Top gradient blend to transition from the section above */
+.landscape-image-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    background: linear-gradient(to bottom,
+        #f2eae3 0%,
+        rgba(242, 234, 227, 0.5) 40%,
+        rgba(242, 234, 227, 0.3) 70%,
+        transparent 100%);
+    z-index: 1;
+    pointer-events: none;
 }
 
 .landscape-image {
@@ -355,7 +373,7 @@
 }
 
 /* ============================================
-   PORTFOLIO IMAGE LIGHTBOX MODAL (Popup Card Style)
+   PORTFOLIO IMAGE LIGHTBOX MODAL (Amazon-style Zoom)
    ============================================ */
 
 .portfolio-lightbox-modal {
@@ -376,9 +394,9 @@
 .portfolio-lightbox-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(6, 8, 10, 0.75);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    background: rgba(6, 8, 10, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     cursor: pointer;
     opacity: 0;
     animation: portfolioFadeIn 0.25s forwards;
@@ -386,31 +404,30 @@
 
 .portfolio-lightbox-dialog {
     position: relative;
-    max-width: 90vw;
-    max-height: 85vh;
-    width: auto;
-    height: auto;
-    background-color: rgba(31, 53, 51, 0.6);
+    width: 90vw;
+    max-width: 1200px;
+    height: 80vh;
+    max-height: 700px;
+    background-color: rgba(31, 53, 51, 0.40);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border-radius: 14px;
-    padding: 16px;
-    box-shadow: 0 26px 60px rgba(31, 53, 51, 0.28);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 26px 60px rgba(0, 0, 0, 0.1);
     transform: translateY(20px) scale(0.95);
     opacity: 0;
     animation: portfolioPopIn 0.3s 0.1s forwards;
     overflow: hidden;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
 }
 
 .portfolio-lightbox-close {
     position: absolute;
-    right: 12px;
-    top: 12px;
-    width: 40px;
-    height: 40px;
+    right: 16px;
+    top: 16px;
+    width: 44px;
+    height: 44px;
     border: 0;
     background: rgba(255, 255, 255, 0.15);
     border-radius: 50%;
@@ -436,28 +453,123 @@
 
 .portfolio-lightbox-content {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    gap: 24px;
     width: 100%;
     height: 100%;
+    flex: 1;
+    min-height: 0;
 }
 
-.portfolio-lightbox-image {
+/* Left side - Thumbnail with zoom lens */
+.lightbox-left {
+    flex: 0 0 35%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+}
+
+.lightbox-thumbnail-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: crosshair;
+    overflow: hidden;
+}
+
+.lightbox-thumbnail {
     max-width: 100%;
-    max-height: 80vh;
+    max-height: 100%;
     width: auto;
     height: auto;
     object-fit: contain;
     border-radius: 8px;
     display: block;
+    user-select: none;
+    -webkit-user-drag: none;
 }
 
-/* Hide lightbox image when no src is set - prevents broken image icon */
-.portfolio-lightbox-image:not([src]),
-.portfolio-lightbox-image[src=""] {
+/* Hide thumbnail when no src is set */
+.lightbox-thumbnail:not([src]),
+.lightbox-thumbnail[src=""] {
     display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
+}
+
+/* Zoom lens overlay */
+.zoom-lens {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    background: rgba(242, 234, 227, 0.2);
+    border: 2px solid rgba(242, 234, 227, 0.6);
+    border-radius: 8px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+.lightbox-thumbnail-wrapper:hover .zoom-lens,
+.lightbox-thumbnail-wrapper.active .zoom-lens {
+    opacity: 1;
+}
+
+/* Right side - Title and zoom result */
+.lightbox-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 0;
+}
+
+.lightbox-title {
+    color: #f2eae3;
+    font-size: 24px;
+    font-weight: 600;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(242, 234, 227, 0.2);
+    flex-shrink: 0;
+}
+
+.lightbox-zoom-container {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    min-height: 0;
+}
+
+.lightbox-zoom-result {
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    /* Default state - show placeholder text */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lightbox-zoom-result::before {
+    content: 'Hover over the image to show enlarged view';
+    color: rgba(242, 234, 227, 0.5);
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-align: center;
+    padding: 20px;
+}
+
+.lightbox-zoom-result.active::before {
+    display: none;
 }
 
 @keyframes portfolioPopIn {
@@ -595,7 +707,7 @@
     }
 
     .card-image {
-        width: 180px;
+        width: 250px;
     }
 
     /* Floor plan images responsive */
@@ -603,8 +715,8 @@
     .card-image.ground-floor,
     .card-image.first-floor,
     .card-image.second-floor {
-        width: 200px;
-        min-width: 50%;
+        width: 300px;
+        min-width: 55%;
     }
 
     .card-title {
@@ -655,13 +767,33 @@
 
     /* Portfolio lightbox modal responsive */
     .portfolio-lightbox-dialog {
-        max-width: 95vw;
-        max-height: 90vh;
+        width: 95vw;
+        height: 90vh;
+        max-height: none;
+        padding: 16px;
+    }
+
+    .portfolio-lightbox-content {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .lightbox-left {
+        flex: 0 0 40%;
         padding: 12px;
     }
 
-    .portfolio-lightbox-image {
-        max-height: 75vh;
+    .lightbox-right {
+        flex: 1;
+    }
+
+    .lightbox-title {
+        font-size: 20px;
+    }
+
+    .zoom-lens {
+        width: 80px;
+        height: 80px;
     }
 
     .portfolio-lightbox-close {
@@ -707,15 +839,15 @@
     }
 
     .card-image {
-        width: 140px;
+        width: 200px;
     }
 
     .card-image.site-layout,
     .card-image.ground-floor,
     .card-image.first-floor,
     .card-image.second-floor {
-        width: 250px;
-        min-width: 45%;
+        width: 280px;
+        min-width: 50%;
     }
 
     .card-title {
@@ -734,14 +866,38 @@
 
     /* Portfolio lightbox modal small mobile */
     .portfolio-lightbox-dialog {
-        max-width: 96vw;
-        padding: 10px;
+        width: 96vw;
+        height: 95vh;
+        padding: 12px;
         border-radius: 10px;
     }
 
-    .portfolio-lightbox-image {
-        max-height: 70vh;
-        border-radius: 6px;
+    .portfolio-lightbox-content {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .lightbox-left {
+        flex: 0 0 35%;
+        padding: 8px;
+    }
+
+    .lightbox-right {
+        flex: 1;
+    }
+
+    .lightbox-title {
+        font-size: 16px;
+        padding: 6px 0;
+    }
+
+    .lightbox-zoom-result::before {
+        font-size: 12px;
+    }
+
+    .zoom-lens {
+        width: 60px;
+        height: 60px;
     }
 
     .portfolio-lightbox-close {

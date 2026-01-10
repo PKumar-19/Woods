@@ -3,6 +3,14 @@
    Smooth RAF-based animation with speed transitions
    ============================================ */
 
+// Track global mouse position for checking cursor location when lightbox closes
+window.mouseX = 0;
+window.mouseY = 0;
+document.addEventListener('mousemove', (e) => {
+    window.mouseX = e.clientX;
+    window.mouseY = e.clientY;
+});
+
 /**
  * Project Data
  */
@@ -324,17 +332,20 @@ function initScrollControls() {
     });
     scrollRightBtn.addEventListener('touchcancel', endHold);
     
-    // Pause on hover (only if lightbox is not open)
-    scrollTrack.addEventListener('mouseenter', () => {
-        if (!state.lightboxOpen) {
-            state.isPaused = true;
-        }
-    });
-    scrollTrack.addEventListener('mouseleave', () => {
-        if (!state.lightboxOpen) {
-            state.isPaused = false;
-        }
-    });
+    // Pause on hover over scroll container (not track, to avoid bubbling issues)
+    const scrollContainer = scrollTrack.parentElement;
+    if (scrollContainer) {
+        scrollContainer.addEventListener('mouseenter', () => {
+            if (!state.lightboxOpen) {
+                state.isPaused = true;
+            }
+        });
+        scrollContainer.addEventListener('mouseleave', () => {
+            if (!state.lightboxOpen) {
+                state.isPaused = false;
+            }
+        });
+    }
     
     return true;
 }
@@ -369,36 +380,63 @@ function initInfiniteScroll() {
 
 /* ============================================
    PORTFOLIO LIGHTBOX MODAL FUNCTIONALITY
-   (Popup card style like Book A Call form)
+   (Amazon-style zoom with hover magnification)
    ============================================ */
 
-// Map imageClass to actual image URLs
-const imageClassToUrl = {
-    'front-elevation': 'images/Project_Overview/Front-Elevation.png',
-    'rear-elevation': 'images/Project_Overview/Rear-Elevation.png',
-    'site-layout': 'images/Portfolio_Scroll_Section/Site-Plans.png',
-    'ground-floor': 'images/Portfolio_Scroll_Section/Ground-Floor-Plans.png',
-    'first-floor': 'images/Portfolio_Scroll_Section/First-Floor-Plans.png',
-    'second-floor': 'images/Portfolio_Scroll_Section/Second-Floor-Plans.png'
+// Map imageClass to actual image URLs and titles
+const imageClassToData = {
+    'front-elevation': { url: 'images/Project_Overview/Front-Elevation.png', title: 'Front Elevation' },
+    'rear-elevation': { url: 'images/Project_Overview/Rear-Elevation.png', title: 'Rear Elevation' },
+    'site-layout': { url: 'images/Portfolio_Scroll_Section/Site-Plans.png', title: 'Site Layout' },
+    'ground-floor': { url: 'images/Portfolio_Scroll_Section/Ground-Floor-Plans.png', title: 'Ground Floor Layout' },
+    'first-floor': { url: 'images/Portfolio_Scroll_Section/First-Floor-Plans.png', title: 'First Floor Layout' },
+    'second-floor': { url: 'images/Portfolio_Scroll_Section/Second-Floor-Plans.png', title: 'Second Floor Layout' }
 };
 
+// Lightbox elements
 let portfolioModal = null;
-let portfolioModalImage = null;
 let portfolioModalOverlay = null;
 let portfolioModalClose = null;
+let lightboxThumbnail = null;
+let lightboxThumbnailWrapper = null;
+let lightboxTitle = null;
+let lightboxZoomResult = null;
+let zoomLens = null;
+
+// Zoom configuration
+const ZOOM_LEVEL = 2.5; // How much to magnify
+
+// Store current image URL for zoom
+let currentImageUrl = '';
 
 /**
- * Open portfolio lightbox modal with specified image
+ * Open portfolio lightbox modal with specified image and title
  */
-function openPortfolioModal(imageUrl) {
-    if (!portfolioModal || !portfolioModalImage) return;
+function openPortfolioModal(imageUrl, title = 'Floor Plan') {
+    if (!portfolioModal || !lightboxThumbnail) return;
 
     // Stop the scroller completely
     state.isPaused = true;
     state.lightboxOpen = true;
 
-    // Set the image source
-    portfolioModalImage.src = imageUrl;
+    // Store the image URL for zoom functionality
+    currentImageUrl = imageUrl;
+
+    // Set the image source and title
+    lightboxThumbnail.src = imageUrl;
+    if (lightboxTitle) {
+        lightboxTitle.textContent = title;
+    }
+
+    // Preload image for zoom (but don't set background yet - wait for hover)
+    const img = new Image();
+    img.src = imageUrl;
+
+    // Clear any previous zoom state
+    if (lightboxZoomResult) {
+        lightboxZoomResult.style.backgroundImage = '';
+        lightboxZoomResult.classList.remove('active');
+    }
 
     // Show the modal
     portfolioModal.classList.add('show');
@@ -422,44 +460,149 @@ function closePortfolioModal() {
         portfolioModal.classList.remove('show', 'closing');
         portfolioModal.setAttribute('aria-hidden', 'true');
 
-        // Clear the image source
-        if (portfolioModalImage) {
-            portfolioModalImage.src = '';
+        // Clear the image source and zoom
+        currentImageUrl = '';
+        if (lightboxThumbnail) {
+            lightboxThumbnail.src = '';
+        }
+        if (lightboxZoomResult) {
+            lightboxZoomResult.style.backgroundImage = '';
+            lightboxZoomResult.classList.remove('active');
+        }
+        if (lightboxThumbnailWrapper) {
+            lightboxThumbnailWrapper.classList.remove('active');
         }
 
         // Restore body scroll
         document.body.style.overflow = '';
 
-        // Resume scroll animation
+        // Resume scroll animation - reset timing to prevent jump
         state.lightboxOpen = false;
-        state.isPaused = false;
+        state.lastTime = 0; // Reset timing to avoid large deltaTime jump
+
+        // Keep paused if cursor is still over the scroll area, otherwise resume
+        // Check if mouse is over the scroll container
+        const scrollContainer = scrollTrack ? scrollTrack.parentElement : null;
+        if (scrollContainer) {
+            const rect = scrollContainer.getBoundingClientRect();
+            const mouseX = window.mouseX || 0;
+            const mouseY = window.mouseY || 0;
+            const isOverContainer = mouseX >= rect.left && mouseX <= rect.right &&
+                                   mouseY >= rect.top && mouseY <= rect.bottom;
+            state.isPaused = isOverContainer;
+        } else {
+            state.isPaused = false;
+        }
+
+        // Force reapply transform to ensure cards are visible
+        if (scrollTrack) {
+            scrollTrack.style.transform = `translateX(${state.position}px)`;
+        }
     }, 250);
 }
 
 /**
- * Get image URL from card-image element
+ * Get image URL and title from card-image element
  */
-function getImageUrlFromCard(cardImage) {
+function getImageDataFromCard(cardImage) {
     // Check for imageClass
-    for (const [className, url] of Object.entries(imageClassToUrl)) {
+    for (const [className, data] of Object.entries(imageClassToData)) {
         if (cardImage.classList.contains(className)) {
-            return url;
+            return data;
         }
     }
 
     // Fallback: try to get background-image from computed style
     const bgImage = window.getComputedStyle(cardImage).backgroundImage;
     if (bgImage && bgImage !== 'none') {
-        // Extract URL from background-image: url("...")
         const match = bgImage.match(/url\(["']?([^"')]+)["']?\)/);
-        if (match) return match[1];
+        if (match) return { url: match[1], title: 'Floor Plan' };
     }
 
     // Check for img inside
     const img = cardImage.querySelector('img');
-    if (img && img.src) return img.src;
+    if (img && img.src) return { url: img.src, title: 'Floor Plan' };
 
     return null;
+}
+
+/**
+ * Handle mouse move for zoom effect
+ */
+function handleZoomMove(e) {
+    if (!lightboxThumbnail || !zoomLens || !lightboxZoomResult) return;
+
+    const img = lightboxThumbnail;
+    const imgRect = img.getBoundingClientRect();
+
+    // Calculate cursor position relative to image
+    let x = e.clientX - imgRect.left;
+    let y = e.clientY - imgRect.top;
+
+    // Get lens dimensions
+    const lensWidth = zoomLens.offsetWidth;
+    const lensHeight = zoomLens.offsetHeight;
+
+    // Constrain lens position within image bounds
+    let lensX = x - lensWidth / 2;
+    let lensY = y - lensHeight / 2;
+
+    // Keep lens within image boundaries
+    lensX = Math.max(0, Math.min(lensX, imgRect.width - lensWidth));
+    lensY = Math.max(0, Math.min(lensY, imgRect.height - lensHeight));
+
+    // Position the lens
+    zoomLens.style.left = lensX + 'px';
+    zoomLens.style.top = lensY + 'px';
+
+    // Calculate zoom result dimensions
+    const zoomContainer = lightboxZoomResult.parentElement;
+    const resultWidth = zoomContainer.offsetWidth;
+    const resultHeight = zoomContainer.offsetHeight;
+
+    // Calculate the ratio between the zoom result and lens
+    const ratioX = resultWidth / lensWidth;
+    const ratioY = resultHeight / lensHeight;
+
+    // Calculate background size (zoomed image)
+    const bgWidth = imgRect.width * ratioX;
+    const bgHeight = imgRect.height * ratioY;
+
+    // Calculate background position
+    const bgX = -lensX * ratioX;
+    const bgY = -lensY * ratioY;
+
+    // Apply zoom to result area
+    lightboxZoomResult.style.backgroundSize = `${bgWidth}px ${bgHeight}px`;
+    lightboxZoomResult.style.backgroundPosition = `${bgX}px ${bgY}px`;
+}
+
+/**
+ * Handle mouse enter on thumbnail
+ */
+function handleZoomEnter() {
+    if (lightboxThumbnailWrapper) {
+        lightboxThumbnailWrapper.classList.add('active');
+    }
+    if (lightboxZoomResult && currentImageUrl) {
+        // Set the background image when hover starts
+        lightboxZoomResult.style.backgroundImage = `url('${currentImageUrl}')`;
+        lightboxZoomResult.classList.add('active');
+    }
+}
+
+/**
+ * Handle mouse leave on thumbnail
+ */
+function handleZoomLeave() {
+    if (lightboxThumbnailWrapper) {
+        lightboxThumbnailWrapper.classList.remove('active');
+    }
+    if (lightboxZoomResult) {
+        lightboxZoomResult.classList.remove('active');
+        // Clear the background image to show placeholder text
+        lightboxZoomResult.style.backgroundImage = '';
+    }
 }
 
 /**
@@ -467,11 +610,15 @@ function getImageUrlFromCard(cardImage) {
  */
 function initLightbox() {
     portfolioModal = document.getElementById('portfolioLightboxModal');
-    portfolioModalImage = document.getElementById('portfolioLightboxImage');
     portfolioModalOverlay = document.querySelector('.portfolio-lightbox-overlay');
     portfolioModalClose = document.getElementById('portfolioLightboxClose');
+    lightboxThumbnail = document.getElementById('lightboxThumbnail');
+    lightboxThumbnailWrapper = document.getElementById('lightboxThumbnailWrapper');
+    lightboxTitle = document.getElementById('lightboxTitle');
+    lightboxZoomResult = document.getElementById('lightboxZoomResult');
+    zoomLens = document.getElementById('zoomLens');
 
-    if (!portfolioModal || !portfolioModalImage) {
+    if (!portfolioModal || !lightboxThumbnail) {
         console.warn('Portfolio lightbox modal elements not found');
         return;
     }
@@ -498,15 +645,31 @@ function initLightbox() {
         }
     });
 
+    // Set up zoom functionality on thumbnail
+    if (lightboxThumbnailWrapper) {
+        lightboxThumbnailWrapper.addEventListener('mousemove', handleZoomMove);
+        lightboxThumbnailWrapper.addEventListener('mouseenter', handleZoomEnter);
+        lightboxThumbnailWrapper.addEventListener('mouseleave', handleZoomLeave);
+
+        // Touch support for mobile
+        lightboxThumbnailWrapper.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            handleZoomMove(touch);
+        }, { passive: false });
+        lightboxThumbnailWrapper.addEventListener('touchstart', handleZoomEnter);
+        lightboxThumbnailWrapper.addEventListener('touchend', handleZoomLeave);
+    }
+
     // Add click listeners to card images (use event delegation on scroll track)
     if (scrollTrack) {
         scrollTrack.addEventListener('click', (e) => {
             const cardImage = e.target.closest('.card-image');
             if (cardImage) {
                 e.stopPropagation();
-                const imageUrl = getImageUrlFromCard(cardImage);
-                if (imageUrl) {
-                    openPortfolioModal(imageUrl);
+                const imageData = getImageDataFromCard(cardImage);
+                if (imageData) {
+                    openPortfolioModal(imageData.url, imageData.title);
                 }
             }
         });
@@ -599,12 +762,52 @@ function initPortfolioTitleAnimation() {
     }
 }
 
+/**
+ * Initialize scroll-triggered animation for amenities section title
+ * Only animates when scrolling DOWN into view
+ */
+function initAmenitiesTitleAnimation() {
+    const amenitiesTitle = document.querySelector('.slide-amenities-title');
+    if (!amenitiesTitle) return;
+
+    // Wrap words in spans for individual animation
+    wrapWordsInSpans(amenitiesTitle);
+
+    // Create Intersection Observer
+    const amenitiesTitleObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && scrollDirection === 'down') {
+                // Scrolling down into view - animate in word by word
+                entry.target.classList.add('animate-in');
+            }
+            // When scrolling up or out of view, keep the current state (stays visible)
+        });
+    }, {
+        threshold: 0.2, // Trigger when 20% visible
+        rootMargin: '0px 0px -30px 0px' // Slight offset from bottom
+    });
+
+    // Observe the title element
+    amenitiesTitleObserver.observe(amenitiesTitle);
+
+    // Check if already in view on page load (for refreshes mid-page)
+    const rect = amenitiesTitle.getBoundingClientRect();
+    const isInView = rect.top < window.innerHeight && rect.bottom > 0;
+    if (isInView) {
+        // Already visible - animate immediately
+        setTimeout(() => {
+            amenitiesTitle.classList.add('animate-in');
+        }, 100);
+    }
+}
+
 // Auto-initialize when DOM is loaded
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
         initInfiniteScroll();
         initLightbox();
         initPortfolioTitleAnimation();
+        initAmenitiesTitleAnimation();
         // Signal that portfolio lightbox is ready for preloader
         window.portfolioLightboxReady = true;
     });
@@ -612,6 +815,7 @@ if (document.readyState === 'loading') {
     initInfiniteScroll();
     initLightbox();
     initPortfolioTitleAnimation();
+    initAmenitiesTitleAnimation();
     // Signal that portfolio lightbox is ready for preloader
     window.portfolioLightboxReady = true;
 }
