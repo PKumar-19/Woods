@@ -1253,7 +1253,7 @@
     </div>
     <div id="rotate-device"></div>
 
-    <!-- Portfolio Image Lightbox Modal (popup card style) -->
+    <!-- Portfolio Image Lightbox Modal (Amazon-style zoom) -->
     <div class="portfolio-lightbox-modal" id="portfolioLightboxModal" aria-hidden="true">
         <div class="portfolio-lightbox-overlay"></div>
         <div class="portfolio-lightbox-dialog">
@@ -1264,7 +1264,22 @@
                 </svg>
             </button>
             <div class="portfolio-lightbox-content">
-                <img alt="Enlarged view" class="portfolio-lightbox-image" id="portfolioLightboxImage">
+                <!-- Left side: Thumbnail image with hover lens -->
+                <div class="lightbox-left">
+                    <div class="lightbox-thumbnail-wrapper" id="lightboxThumbnailWrapper">
+                        <img alt="Thumbnail view" class="lightbox-thumbnail" id="lightboxThumbnail">
+                        <!-- Zoom lens that follows cursor -->
+                        <div class="zoom-lens" id="zoomLens"></div>
+                    </div>
+                </div>
+                <!-- Right side: Title and enlarged zoom area -->
+                <div class="lightbox-right">
+                    <div class="lightbox-title" id="lightboxTitle">Floor Plan</div>
+                    <div class="lightbox-zoom-container" id="lightboxZoomContainer">
+                        <!-- Zoomed image shown here -->
+                        <div class="lightbox-zoom-result" id="lightboxZoomResult"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
