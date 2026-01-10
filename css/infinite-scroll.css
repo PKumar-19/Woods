@@ -343,7 +343,24 @@
     margin: 0;
     overflow: hidden;
     position: relative;
-    background-color: #0c0c0c;
+    /* background-color: #0c0c0c; */
+}
+
+/* Top gradient blend to transition from the section above */
+.landscape-image-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    background: linear-gradient(to bottom,
+        #f2eae3 0%,
+        rgba(242, 234, 227, 0.5) 40%,
+        rgba(242, 234, 227, 0.3) 70%,
+        transparent 100%);
+    z-index: 1;
+    pointer-events: none;
 }
 
 .landscape-image {

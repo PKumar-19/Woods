@@ -599,12 +599,52 @@ function initPortfolioTitleAnimation() {
     }
 }
 
+/**
+ * Initialize scroll-triggered animation for amenities section title
+ * Only animates when scrolling DOWN into view
+ */
+function initAmenitiesTitleAnimation() {
+    const amenitiesTitle = document.querySelector('.slide-amenities-title');
+    if (!amenitiesTitle) return;
+
+    // Wrap words in spans for individual animation
+    wrapWordsInSpans(amenitiesTitle);
+
+    // Create Intersection Observer
+    const amenitiesTitleObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && scrollDirection === 'down') {
+                // Scrolling down into view - animate in word by word
+                entry.target.classList.add('animate-in');
+            }
+            // When scrolling up or out of view, keep the current state (stays visible)
+        });
+    }, {
+        threshold: 0.2, // Trigger when 20% visible
+        rootMargin: '0px 0px -30px 0px' // Slight offset from bottom
+    });
+
+    // Observe the title element
+    amenitiesTitleObserver.observe(amenitiesTitle);
+
+    // Check if already in view on page load (for refreshes mid-page)
+    const rect = amenitiesTitle.getBoundingClientRect();
+    const isInView = rect.top < window.innerHeight && rect.bottom > 0;
+    if (isInView) {
+        // Already visible - animate immediately
+        setTimeout(() => {
+            amenitiesTitle.classList.add('animate-in');
+        }, 100);
+    }
+}
+
 // Auto-initialize when DOM is loaded
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
         initInfiniteScroll();
         initLightbox();
         initPortfolioTitleAnimation();
+        initAmenitiesTitleAnimation();
         // Signal that portfolio lightbox is ready for preloader
         window.portfolioLightboxReady = true;
     });
@@ -612,6 +652,7 @@ if (document.readyState === 'loading') {
     initInfiniteScroll();
     initLightbox();
     initPortfolioTitleAnimation();
+    initAmenitiesTitleAnimation();
     // Signal that portfolio lightbox is ready for preloader
     window.portfolioLightboxReady = true;
 }
