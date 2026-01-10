@@ -1336,51 +1336,7 @@
     })();
     </script>
 
-    <script>
-    (function(){
-      // Parallax hover/mousemove for tourism hero
-      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      function initTourismParallax(){
-        var sections = document.querySelectorAll('.tourism-hero-section.has-parallax');
-        if(!sections.length) return;
-        sections.forEach(function(section){
-          var layer = section.querySelector('.tourism-parallax-layer');
-          if(!layer) return;
-          var strength = 22; // max translate in px
-          var rect;
-          function updateTransform(x, y){
-            rect = rect || section.getBoundingClientRect();
-            var cx = (x - rect.left) - rect.width/2;
-            var cy = (y - rect.top) - rect.height/2;
-            var tx = (cx / (rect.width/2)) * strength;
-            var ty = (cy / (rect.height/2)) * (strength * 0.6);
-            // move background opposite to cursor for parallax
-            layer.style.transform = 'translate3d(' + (-tx).toFixed(2) + 'px,' + (-ty).toFixed(2) + 'px,0) scale(1.04)';
-          }
-          function onMove(e){
-            if (e.touches && e.touches[0]) e = e.touches[0];
-            updateTransform(e.clientX, e.clientY);
-          }
-          function onLeave(){
-            layer.style.transition = 'transform 600ms cubic-bezier(.22,.61,.36,1)';
-            layer.style.transform = 'translate3d(0,0,0) scale(1)';
-            setTimeout(function(){ layer.style.transition=''; }, 650);
-            rect = null;
-          }
-          section.addEventListener('mousemove', onMove);
-          section.addEventListener('touchmove', onMove, {passive:true});
-          section.addEventListener('mouseleave', onLeave);
-          section.addEventListener('touchend', onLeave);
-          section.addEventListener('mouseenter', function(){ layer.style.transition='transform 140ms linear'; });
-        });
-      }
-      if (document.readyState === 'complete' || document.readyState === 'interactive'){
-        setTimeout(initTourismParallax, 30);
-      } else {
-        document.addEventListener('DOMContentLoaded', initTourismParallax, {once:true});
-      }
-    })();
-    </script>
+    <!-- Tourism parallax effect removed -->
 
     <script>
     (function(){

@@ -41,25 +41,20 @@
     z-index: 1;
 }
 
-/* Parallax background layer */
+/* Background layer (parallax removed) */
 .tourism-hero-section.has-parallax { background: none; }
 .tourism-parallax-layer {
   position: absolute;
-  /* Extend beyond section bounds to prevent gaps */
-  top: -50px;
-  left: -50px;
-  right: -50px;
-  bottom: -50px;
-  margin-top: -70px;
-  padding-bottom: 70px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-  /* Fallback background color matching sky/mountain tones */
-  background-color: #6b8a7a;
-  will-change: transform;
-  transform: translate3d(0,0,0) scale(1.02);
-  transition: transform 0.6s cubic-bezier(.22,.61,.36,1);
+  /* background-color: #6b8a7a; */
   z-index: 0;
   pointer-events: none;
   filter: saturate(1.02) contrast(1.02);
@@ -70,9 +65,7 @@
   .tourism-parallax-layer { transition: none; transform: none !important; }
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .tourism-hero-section:hover .tourism-parallax-layer { transform: scale(1.02); transition: transform 300ms ease; }
-}
+/* Hover parallax effect removed */
 
 /* Larger screens: give even taller crop for very tall appearance */
 @media (min-width: 1400px) {
