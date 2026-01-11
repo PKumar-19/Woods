@@ -69,4 +69,43 @@
     clearInterval(fixInterval);
   }, 5000);
 
+  // Parallax effect for bg-gif-woods video
+  function initParallax() {
+    const bgGifWoods = document.querySelector('.bg-gif-woods');
+    const bgVideoWoods = document.querySelector('.bg-video-woods');
+    if (!bgGifWoods || !bgVideoWoods) return;
+
+    const parallaxSpeed = 0.7; // Adjust this value (0 = no movement, 1 = normal scroll)
+
+    function updateParallax() {
+      const scrollY = window.scrollY || window.pageYOffset;
+      const translateY = scrollY * parallaxSpeed;
+
+      // Apply parallax transform to the video
+      bgVideoWoods.style.setProperty('transform', `translateY(${translateY}px)`, 'important');
+    }
+
+    // Use requestAnimationFrame for smooth performance
+    let ticking = false;
+    window.addEventListener('scroll', function() {
+      if (!ticking) {
+        requestAnimationFrame(function() {
+          updateParallax();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+
+    // Initial call
+    updateParallax();
+  }
+
+  // Initialize parallax when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initParallax);
+  } else {
+    initParallax();
+  }
+
 })();

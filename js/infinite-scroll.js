@@ -480,18 +480,29 @@ function closePortfolioModal() {
         state.lightboxOpen = false;
         state.lastTime = 0; // Reset timing to avoid large deltaTime jump
 
-        // Keep paused if cursor is still over the scroll area, otherwise resume
-        // Check if mouse is over the scroll container
-        const scrollContainer = scrollTrack ? scrollTrack.parentElement : null;
-        if (scrollContainer) {
-            const rect = scrollContainer.getBoundingClientRect();
-            const mouseX = window.mouseX || 0;
-            const mouseY = window.mouseY || 0;
-            const isOverContainer = mouseX >= rect.left && mouseX <= rect.right &&
-                                   mouseY >= rect.top && mouseY <= rect.bottom;
-            state.isPaused = isOverContainer;
-        } else {
+        // Check if this is a touch device, tablet, or tablet-sized viewport
+        // Also check viewport width to handle browser DevTools tablet simulation
+        const isTouchDevice = ('ontouchstart' in window) ||
+                             (navigator.maxTouchPoints > 0) ||
+                             (window.matchMedia('(pointer: coarse)').matches);
+        const isTabletOrMobileViewport = window.innerWidth <= 1024;
+
+        // On touch devices or tablet/mobile viewports, always resume scrolling after closing lightbox
+        // On desktop with wide viewport, keep paused if cursor is still over the scroll area
+        if (isTouchDevice || isTabletOrMobileViewport) {
             state.isPaused = false;
+        } else {
+            const scrollContainer = scrollTrack ? scrollTrack.parentElement : null;
+            if (scrollContainer) {
+                const rect = scrollContainer.getBoundingClientRect();
+                const mouseX = window.mouseX || 0;
+                const mouseY = window.mouseY || 0;
+                const isOverContainer = mouseX >= rect.left && mouseX <= rect.right &&
+                                       mouseY >= rect.top && mouseY <= rect.bottom;
+                state.isPaused = isOverContainer;
+            } else {
+                state.isPaused = false;
+            }
         }
 
         // Force reapply transform to ensure cards are visible
