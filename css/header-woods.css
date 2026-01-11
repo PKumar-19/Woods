@@ -55,14 +55,14 @@
 .bg-video-woods {
   /* Use fixed full-viewport sizing to avoid letterboxing */
   position: fixed !important;
-  inset: 0 !important; /* top:0; right:0; bottom:0; left:0 */
+  top: 0 !important;
+  left: 0 !important;
   width: 100vw !important;
-  height: 100vh !important;
+  height: 120vh !important; /* Extra height for parallax scrolling */
   min-width: 100vw !important;
-  min-height: 100vh !important;
   object-fit: cover !important;
   object-position: center center !important;
-  transform: none !important;
+  /* transform handled by JS for parallax effect */
   margin: 0 !important;
   z-index: 5 !important; /* Keep it under the header */
 }
@@ -83,12 +83,13 @@
 .bg-gif-woods .bg-video-woods {
   /* no-op: the fixed .bg-video-woods rules above apply */
   position: fixed !important;
-  inset: 0 !important;
+  top: 0 !important;
+  left: 0 !important;
   width: 100vw !important;
-  height: 100vh !important;
+  height: 120vh !important; /* Extra height for parallax scrolling */
   object-fit: cover !important;
   object-position: center center !important;
-  transform: none !important;
+  /* transform handled by JS for parallax effect */
   margin: 0 !important;
   z-index: 5 !important;
 }
