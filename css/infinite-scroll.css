@@ -301,37 +301,61 @@
 
 .portfolio-section-title {
     width: 100%;
-    padding: 60px 20px;
+    padding: 80px 20px;
     text-align: center;
-    background-color: #f2eae3;
+    background-color: transparent;
     /* Reset any inherited margins/margins */
     margin: 0;
-    margin-top: 0;
     box-sizing: border-box;
 }
 
-.portfolio-section-title h2 {
-    color: #0c0c0c;
-    font-size: 42px;
-    font-style: 'montserrat', sans-serif;
-    font-weight: 600;
-    line-height: 1.3;
-    margin: 0;
-    letter-spacing: 0.5px;
+.portfolio-section-title .subtitle {
+    /* color: rgba(255,255,255,0.9); */
+    font-family: 'Montserrat', sans-serif;
+    font-size: 34px;
+    font-weight: 400;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin: 0 0 12px;
 }
 
-/* Word-by-word horizontal animation */
-.portfolio-section-title h2 .word {
+.portfolio-section-title h2 {
+    /* color: #ffffff; */
+    font-family: 'Montserrat', sans-serif;
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 1.05;
+    margin: 0;
+    letter-spacing: 0.5px;
+    /* text-shadow: 0 4px 18px rgba(0,0,0,0.6); */
+}
+
+/* Line + Word-by-word horizontal animation */
+.portfolio-section-title h2 .line {
+    display: block; /* wrap each line */
+    overflow: visible;
+    margin: 6px 0;
+}
+
+.portfolio-section-title h2 .line .word {
     display: inline-block;
     opacity: 0;
     transform: translateX(-30px);
     transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    white-space: nowrap;
 }
 
-/* Animated state - words slide in from left */
-.portfolio-section-title.animate-in h2 .word {
+/* Animated state - words slide in from left (staggered via inline transition-delay) */
+.portfolio-section-title.animate-in h2 .line .word {
     opacity: 1;
     transform: translateX(0);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .portfolio-section-title { padding: 48px 12px; }
+    .portfolio-section-title h2 { font-size: 32px; }
+    .portfolio-section-title .subtitle { font-size: 12px; margin-bottom: 8px; }
 }
 
 /* ============================================
