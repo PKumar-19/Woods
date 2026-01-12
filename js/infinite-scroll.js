@@ -719,10 +719,28 @@ function initPortfolioTitleAnimation() {
     const h2 = portfolioTitle.querySelector('h2');
     if (!h2) return;
 
-    // Wrap words in spans for individual animation
-    wrapWordsInSpans(h2);
+    // Wrap H2 into lines and words (portfolio-only helper)
+    wrapPortfolioLinesWords(h2);
 
-    // Track scroll direction
+    // Helper that splits on <br> and wraps each word with a staggered transition-delay
+    function wrapPortfolioLinesWords(element) {
+        const html = element.innerHTML;
+        const lines = html.split(/<br\s*\/?\s*>/i).map(l => l.trim()).filter(Boolean);
+
+        const lineDelay = 0.15; // seconds per line
+        const wordDelay = 0.08; // seconds per word inside a line
+
+        element.innerHTML = lines.map((line, lineIndex) => {
+            const words = line.split(/\s+/).filter(Boolean);
+            const wordsHtml = words.map((word, wordIndex) => {
+                const delay = (lineIndex * lineDelay) + (wordIndex * wordDelay);
+                return `<span class="word" style="transition-delay: ${delay.toFixed(2)}s">${word}</span>`;
+            }).join(' ');
+            return `<span class="line">${wordsHtml}</span>`;
+        }).join('');
+    }
+
+    // Track scroll direction (kept for compatibility with other animations)
     lastScrollY = window.scrollY || window.pageYOffset;
 
     // Use smooth scroll container if available, otherwise window
@@ -745,32 +763,24 @@ function initPortfolioTitleAnimation() {
 
     scrollTarget.addEventListener('scroll', updateScrollDirection, { passive: true });
 
-    // Create Intersection Observer
+    // Create Intersection Observer that only triggers when the section enters the viewport
+    // and removes the class on exit so animation can replay when re-entered.
     portfolioTitleObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting && scrollDirection === 'down') {
-                // Scrolling down into view - animate in word by word
+            if (entry.isIntersecting) {
                 entry.target.classList.add('animate-in');
+            } else {
+                entry.target.classList.remove('animate-in');
             }
-            // When scrolling up or out of view, keep the current state (stays visible)
         });
     }, {
+        root: (hasSmoothScroll ? scrollerEl : null),
         threshold: 0.2, // Trigger when 20% visible
         rootMargin: '0px 0px -30px 0px' // Slight offset from bottom
     });
 
     // Observe the title element
     portfolioTitleObserver.observe(portfolioTitle);
-
-    // Check if already in view on page load (for refreshes mid-page)
-    const rect = portfolioTitle.getBoundingClientRect();
-    const isInView = rect.top < window.innerHeight && rect.bottom > 0;
-    if (isInView) {
-        // Already visible - animate immediately
-        setTimeout(() => {
-            portfolioTitle.classList.add('animate-in');
-        }, 100);
-    }
 }
 
 /**
