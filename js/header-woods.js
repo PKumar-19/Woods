@@ -75,6 +75,13 @@
     const bgVideoWoods = document.querySelector('.bg-video-woods');
     if (!bgGifWoods || !bgVideoWoods) return;
 
+    // Disable parallax on mobile devices (768px and below)
+    const isMobile = window.innerWidth <= 768;
+    if (isMobile) {
+      bgVideoWoods.style.setProperty('transform', 'none', 'important');
+      return;
+    }
+
     const parallaxSpeed = 0.7; // Adjust this value (0 = no movement, 1 = normal scroll)
 
     function updateParallax() {
