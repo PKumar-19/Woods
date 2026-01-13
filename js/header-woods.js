@@ -75,9 +75,9 @@
     const bgVideoWoods = document.querySelector('.bg-video-woods');
     if (!bgGifWoods || !bgVideoWoods) return;
 
-    // Disable parallax on mobile devices (768px and below)
-    const isMobile = window.innerWidth <= 768;
-    if (isMobile) {
+    // Disable parallax on mobile and tablet devices (1024px and below)
+    const isMobileOrTablet = window.innerWidth <= 1024;
+    if (isMobileOrTablet) {
       bgVideoWoods.style.setProperty('transform', 'none', 'important');
       return;
     }

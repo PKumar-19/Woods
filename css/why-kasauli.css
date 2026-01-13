@@ -572,6 +572,11 @@
         position: relative;
     }
 
+    /* Reduce the scale on tablet to disable parallax effect */
+    .tourism-hero-section .tourism-bg-video {
+        transform: translate(-50%, -50%) scale(1.05);
+    }
+
     /* Make parallax layer contained within section on tablet */
     .tourism-hero-section .tourism-parallax-layer {
         position: absolute;
@@ -963,7 +968,7 @@
 
     .kasauli-title-center {
         /* Reduced padding to prevent overlap with serenity section */
-        padding-top: 40px;
+        padding-top: 42%;
         padding-bottom: 15px;
         min-height: 100px;
         height: 40vh;
