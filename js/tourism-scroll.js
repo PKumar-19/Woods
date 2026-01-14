@@ -288,7 +288,10 @@ window.addEventListener("load", () => {
   /* DOCK Kasauli on its OWN LINE (responsive-friendly) */
   function getTargetScale() {
     const w = window.innerWidth;
-    if (w <= 480) return 0.28; // small phones
+    // Scale calculated to match serenity-label font size at each breakpoint
+    // Mobile: serenity-label is clamp(22px, 6vw, 32px), kasauli-text is 50px
+    // At 480px: 6vw = 28.8px, so scale = 28.8/50 = 0.576
+    if (w <= 480) return 0.58; // small phones - match INVEST IN font size
     if (w <= 768) return 0.26; // phones / small tablets
     if (w <= 1024) return 0.24; // tablets
     return 0.3; // desktop
