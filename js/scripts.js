@@ -3173,68 +3173,58 @@ Function Showcase Gallery
 
 			// Pin and animate thumbnails
 			if (isSnapSliderMobile) {
-				// MOBILE: Pin without scrub, use discrete animations triggered by slide visibility
-				// Pin the thumbnail wrapper
+				// MOBILE: Use scrub-based animations (same as desktop) for smooth parallax sync
+				// Pin the thumbnail wrapper with scrub for smooth movement
 				ScrollTrigger.create({
-					trigger: snapSlides,
+					trigger: snapSliderHolder,
 					start: "top top",
 					end: () => "+=" + innerHeight * (snapSlides.length - 1),
 					pin: snapThumbsWrapper,
 					pinSpacing: false,
+					scrub: true, // Enable scrub for smooth pinning
 				});
 
-				// Pin the captions wrapper
+				// Pin the captions wrapper with scrub
 				ScrollTrigger.create({
-					trigger: snapCaptionWrapper,
+					trigger: snapSliderHolder,
 					start: "top top",
 					end: () => "+=" + innerHeight * (snapSlides.length - 1),
-					pin: true,
+					pin: snapCaptionWrapper,
 					pinSpacing: false,
+					scrub: true, // Enable scrub for smooth pinning
 				});
 
-				// Track current slide for mobile thumb/caption animation
-				let currentMobileSlide = 0;
+				// Animate thumbnails with scrub (same as desktop for smooth sync)
+				gsap.fromTo(
+					snapThumbs,
+					{ y: 0 },
+					{
+						y: -snapThumbs[0].offsetHeight * (snapThumbs.length - 1),
+						scrollTrigger: {
+							trigger: snapSliderHolder,
+							scrub: 1.5, // Match the parallax scrub value for sync
+							start: "top top",
+							end: "+=" + innerHeight * (snapSlides.length - 1),
+						},
+						ease: "none",
+					}
+				);
 
-				// Animate thumbnails and captions discretely when each slide enters view
-				snapSlides.forEach((slide, i) => {
-					ScrollTrigger.create({
-						trigger: slide,
-						start: "top 60%",
-						end: "bottom 40%",
-						onEnter: () => {
-							if (currentMobileSlide !== i) {
-								currentMobileSlide = i;
-								// Animate thumbnail to show current slide
-								gsap.to(snapThumbs, {
-									y: -snapThumbs[0].offsetHeight * i,
-									duration: 0.4,
-									ease: "power2.out"
-								});
-								// Animate captions to show current slide
-								gsap.to(snapCaptions, {
-									y: -snapCaptions[0].offsetHeight * i,
-									duration: 0.4,
-									ease: "power2.out"
-								});
-							}
+				// Animate captions with scrub
+				gsap.fromTo(
+					snapCaptions,
+					{ y: 0 },
+					{
+						y: -snapCaptions[0].offsetHeight * (snapCaptions.length - 1),
+						scrollTrigger: {
+							trigger: snapSliderHolder,
+							scrub: 1.5, // Match the parallax scrub value for sync
+							start: "top top",
+							end: "+=" + innerHeight * (snapSlides.length - 1),
 						},
-						onEnterBack: () => {
-							if (currentMobileSlide !== i) {
-								currentMobileSlide = i;
-								gsap.to(snapThumbs, {
-									y: -snapThumbs[0].offsetHeight * i,
-									duration: 0.4,
-									ease: "power2.out"
-								});
-								gsap.to(snapCaptions, {
-									y: -snapCaptions[0].offsetHeight * i,
-									duration: 0.4,
-									ease: "power2.out"
-								});
-							}
-						},
-					});
-				});
+						ease: "none",
+					}
+				);
 			} else {
 				// DESKTOP: Original scrub-based animations
 				ScrollTrigger.create({
