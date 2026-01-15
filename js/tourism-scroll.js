@@ -291,7 +291,7 @@ window.addEventListener("load", () => {
     // Scale calculated to match serenity-label font size at each breakpoint
     // Mobile: serenity-label is clamp(22px, 6vw, 32px), kasauli-text is 50px
     // At 480px: 6vw = 28.8px, so scale = 28.8/50 = 0.576
-    if (w <= 480) return 0.58; // small phones - match INVEST IN font size
+    if (w <= 480) return 0.40; // small phones - match INVEST IN font size
     if (w <= 768) return 0.26; // phones / small tablets
     if (w <= 1024) return 0.24; // tablets
     return 0.3; // desktop
@@ -309,13 +309,14 @@ window.addEventListener("load", () => {
     if (isMobileOrTablet && serenityLabelForDock) {
       const labelRect = serenityLabelForDock.getBoundingClientRect();
 
-      // Calculate centers for alignment
-      const heroCenterX = heroRect.left + heroRect.width / 2;
-      const labelCenterX = labelRect.left + labelRect.width / 2;
+      // =====================================================
+      // MANUAL ADJUSTMENT: Change this value to move Kasauli's horizontally
+      // Positive = move RIGHT, Negative = move LEFT
+      // =====================================================
+      const mobileXOffset = 30; // Adjust this value (in pixels) to fine-tune horizontal position
 
-      // With transformOrigin "center top", the center stays aligned during scaling
-      // We need to move the hero center to align with the label center
-      const targetX = labelCenterX - heroCenterX - 8;
+      // Align LEFT edges of scaled Kasauli's with INVEST IN
+      const targetX = labelRect.left - heroRect.left + mobileXOffset;
 
       // Calculate target Y to position below INVEST IN with appropriate spacing
       const targetY = labelRect.bottom - heroRect.top + 5;
@@ -323,10 +324,9 @@ window.addEventListener("load", () => {
       cachedDockPosition = { x: targetX, y: targetY };
 
       console.log('Dock position calc:', {
-        heroCenterX: heroCenterX,
-        labelCenterX: labelCenterX,
         labelLeft: labelRect.left,
         heroLeft: heroRect.left,
+        mobileXOffset: mobileXOffset,
         targetX: targetX,
         targetY: targetY,
         scale: scale
@@ -364,8 +364,8 @@ window.addEventListener("load", () => {
       x: () => cachedDockPosition ? cachedDockPosition.x : 0,
       y: () => cachedDockPosition ? cachedDockPosition.y : 0,
       scale: () => getTargetScale(),
-      // Use center top origin for mobile/tablet so text stays centered while scaling
-      transformOrigin: isMobileOrTablet ? "center top" : "left center",
+      // Use left top origin for mobile/tablet so left edge aligns with INVEST IN
+      transformOrigin: isMobileOrTablet ? "left top" : "left center",
       ease: "power2.inOut",
     },
     0
