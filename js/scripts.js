@@ -3053,7 +3053,7 @@ Function Showcase Gallery
         })();
 
 /*---------------------------------------------------*/
-		
+
 		if( $('.snap-slider-holder').length > 0 ){
 
 			// Selectors and utilities
@@ -3071,46 +3071,67 @@ Function Showcase Gallery
 				? document.querySelector('#content-scroll')
 				: null;
 
+			// Mobile detection - disable heavy animations on touch devices for smooth scrolling
+			const isSnapSliderMobile = isMobile() || window.innerWidth <= 1024;
+
 			// Set initial opacity to 1 so images are visible by default
 			// Animation will still work but won't cause invisible images if it fails
 			gsap.set(snapSlidesImgMask, { opacity: 1 });
 
 			// Fade in animation (subtle enhancement, not required for visibility)
-			gsap.fromTo(snapSlidesImgMask,
-				{ opacity: 0.7 },
-				{
-					duration: 1,
-					opacity: 1,
-					ease: "sine.out",
-					scrollTrigger: {
-						trigger: snapSliderHolder,
-						start: 'top 100%',
-						end: '+=100%',
-						scrub: 0.5,
-						scroller: snapScrollerElement || undefined,
-					},
-				}
-			);
+			// On mobile: use simpler animation without scrub to prevent jank
+			if (isSnapSliderMobile) {
+				// Mobile: simple fade without scrub
+				gsap.fromTo(snapSlidesImgMask,
+					{ opacity: 0.85 },
+					{
+						duration: 0.6,
+						opacity: 1,
+						ease: "power2.out",
+						scrollTrigger: {
+							trigger: snapSliderHolder,
+							start: 'top 90%',
+							toggleActions: "play none none reverse",
+						},
+					}
+				);
+			} else {
+				// Desktop: original scrub-based animation
+				gsap.fromTo(snapSlidesImgMask,
+					{ opacity: 0.7 },
+					{
+						duration: 1,
+						opacity: 1,
+						ease: "sine.out",
+						scrollTrigger: {
+							trigger: snapSliderHolder,
+							start: 'top 100%',
+							end: '+=100%',
+							scrub: 0.5,
+							scroller: snapScrollerElement || undefined,
+						},
+					}
+				);
+
+				gsap.fromTo(snapSlidesImgMask,
+					{ opacity: 1 },
+					{
+						duration: 1,
+						opacity: 0.7,
+						ease: "sine.out",
+						scrollTrigger: {
+							trigger: snapSliderHolder,
+							start: 'bottom 100%',
+							end: '+=100%',
+							scrub: 0.5,
+							scroller: snapScrollerElement || undefined,
+						},
+					}
+				);
+			}
 
 
-			gsap.fromTo(snapSlidesImgMask,
-				{ opacity: 1 },
-				{
-					duration: 1,
-					opacity: 0.7,
-					ease: "sine.out",
-					scrollTrigger: {
-						trigger: snapSliderHolder,
-						start: 'bottom 100%',
-						end: '+=100%',
-						scrub: 0.5,
-						scroller: snapScrollerElement || undefined,
-					},
-				}
-			);
 
-			
-		
 			// Utility function for playing/pausing videos
 			const toggleVideo = ($slide, play) => {
 				$slide.find('video').each(function () {
@@ -3118,7 +3139,7 @@ Function Showcase Gallery
 					play ? video.play() : video.pause();
 				});
 			};
-		
+
 			// Initialize animations for each slide
 			$('.snap-slide').each(function () {
 				const $this = $(this);
@@ -3151,101 +3172,196 @@ Function Showcase Gallery
 			});
 
 			// Pin and animate thumbnails
-			ScrollTrigger.create({
-				trigger: snapSlides,
-				start: "top top",
-				end: () => "+=" + innerHeight * (snapSlides.length - 1),
-				pin: snapThumbsWrapper,
-				scrub: 0.5,
-				scroller: snapScrollerElement || undefined,
-			});
+			if (isSnapSliderMobile) {
+				// MOBILE: Pin without scrub, use discrete animations triggered by slide visibility
+				// Pin the thumbnail wrapper
+				ScrollTrigger.create({
+					trigger: snapSlides,
+					start: "top top",
+					end: () => "+=" + innerHeight * (snapSlides.length - 1),
+					pin: snapThumbsWrapper,
+					pinSpacing: false,
+				});
 
-			gsap.fromTo(
-				snapThumbs,
-				{ y: 0 },
-				{
-					y: -snapThumbs[0].offsetHeight * (snapThumbs.length - 1),
-					scrollTrigger: {
-						trigger: snapSliderHolder,
-						scrub: 0.5,
-						start: "top top",
-						end: "+=" + innerHeight * (snapSlides.length - 1),
-						scroller: snapScrollerElement || undefined,
-					},
-					ease: "none",
-				}
-			);
+				// Pin the captions wrapper
+				ScrollTrigger.create({
+					trigger: snapCaptionWrapper,
+					start: "top top",
+					end: () => "+=" + innerHeight * (snapSlides.length - 1),
+					pin: true,
+					pinSpacing: false,
+				});
 
-			// Pin and animate captions
-			ScrollTrigger.create({
-				trigger: snapCaptionWrapper,
-				start: "top top",
-				end: () => "+=" + innerHeight * (snapSlides.length - 1),
-				pin: true,
-				scrub: 0.5,
-				scroller: snapScrollerElement || undefined,
-			});
+				// Track current slide for mobile thumb/caption animation
+				let currentMobileSlide = 0;
 
-			gsap.fromTo(
-				snapCaptions,
-				{ y: 0 },
-				{
-					y: -snapCaptions[0].offsetHeight * (snapCaptions.length - 1),
-					scrollTrigger: {
-						trigger: snapSliderHolder,
-						scrub: 0.5,
-						start: "top top",
-						end: "+=" + innerHeight * (snapSlides.length - 1),
-						scroller: snapScrollerElement || undefined,
-					},
-					ease: "none",
-				}
-			);
-		
-			// Set initial heights for slides
-			gsap.set(snapSlides, { height: window.innerHeight });
-		
-			// Create snapping effect
-			const snapPoints = gsap.utils.snap(1 / (snapSlides.length - 1));
-			ScrollTrigger.create({
-				trigger: snapSlides,
-				start: "top top",
-				end: "+=" + innerHeight * (snapSlides.length - 1),
-				snap: {
-					snapTo: snapPoints,
-					duration: { min: 0.4, max: 1.0 },
-					delay: 0.05,
-					ease: "power2.inOut",
-				},
-			});
-		
-			// Animate image transitions within slides
-			snapSlides.forEach((slide, i) => {
-				const imageWrappers = slide.querySelectorAll(".img-mask");
-				const isLastSlide = i === snapSlides.length - 1;
-				const isFirstSlide = i === 0;
+				// Animate thumbnails and captions discretely when each slide enters view
+				snapSlides.forEach((slide, i) => {
+					ScrollTrigger.create({
+						trigger: slide,
+						start: "top 60%",
+						end: "bottom 40%",
+						onEnter: () => {
+							if (currentMobileSlide !== i) {
+								currentMobileSlide = i;
+								// Animate thumbnail to show current slide
+								gsap.to(snapThumbs, {
+									y: -snapThumbs[0].offsetHeight * i,
+									duration: 0.4,
+									ease: "power2.out"
+								});
+								// Animate captions to show current slide
+								gsap.to(snapCaptions, {
+									y: -snapCaptions[0].offsetHeight * i,
+									duration: 0.4,
+									ease: "power2.out"
+								});
+							}
+						},
+						onEnterBack: () => {
+							if (currentMobileSlide !== i) {
+								currentMobileSlide = i;
+								gsap.to(snapThumbs, {
+									y: -snapThumbs[0].offsetHeight * i,
+									duration: 0.4,
+									ease: "power2.out"
+								});
+								gsap.to(snapCaptions, {
+									y: -snapCaptions[0].offsetHeight * i,
+									duration: 0.4,
+									ease: "power2.out"
+								});
+							}
+						},
+					});
+				});
+			} else {
+				// DESKTOP: Original scrub-based animations
+				ScrollTrigger.create({
+					trigger: snapSlides,
+					start: "top top",
+					end: () => "+=" + innerHeight * (snapSlides.length - 1),
+					pin: snapThumbsWrapper,
+					scrub: 0.5,
+					scroller: snapScrollerElement || undefined,
+				});
 
 				gsap.fromTo(
-					imageWrappers,
-					{ y: isFirstSlide ? 0 : -window.innerHeight * 0.5 },
+					snapThumbs,
+					{ y: 0 },
 					{
-						y: isLastSlide ? 0 : window.innerHeight * 0.5,
+						y: -snapThumbs[0].offsetHeight * (snapThumbs.length - 1),
 						scrollTrigger: {
-							trigger: slide,
+							trigger: snapSliderHolder,
 							scrub: 0.5,
-							start: isFirstSlide ? "top top" : "top bottom",
-							end: isLastSlide ? "top top" : undefined,
+							start: "top top",
+							end: "+=" + innerHeight * (snapSlides.length - 1),
+							scroller: snapScrollerElement || undefined,
 						},
 						ease: "none",
 					}
 				);
 
-				if (snapThumbImg[i]) {
+				// Pin and animate captions - desktop only
+				ScrollTrigger.create({
+					trigger: snapCaptionWrapper,
+					start: "top top",
+					end: () => "+=" + innerHeight * (snapSlides.length - 1),
+					pin: true,
+					scrub: 0.5,
+					scroller: snapScrollerElement || undefined,
+				});
+
+				gsap.fromTo(
+					snapCaptions,
+					{ y: 0 },
+					{
+						y: -snapCaptions[0].offsetHeight * (snapCaptions.length - 1),
+						scrollTrigger: {
+							trigger: snapSliderHolder,
+							scrub: 0.5,
+							start: "top top",
+							end: "+=" + innerHeight * (snapSlides.length - 1),
+							scroller: snapScrollerElement || undefined,
+						},
+						ease: "none",
+					}
+				);
+			}
+
+			// Set initial heights for slides
+			gsap.set(snapSlides, { height: window.innerHeight });
+
+			// Create snapping effect - ONLY on desktop (conflicts with native touch scroll)
+			if (!isSnapSliderMobile) {
+				const snapPoints = gsap.utils.snap(1 / (snapSlides.length - 1));
+				ScrollTrigger.create({
+					trigger: snapSlides,
+					start: "top top",
+					end: "+=" + innerHeight * (snapSlides.length - 1),
+					snap: {
+						snapTo: snapPoints,
+						duration: { min: 0.4, max: 1.0 },
+						delay: 0.05,
+						ease: "power2.inOut",
+					},
+				});
+			}
+
+			// Animate image transitions within slides
+			// On mobile: use CSS scroll-snap and lightweight intersection-based animations
+			// On desktop: use full parallax with scrub
+			if (isSnapSliderMobile) {
+				// Mobile: lightweight intersection-based fade animations
+				snapSlides.forEach((slide, i) => {
+					const imageWrappers = slide.querySelectorAll(".img-mask");
+
+					ScrollTrigger.create({
+						trigger: slide,
+						start: "top 80%",
+						end: "bottom 20%",
+						onEnter: () => {
+							gsap.to(imageWrappers, {
+								opacity: 1,
+								scale: 1,
+								duration: 0.4,
+								ease: "power2.out"
+							});
+						},
+						onLeave: () => {
+							gsap.to(imageWrappers, {
+								opacity: 0.9,
+								duration: 0.3
+							});
+						},
+						onEnterBack: () => {
+							gsap.to(imageWrappers, {
+								opacity: 1,
+								scale: 1,
+								duration: 0.4,
+								ease: "power2.out"
+							});
+						},
+						onLeaveBack: () => {
+							gsap.to(imageWrappers, {
+								opacity: 0.9,
+								duration: 0.3
+							});
+						},
+					});
+				});
+			} else {
+				// Desktop: full parallax animations with scrub
+				snapSlides.forEach((slide, i) => {
+					const imageWrappers = slide.querySelectorAll(".img-mask");
+					const isLastSlide = i === snapSlides.length - 1;
+					const isFirstSlide = i === 0;
+
 					gsap.fromTo(
-						snapThumbImg[i],
-						{ y: isFirstSlide ? 0 : -snapThumbImg[i].offsetHeight / 2 },
+						imageWrappers,
+						{ y: isFirstSlide ? 0 : -window.innerHeight * 0.5 },
 						{
-							y: isLastSlide ? 0 : snapThumbImg[i].offsetHeight / 2,
+							y: isLastSlide ? 0 : window.innerHeight * 0.5,
 							scrollTrigger: {
 								trigger: slide,
 								scrub: 0.5,
@@ -3255,8 +3371,25 @@ Function Showcase Gallery
 							ease: "none",
 						}
 					);
-				}
-			});
+
+					if (snapThumbImg[i]) {
+						gsap.fromTo(
+							snapThumbImg[i],
+							{ y: isFirstSlide ? 0 : -snapThumbImg[i].offsetHeight / 2 },
+							{
+								y: isLastSlide ? 0 : snapThumbImg[i].offsetHeight / 2,
+								scrollTrigger: {
+									trigger: slide,
+									scrub: 0.5,
+									start: isFirstSlide ? "top top" : "top bottom",
+									end: isLastSlide ? "top top" : undefined,
+								},
+								ease: "none",
+							}
+						);
+					}
+				});
+			}
 			
 			
 

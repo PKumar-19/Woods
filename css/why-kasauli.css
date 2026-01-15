@@ -1073,3 +1073,43 @@
 .snap-slider-thumbs .thumb-slide .slide-link {
     display: none;
 }
+
+/* =====================================================
+   MOBILE AMENITIES SCROLL OPTIMIZATION
+   Performance optimizations for smooth scrolling on touch devices
+   ===================================================== */
+@media (max-width: 1024px) {
+    /* Optimize images for GPU compositing on mobile */
+    .snap-slide .img-mask {
+        will-change: transform, opacity;
+        transform: translateZ(0);
+        backface-visibility: hidden;
+    }
+
+    .snap-slide .section-image,
+    .snap-slide .item-image {
+        transform: translateZ(0);
+        backface-visibility: hidden;
+    }
+
+    /* Optimize thumbnail animations - promote to GPU layer */
+    .snap-slider-thumbs-wrapper {
+        will-change: transform;
+        transform: translateZ(0);
+    }
+
+    .thumb-slide {
+        will-change: transform;
+        transform: translateZ(0);
+    }
+
+    /* Optimize caption animations - promote to GPU layer */
+    .snap-slider-captions-wrapper {
+        will-change: transform;
+        transform: translateZ(0);
+    }
+
+    .snap-slide-caption {
+        will-change: transform;
+    }
+}
