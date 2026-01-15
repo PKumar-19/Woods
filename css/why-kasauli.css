@@ -1076,23 +1076,12 @@
 
 /* =====================================================
    MOBILE AMENITIES SCROLL OPTIMIZATION
-   Uses native CSS scroll-snap for smooth scrolling on touch devices
+   Performance optimizations for smooth scrolling on touch devices
    ===================================================== */
 @media (max-width: 1024px) {
-    /* Enable native CSS scroll-snap on the snap-slider for smooth touch scrolling */
-    .snap-slider-images-wrapper {
-        scroll-snap-type: y mandatory;
-        -webkit-overflow-scrolling: touch; /* iOS momentum scrolling */
-    }
-
-    .snap-slide {
-        scroll-snap-align: start;
-        scroll-snap-stop: always;
-    }
-
     /* Optimize images for GPU compositing on mobile */
     .snap-slide .img-mask {
-        will-change: opacity;
+        will-change: transform, opacity;
         transform: translateZ(0);
         backface-visibility: hidden;
     }
@@ -1103,26 +1092,24 @@
         backface-visibility: hidden;
     }
 
-    /* Reduce thumbnail wrapper complexity on mobile */
+    /* Optimize thumbnail animations - promote to GPU layer */
     .snap-slider-thumbs-wrapper {
-        will-change: auto;
+        will-change: transform;
+        transform: translateZ(0);
     }
 
-    /* Simplify caption animations on mobile */
+    .thumb-slide {
+        will-change: transform;
+        transform: translateZ(0);
+    }
+
+    /* Optimize caption animations - promote to GPU layer */
     .snap-slider-captions-wrapper {
-        will-change: auto;
-    }
-}
-
-/* Extra optimization for small mobile screens */
-@media (max-width: 480px) {
-    .snap-slide .img-mask {
-        /* Disable complex transforms on very small screens */
-        transform: none !important;
+        will-change: transform;
+        transform: translateZ(0);
     }
 
-    /* Ensure smooth native scrolling takes priority */
-    .snap-slider-holder {
-        -webkit-overflow-scrolling: touch;
+    .snap-slide-caption {
+        will-change: transform;
     }
 }

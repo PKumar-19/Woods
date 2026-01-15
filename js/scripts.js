@@ -3171,8 +3171,72 @@ Function Showcase Gallery
 				});
 			});
 
-			// Pin and animate thumbnails - ONLY on desktop (causes jank on mobile)
-			if (!isSnapSliderMobile) {
+			// Pin and animate thumbnails
+			if (isSnapSliderMobile) {
+				// MOBILE: Pin without scrub, use discrete animations triggered by slide visibility
+				// Pin the thumbnail wrapper
+				ScrollTrigger.create({
+					trigger: snapSlides,
+					start: "top top",
+					end: () => "+=" + innerHeight * (snapSlides.length - 1),
+					pin: snapThumbsWrapper,
+					pinSpacing: false,
+				});
+
+				// Pin the captions wrapper
+				ScrollTrigger.create({
+					trigger: snapCaptionWrapper,
+					start: "top top",
+					end: () => "+=" + innerHeight * (snapSlides.length - 1),
+					pin: true,
+					pinSpacing: false,
+				});
+
+				// Track current slide for mobile thumb/caption animation
+				let currentMobileSlide = 0;
+
+				// Animate thumbnails and captions discretely when each slide enters view
+				snapSlides.forEach((slide, i) => {
+					ScrollTrigger.create({
+						trigger: slide,
+						start: "top 60%",
+						end: "bottom 40%",
+						onEnter: () => {
+							if (currentMobileSlide !== i) {
+								currentMobileSlide = i;
+								// Animate thumbnail to show current slide
+								gsap.to(snapThumbs, {
+									y: -snapThumbs[0].offsetHeight * i,
+									duration: 0.4,
+									ease: "power2.out"
+								});
+								// Animate captions to show current slide
+								gsap.to(snapCaptions, {
+									y: -snapCaptions[0].offsetHeight * i,
+									duration: 0.4,
+									ease: "power2.out"
+								});
+							}
+						},
+						onEnterBack: () => {
+							if (currentMobileSlide !== i) {
+								currentMobileSlide = i;
+								gsap.to(snapThumbs, {
+									y: -snapThumbs[0].offsetHeight * i,
+									duration: 0.4,
+									ease: "power2.out"
+								});
+								gsap.to(snapCaptions, {
+									y: -snapCaptions[0].offsetHeight * i,
+									duration: 0.4,
+									ease: "power2.out"
+								});
+							}
+						},
+					});
+				});
+			} else {
+				// DESKTOP: Original scrub-based animations
 				ScrollTrigger.create({
 					trigger: snapSlides,
 					start: "top top",
