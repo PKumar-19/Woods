@@ -661,6 +661,9 @@
     display: flex;
     align-items: flex-start;
     justify-content: center;
+    /* Ensure text box stays above kasauli text during scroll animation */
+    position: relative;
+    z-index: 55;
 }
 
 .serenity-heading {
@@ -669,6 +672,9 @@
     font-family: 'Montserrat', sans-serif;
     line-height: 1.3;
     text-align: left;
+    /* Create stacking context to keep all text above docking kasauli text */
+    position: relative;
+    z-index: 60;
 }
 
 .serenity-label {
