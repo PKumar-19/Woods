@@ -3309,46 +3309,55 @@ Function Showcase Gallery
 			}
 
 			// Animate image transitions within slides
-			// On mobile: use CSS scroll-snap and lightweight intersection-based animations
+			// On mobile: use lighter scrub value and reduced parallax distance for smoother performance
 			// On desktop: use full parallax with scrub
 			if (isSnapSliderMobile) {
-				// Mobile: lightweight intersection-based fade animations
+				// Mobile: lighter parallax with higher scrub value (less frequent updates)
+				// Both main image and thumbnail use identical ScrollTrigger settings to stay in sync
+				const mobileScrollTriggerSettings = {
+					scrub: 1.5, // Higher scrub = smoother but less responsive (good for mobile)
+				};
+
 				snapSlides.forEach((slide, i) => {
 					const imageWrappers = slide.querySelectorAll(".img-mask");
+					const isLastSlide = i === snapSlides.length - 1;
+					const isFirstSlide = i === 0;
 
-					ScrollTrigger.create({
+					// Reduced parallax distance for mobile (30% of viewport instead of 50%)
+					const parallaxDistance = window.innerHeight * 0.3;
+
+					// Shared trigger settings for this slide
+					const triggerConfig = {
 						trigger: slide,
-						start: "top 80%",
-						end: "bottom 20%",
-						onEnter: () => {
-							gsap.to(imageWrappers, {
-								opacity: 1,
-								scale: 1,
-								duration: 0.4,
-								ease: "power2.out"
-							});
-						},
-						onLeave: () => {
-							gsap.to(imageWrappers, {
-								opacity: 0.9,
-								duration: 0.3
-							});
-						},
-						onEnterBack: () => {
-							gsap.to(imageWrappers, {
-								opacity: 1,
-								scale: 1,
-								duration: 0.4,
-								ease: "power2.out"
-							});
-						},
-						onLeaveBack: () => {
-							gsap.to(imageWrappers, {
-								opacity: 0.9,
-								duration: 0.3
-							});
-						},
-					});
+						scrub: mobileScrollTriggerSettings.scrub,
+						start: isFirstSlide ? "top top" : "top bottom",
+						end: isLastSlide ? "top top" : "bottom top",
+					};
+
+					// Main image parallax
+					gsap.fromTo(
+						imageWrappers,
+						{ y: isFirstSlide ? 0 : -parallaxDistance },
+						{
+							y: isLastSlide ? 0 : parallaxDistance,
+							scrollTrigger: triggerConfig,
+							ease: "none",
+						}
+					);
+
+					// Thumbnail image parallax - uses same trigger config for perfect sync
+					if (snapThumbImg[i]) {
+						const thumbParallaxDistance = snapThumbImg[i].offsetHeight * 0.4;
+						gsap.fromTo(
+							snapThumbImg[i],
+							{ y: isFirstSlide ? 0 : -thumbParallaxDistance },
+							{
+								y: isLastSlide ? 0 : thumbParallaxDistance,
+								scrollTrigger: { ...triggerConfig }, // Clone config for separate instance
+								ease: "none",
+							}
+						);
+					}
 				});
 			} else {
 				// Desktop: full parallax animations with scrub
