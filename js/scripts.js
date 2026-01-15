@@ -3173,68 +3173,58 @@ Function Showcase Gallery
 
 			// Pin and animate thumbnails
 			if (isSnapSliderMobile) {
-				// MOBILE: Pin without scrub, use discrete animations triggered by slide visibility
-				// Pin the thumbnail wrapper
+				// MOBILE: Use scrub-based animations (same as desktop) for smooth parallax sync
+				// Pin the thumbnail wrapper with scrub for smooth movement
 				ScrollTrigger.create({
-					trigger: snapSlides,
+					trigger: snapSliderHolder,
 					start: "top top",
 					end: () => "+=" + innerHeight * (snapSlides.length - 1),
 					pin: snapThumbsWrapper,
 					pinSpacing: false,
+					scrub: true, // Enable scrub for smooth pinning
 				});
 
-				// Pin the captions wrapper
+				// Pin the captions wrapper with scrub
 				ScrollTrigger.create({
-					trigger: snapCaptionWrapper,
+					trigger: snapSliderHolder,
 					start: "top top",
 					end: () => "+=" + innerHeight * (snapSlides.length - 1),
-					pin: true,
+					pin: snapCaptionWrapper,
 					pinSpacing: false,
+					scrub: true, // Enable scrub for smooth pinning
 				});
 
-				// Track current slide for mobile thumb/caption animation
-				let currentMobileSlide = 0;
+				// Animate thumbnails with scrub (same as desktop for smooth sync)
+				gsap.fromTo(
+					snapThumbs,
+					{ y: 0 },
+					{
+						y: -snapThumbs[0].offsetHeight * (snapThumbs.length - 1),
+						scrollTrigger: {
+							trigger: snapSliderHolder,
+							scrub: 1.5, // Match the parallax scrub value for sync
+							start: "top top",
+							end: "+=" + innerHeight * (snapSlides.length - 1),
+						},
+						ease: "none",
+					}
+				);
 
-				// Animate thumbnails and captions discretely when each slide enters view
-				snapSlides.forEach((slide, i) => {
-					ScrollTrigger.create({
-						trigger: slide,
-						start: "top 60%",
-						end: "bottom 40%",
-						onEnter: () => {
-							if (currentMobileSlide !== i) {
-								currentMobileSlide = i;
-								// Animate thumbnail to show current slide
-								gsap.to(snapThumbs, {
-									y: -snapThumbs[0].offsetHeight * i,
-									duration: 0.4,
-									ease: "power2.out"
-								});
-								// Animate captions to show current slide
-								gsap.to(snapCaptions, {
-									y: -snapCaptions[0].offsetHeight * i,
-									duration: 0.4,
-									ease: "power2.out"
-								});
-							}
+				// Animate captions with scrub
+				gsap.fromTo(
+					snapCaptions,
+					{ y: 0 },
+					{
+						y: -snapCaptions[0].offsetHeight * (snapCaptions.length - 1),
+						scrollTrigger: {
+							trigger: snapSliderHolder,
+							scrub: 1.5, // Match the parallax scrub value for sync
+							start: "top top",
+							end: "+=" + innerHeight * (snapSlides.length - 1),
 						},
-						onEnterBack: () => {
-							if (currentMobileSlide !== i) {
-								currentMobileSlide = i;
-								gsap.to(snapThumbs, {
-									y: -snapThumbs[0].offsetHeight * i,
-									duration: 0.4,
-									ease: "power2.out"
-								});
-								gsap.to(snapCaptions, {
-									y: -snapCaptions[0].offsetHeight * i,
-									duration: 0.4,
-									ease: "power2.out"
-								});
-							}
-						},
-					});
-				});
+						ease: "none",
+					}
+				);
 			} else {
 				// DESKTOP: Original scrub-based animations
 				ScrollTrigger.create({
@@ -3309,46 +3299,55 @@ Function Showcase Gallery
 			}
 
 			// Animate image transitions within slides
-			// On mobile: use CSS scroll-snap and lightweight intersection-based animations
+			// On mobile: use lighter scrub value and reduced parallax distance for smoother performance
 			// On desktop: use full parallax with scrub
 			if (isSnapSliderMobile) {
-				// Mobile: lightweight intersection-based fade animations
+				// Mobile: lighter parallax with higher scrub value (less frequent updates)
+				// Both main image and thumbnail use identical ScrollTrigger settings to stay in sync
+				const mobileScrollTriggerSettings = {
+					scrub: 1.5, // Higher scrub = smoother but less responsive (good for mobile)
+				};
+
 				snapSlides.forEach((slide, i) => {
 					const imageWrappers = slide.querySelectorAll(".img-mask");
+					const isLastSlide = i === snapSlides.length - 1;
+					const isFirstSlide = i === 0;
 
-					ScrollTrigger.create({
+					// Reduced parallax distance for mobile (30% of viewport instead of 50%)
+					const parallaxDistance = window.innerHeight * 0.3;
+
+					// Shared trigger settings for this slide
+					const triggerConfig = {
 						trigger: slide,
-						start: "top 80%",
-						end: "bottom 20%",
-						onEnter: () => {
-							gsap.to(imageWrappers, {
-								opacity: 1,
-								scale: 1,
-								duration: 0.4,
-								ease: "power2.out"
-							});
-						},
-						onLeave: () => {
-							gsap.to(imageWrappers, {
-								opacity: 0.9,
-								duration: 0.3
-							});
-						},
-						onEnterBack: () => {
-							gsap.to(imageWrappers, {
-								opacity: 1,
-								scale: 1,
-								duration: 0.4,
-								ease: "power2.out"
-							});
-						},
-						onLeaveBack: () => {
-							gsap.to(imageWrappers, {
-								opacity: 0.9,
-								duration: 0.3
-							});
-						},
-					});
+						scrub: mobileScrollTriggerSettings.scrub,
+						start: isFirstSlide ? "top top" : "top bottom",
+						end: isLastSlide ? "top top" : "bottom top",
+					};
+
+					// Main image parallax
+					gsap.fromTo(
+						imageWrappers,
+						{ y: isFirstSlide ? 0 : -parallaxDistance },
+						{
+							y: isLastSlide ? 0 : parallaxDistance,
+							scrollTrigger: triggerConfig,
+							ease: "none",
+						}
+					);
+
+					// Thumbnail image parallax - uses same trigger config for perfect sync
+					if (snapThumbImg[i]) {
+						const thumbParallaxDistance = snapThumbImg[i].offsetHeight * 0.4;
+						gsap.fromTo(
+							snapThumbImg[i],
+							{ y: isFirstSlide ? 0 : -thumbParallaxDistance },
+							{
+								y: isLastSlide ? 0 : thumbParallaxDistance,
+								scrollTrigger: { ...triggerConfig }, // Clone config for separate instance
+								ease: "none",
+							}
+						);
+					}
 				});
 			} else {
 				// Desktop: full parallax animations with scrub

@@ -1078,6 +1078,29 @@
    MOBILE AMENITIES SCROLL OPTIMIZATION
    Performance optimizations for smooth scrolling on touch devices
    ===================================================== */
+
+/* Ensure snap-slider-holder contains pinned elements properly */
+.snap-slider-holder {
+    position: relative;
+    /* Create stacking context to contain z-index */
+    isolation: isolate;
+}
+
+/* Ensure pinned thumbs wrapper stays positioned correctly */
+.snap-slider-thumbs {
+    z-index: 5;
+}
+
+/* Ensure pinned captions wrapper stays positioned correctly */
+.snap-slider-captions {
+    z-index: 4;
+}
+
+/* GSAP pin-spacer wrapper styling to prevent escape */
+.snap-slider-holder .pin-spacer {
+    z-index: 5 !important;
+}
+
 @media (max-width: 1024px) {
     /* Optimize images for GPU compositing on mobile */
     .snap-slide .img-mask {
