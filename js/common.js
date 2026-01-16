@@ -1,15 +1,31 @@
 jQuery(function ($) {
-	
+
+	// Get diagnostics logger (created in scripts.js)
+	function getCommonDiag() {
+		if (window.WoodsLoadDiagnostics) return window.WoodsLoadDiagnostics;
+		// Fallback if scripts.js hasn't loaded yet
+		return {
+			log: function(s, m, d) { console.log('[COMMON] [' + s + '] ' + m, d || ''); },
+			milestone: function(n) { console.log('%c[COMMON MILESTONE] ' + n, 'background: #8a1e5a; color: #fff; padding: 2px 8px;'); },
+			warn: function(s, m, d) { console.warn('[COMMON] [' + s + '] ' + m, d || ''); },
+			error: function(s, m, d) { console.error('[COMMON] [' + s + '] ' + m, d || ''); }
+		};
+	}
+
 /*--------------------------------------------------
 Function Scroll Effects
 ---------------------------------------------------*/
 
 
 	window.ScrollEffects = function() {
-		
-		gsap.defaults({overwrite: "auto"});	
+		var diag = getCommonDiag();
+		diag.milestone('ScrollEffects() started');
+
+		gsap.defaults({overwrite: "auto"});
 		gsap.registerPlugin(ScrollTrigger, Flip);
 		gsap.config({nullTargetWarn: false});
+
+		diag.log('SCROLL_EFFECTS', 'GSAP and ScrollTrigger registered');
 		
 		const sliders = [
 			'.showcase-gallery',
@@ -64,16 +80,18 @@ Function Scroll Effects
 		// IMPORTANT: Disable smooth scroll on mobile to prevent jerky scrolling
 		// The Smooth Scrollbar library causes performance issues on touch devices
 		let enableSmoothScrollMobile = false;
-		if( isMobile() ){
+		diag.log('SCROLL_EFFECTS', 'Checking smooth scroll setup', { isMobile: isMobile() });
 
+		if( isMobile() ){
+			diag.log('SCROLL_EFFECTS', 'Mobile detected, disabling smooth scroll');
 			if( !enableSmoothScrollMobile ){
 
 				document.body.classList.remove("smooth-scroll");
 			}
 		}
-		
+
 		if (document.body.classList.contains("smooth-scroll"))  {
-			
+			diag.log('SCROLL_EFFECTS', 'Initializing Smooth Scrollbar');
 			const ScrollArea = document.querySelector('#content-scroll');
 			class EdgeEasingPlugin extends Scrollbar.ScrollbarPlugin {
 				constructor() {
@@ -2922,8 +2940,8 @@ for accurate position calculations after all resources load
 ---------------------------------------------------*/
 
 	window.InitContentAnimations = function() {
-
-		console.log('InitContentAnimations: Starting...');
+		var diag = getCommonDiag();
+		diag.milestone('InitContentAnimations() started');
 
 		// Mark custom animations as ready for WoodsAnimations
 		if (typeof WoodsAnimations !== 'undefined' && WoodsAnimations.ReadyState) {
@@ -2935,7 +2953,7 @@ for accurate position calculations after all resources load
 			? document.querySelector('#content-scroll')
 			: null;
 
-		console.log('InitContentAnimations: scrollerElement =', scrollerElement);
+		diag.log('CONTENT_ANIMATIONS', 'scrollerElement = ' + (scrollerElement ? '#content-scroll' : 'null (native scroll)'));
 
 		// Track if setup has been done to prevent duplicate calls
 		var setupDone = false;
@@ -2944,10 +2962,10 @@ for accurate position calculations after all resources load
 			if (setupDone) return;
 			setupDone = true;
 
-			console.log('InitContentAnimations: Setting up .has-animation triggers');
+			diag.log('CONTENT_ANIMATIONS', 'Setting up .has-animation triggers');
 
 			var hasAnimation = gsap.utils.toArray('.has-animation');
-			console.log('InitContentAnimations: Found ' + hasAnimation.length + ' .has-animation elements');
+			diag.log('CONTENT_ANIMATIONS', 'Found ' + hasAnimation.length + ' .has-animation elements');
 
 			// Use hybrid approach: GSAP ScrollTrigger for scroll detection,
 			// but jQuery-compatible class-based animation for the actual reveal
@@ -3056,10 +3074,10 @@ for accurate position calculations after all resources load
 			});
 
 			// Final refresh after all triggers are created
-			console.log('InitContentAnimations: Triggers created, performing final refresh');
+			diag.log('CONTENT_ANIMATIONS', 'Triggers created, performing final refresh');
 			setTimeout(function() {
 				ScrollTrigger.refresh();
-				console.log('InitContentAnimations: Complete');
+				diag.milestone('InitContentAnimations COMPLETE');
 
 				// Trigger custom event for other scripts to know animations are ready
 				$(document).trigger('contentAnimations:ready');
@@ -3070,10 +3088,12 @@ for accurate position calculations after all resources load
 		var imagesLoadedTimeout = null;
 		var imagesLoadedFired = false;
 
+		diag.log('CONTENT_ANIMATIONS', 'Setting up imagesLoaded with 3s fallback timeout');
+
 		// Set a fallback timeout in case imagesLoaded never fires
 		imagesLoadedTimeout = setTimeout(function() {
 			if (!imagesLoadedFired) {
-				console.log('InitContentAnimations: imagesLoaded timeout, proceeding anyway');
+				diag.warn('CONTENT_ANIMATIONS', 'imagesLoaded timeout (3s), proceeding anyway');
 				imagesLoadedFired = true;
 				setupAnimationTriggers();
 			}
@@ -3081,15 +3101,25 @@ for accurate position calculations after all resources load
 
 		// Wait for imagesLoaded to finish before setting up animations
 		// This ensures layout is stable before calculating ScrollTrigger positions
-		imagesLoaded('body', function() {
+		var contentImgLoad = imagesLoaded('body');
+		var contentTotalImages = contentImgLoad.images.length;
+		diag.log('CONTENT_ANIMATIONS', 'Waiting for ' + contentTotalImages + ' images to load');
+
+		contentImgLoad.on('progress', function(instance, image) {
+			var loaded = instance.progressedCount;
+			diag.log('CONTENT_ANIMATIONS_IMAGES', 'Image ' + loaded + '/' + contentTotalImages + ': ' + (image.isLoaded ? '✓' : '✗'));
+		});
+
+		contentImgLoad.on('done', function() {
 			if (imagesLoadedFired) return; // Already handled by timeout
 			imagesLoadedFired = true;
 			clearTimeout(imagesLoadedTimeout);
 
-			console.log('InitContentAnimations: Images loaded, waiting for layout stabilization');
+			diag.log('CONTENT_ANIMATIONS', 'All images loaded, waiting 300ms for layout stabilization');
 
 			// Wait for layout to fully stabilize after images load
 			setTimeout(function() {
+				diag.log('CONTENT_ANIMATIONS', 'Layout stabilization wait complete, setting up triggers');
 				setupAnimationTriggers();
 			}, 300);
 		});
