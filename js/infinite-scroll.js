@@ -3,6 +3,21 @@
    Smooth RAF-based animation with speed transitions
    ============================================ */
 
+// Get diagnostics logger (created in scripts.js)
+function getInfiniteScrollDiag() {
+    if (window.WoodsLoadDiagnostics) return window.WoodsLoadDiagnostics;
+    // Fallback if scripts.js hasn't loaded yet
+    return {
+        log: function(s, m, d) { console.log('[INFINITE_SCROLL] [' + s + '] ' + m, d || ''); },
+        milestone: function(n) { console.log('%c[INFINITE_SCROLL MILESTONE] ' + n, 'background: #5a1e8a; color: #fff; padding: 2px 8px;'); },
+        warn: function(s, m, d) { console.warn('[INFINITE_SCROLL] [' + s + '] ' + m, d || ''); },
+        error: function(s, m, d) { console.error('[INFINITE_SCROLL] [' + s + '] ' + m, d || ''); }
+    };
+}
+
+var infiniteScrollDiag = getInfiniteScrollDiag();
+infiniteScrollDiag.log('INIT', 'infinite-scroll.js loaded');
+
 // Track global mouse position for checking cursor location when lightbox closes
 window.mouseX = 0;
 window.mouseY = 0;
@@ -824,19 +839,27 @@ function initAmenitiesTitleAnimation() {
 
 // Auto-initialize when DOM is loaded
 if (document.readyState === 'loading') {
+    infiniteScrollDiag.log('INIT', 'DOM not ready, waiting for DOMContentLoaded');
     document.addEventListener('DOMContentLoaded', () => {
+        infiniteScrollDiag = getInfiniteScrollDiag(); // Re-get in case scripts.js loaded
+        infiniteScrollDiag.milestone('DOMContentLoaded fired - initializing portfolio');
         initInfiniteScroll();
         initLightbox();
         initPortfolioTitleAnimation();
         initAmenitiesTitleAnimation();
         // Signal that portfolio lightbox is ready for preloader
         window.portfolioLightboxReady = true;
+        infiniteScrollDiag.log('INIT', 'portfolioLightboxReady = true');
+        infiniteScrollDiag.milestone('infinite-scroll.js initialization COMPLETE');
     });
 } else {
+    infiniteScrollDiag.log('INIT', 'DOM already ready, initializing immediately');
     initInfiniteScroll();
     initLightbox();
     initPortfolioTitleAnimation();
     initAmenitiesTitleAnimation();
     // Signal that portfolio lightbox is ready for preloader
     window.portfolioLightboxReady = true;
+    infiniteScrollDiag.log('INIT', 'portfolioLightboxReady = true');
+    infiniteScrollDiag.milestone('infinite-scroll.js initialization COMPLETE');
 }

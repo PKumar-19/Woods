@@ -1,14 +1,43 @@
 gsap.registerPlugin(ScrollTrigger);
 
-// Wait for full load so elements are present and sized correctly
-window.addEventListener("load", () => {
+// Get diagnostics logger (created in scripts.js)
+function getTourismDiag() {
+  if (window.WoodsLoadDiagnostics) return window.WoodsLoadDiagnostics;
+  // Fallback if scripts.js hasn't loaded yet
+  return {
+    log: function(s, m, d) { console.log('[TOURISM] [' + s + '] ' + m, d || ''); },
+    milestone: function(n) { console.log('%c[TOURISM MILESTONE] ' + n, 'background: #1e5a8a; color: #fff; padding: 2px 8px;'); },
+    warn: function(s, m, d) { console.warn('[TOURISM] [' + s + '] ' + m, d || ''); },
+    error: function(s, m, d) { console.error('[TOURISM] [' + s + '] ' + m, d || ''); }
+  };
+}
+
+var tourismDiag = getTourismDiag();
+tourismDiag.log('TOURISM_SCROLL', 'tourism-scroll.js loaded, waiting for window.load');
+
+// Main initialization function - called after both window.load AND smoothScrollReady
+function initTourismScroll() {
+  tourismDiag = getTourismDiag(); // Re-get in case scripts.js loaded after us
+  tourismDiag.milestone('tourism-scroll.js initialization started');
+
   const texts = Array.from(document.querySelectorAll('.serenity-rotator .serenity-subtext'));
   const imgs = Array.from(document.querySelectorAll('.serenity-image-rotator .rot-image'));
   const count = Math.min(texts.length, imgs.length);
-  if (!count) return;
+
+  tourismDiag.log('SERENITY', 'Found ' + texts.length + ' text elements, ' + imgs.length + ' image elements');
+
+  if (!count) {
+    tourismDiag.warn('SERENITY', 'No serenity rotator elements found, aborting');
+    return;
+  }
 
   const rotator = document.querySelector('.serenity-image-rotator');
-  if (!rotator) return;
+  if (!rotator) {
+    tourismDiag.warn('SERENITY', 'serenity-image-rotator element not found, aborting');
+    return;
+  }
+
+  tourismDiag.log('SERENITY', 'Serenity rotator found, initializing');
 
   let idx = 0;
   let isTransitioning = false;
@@ -107,9 +136,11 @@ window.addEventListener("load", () => {
     }, 50);
   };
 
+  tourismDiag.log('SERENITY', 'Showing initial image (index 0)');
   show(0);
   const interval = 2500;
 
+  tourismDiag.log('SERENITY', 'Starting rotator interval every ' + interval + 'ms');
   // Store interval ID for cleanup on page unload
   const rotatorIntervalId = setInterval(() => {
     idx = (idx + 1) % count;
@@ -127,17 +158,25 @@ window.addEventListener("load", () => {
   });
   
   const heroWord = document.getElementById("tourism-hero-title");
-  console.log("heroWord:", heroWord);
   const dockPoint = document.getElementById("tourism-dock-point");
-  console.log("dockPoint:", dockPoint);
   const sticky = document.getElementById("sticky");
 
+  tourismDiag.log('WHY_KASAULI', 'DOM elements check', {
+    heroWord: !!heroWord,
+    dockPoint: !!dockPoint,
+    sticky: !!sticky
+  });
+
   if (!heroWord || !dockPoint || !sticky) {
-    console.log(
-      "tourism-scroll: missing DOM elements, aborting scroll animations"
-    );
+    tourismDiag.warn('WHY_KASAULI', 'Missing DOM elements, aborting scroll animations', {
+      heroWord: !!heroWord,
+      dockPoint: !!dockPoint,
+      sticky: !!sticky
+    });
     return;
   }
+
+  tourismDiag.log('WHY_KASAULI', 'All required DOM elements found');
 
   // Calculate a robust x/y offset so the hero word docks to the dock point across breakpoints
   function getDockPosition() {
@@ -215,12 +254,10 @@ window.addEventListener("load", () => {
   // Only use custom scroller if smooth-scroll is active (not on mobile)
   if (scrollerEl && hasSmoothScroll) scrollTriggerConfig.scroller = scrollerEl;
 
+  tourismDiag.log('WHY_KASAULI', 'Creating GSAP timeline with ScrollTrigger');
   const tl = gsap.timeline({ scrollTrigger: scrollTriggerConfig });
 
-  console.log(
-    "tourism-scroll: timeline created, scrollTrigger attached?",
-    !!tl.scrollTrigger
-  );
+  tourismDiag.log('WHY_KASAULI', 'Timeline created, scrollTrigger attached: ' + !!tl.scrollTrigger);
 
   // Debounced ScrollTrigger refresh to prevent excessive calls
   let refreshTimeout = null;
@@ -234,13 +271,19 @@ window.addEventListener("load", () => {
   // Refresh after images and media load (reduces intermittent layout-shift issues)
   if (typeof imagesLoaded !== 'undefined') {
     const targetForImages = scrollerEl || document;
+    tourismDiag.log('WHY_KASAULI', 'Setting up imagesLoaded callback for ScrollTrigger refresh');
     imagesLoaded(targetForImages, () => {
-      console.log('tourism-scroll: images loaded, refreshing ScrollTrigger');
+      tourismDiag.log('WHY_KASAULI', 'imagesLoaded callback fired, refreshing ScrollTrigger');
       debouncedRefresh();
 
       // Single delayed refresh to handle late layout shifts (consolidated from multiple calls)
-      setTimeout(() => debouncedRefresh(), 1000);
+      setTimeout(() => {
+        tourismDiag.log('WHY_KASAULI', 'Delayed ScrollTrigger refresh (1s after imagesLoaded)');
+        debouncedRefresh();
+      }, 1000);
     });
+  } else {
+    tourismDiag.warn('WHY_KASAULI', 'imagesLoaded not available');
   }
 
   // Debounced resize handler to prevent excessive refreshes
@@ -416,17 +459,27 @@ window.addEventListener("load", () => {
   const serenityLabelEl = document.querySelector('.serenity-label');
   const serenityRotatorEl = document.querySelector('.serenity-rotator');
 
+  tourismDiag.log('SERENITY_VISIBILITY', 'Serenity elements check', {
+    serenityLabel: !!serenityLabelEl,
+    serenityRotator: !!serenityRotatorEl,
+    isMobileOrTablet: isMobileOrTablet
+  });
+
   if (serenityLabelEl && serenityRotatorEl) {
+    tourismDiag.log('SERENITY_VISIBILITY', 'Setting up serenity visibility animations');
     // On mobile/tablet, don't hide these elements initially since:
     // 1. The docking animation completes quickly and syncs with reveal
     // 2. Prevents "flash of invisible content" when cache is cleared
     // 3. Better UX - content is visible even if JS takes time to load
     if (!isMobileOrTablet) {
       // Only on desktop: Set initial state - hidden until scroll reveals them
+      tourismDiag.log('SERENITY_VISIBILITY', 'Desktop mode: hiding serenity elements initially');
       gsap.set([serenityLabelEl, serenityRotatorEl], {
         opacity: 0,
         y: 30
       });
+    } else {
+      tourismDiag.log('SERENITY_VISIBILITY', 'Mobile/tablet mode: keeping serenity elements visible');
     }
 
     if (isMobileOrTablet) {
@@ -511,6 +564,7 @@ window.addEventListener("load", () => {
   // Fallback for "Why" and "Kasauli" text visibility
   // Ensure these elements are visible even if scroll animation doesn't trigger
   setTimeout(() => {
+    tourismDiag.log('WHY_KASAULI', 'Running visibility fallback check (1.5s after load)');
     const whyEl = document.getElementById('why');
     const kasauliEl = document.getElementById('tourism-hero-title');
 
@@ -521,11 +575,57 @@ window.addEventListener("load", () => {
         const rect = tourismSection.getBoundingClientRect();
         // If section is above the viewport (user hasn't scrolled to it yet)
         if (rect.top > window.innerHeight) {
+          tourismDiag.log('WHY_KASAULI', 'Tourism section not in view, resetting to visible state');
           // Reset to initial visible state
           gsap.set(whyEl, { opacity: 1, y: 0 });
           gsap.set(kasauliEl, { opacity: 1, scale: 1, x: 0, y: 0 });
+        } else {
+          tourismDiag.log('WHY_KASAULI', 'Tourism section in view, no fallback needed');
         }
       }
     }
   }, 1500);
+
+  tourismDiag.milestone('tourism-scroll.js initialization COMPLETE');
+}
+
+// Wait for both window.load AND smoothScrollReady before initializing
+// This ensures ScrollTrigger has the correct scroller proxy set up
+var windowLoaded = false;
+var smoothScrollInitialized = false;
+
+function checkAndInit() {
+  if (windowLoaded && smoothScrollInitialized) {
+    tourismDiag.log('TOURISM_SCROLL', 'Both window.load and smoothScrollReady fired, initializing');
+    initTourismScroll();
+  }
+}
+
+window.addEventListener("load", () => {
+  tourismDiag.milestone('tourism-scroll.js window.load fired');
+  windowLoaded = true;
+
+  // If smoothScrollReady already fired (or was set), init immediately
+  if (window.smoothScrollReady) {
+    smoothScrollInitialized = true;
+  }
+  checkAndInit();
+});
+
+// Listen for smoothScrollReady event from common.js
+document.addEventListener('smoothScrollReady', () => {
+  tourismDiag.log('TOURISM_SCROLL', 'smoothScrollReady event received');
+  smoothScrollInitialized = true;
+  checkAndInit();
+});
+
+// Fallback: if smoothScrollReady doesn't fire within 2 seconds after load, proceed anyway
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    if (!smoothScrollInitialized) {
+      tourismDiag.warn('TOURISM_SCROLL', 'smoothScrollReady timeout (2s), proceeding anyway');
+      smoothScrollInitialized = true;
+      checkAndInit();
+    }
+  }, 2000);
 });

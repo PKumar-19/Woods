@@ -1,32 +1,117 @@
 jQuery(function ($) {
 
+	// ========== DIAGNOSTIC LOGGING FOR FIRST LOAD ISSUES ==========
+	window.WoodsLoadDiagnostics = {
+		startTime: performance.now(),
+		log: function(section, message, data) {
+			var elapsed = (performance.now() - this.startTime).toFixed(2);
+			var logMessage = '[WOODS ' + elapsed + 'ms] [' + section + '] ' + message;
+			if (data) {
+				console.log(logMessage, data);
+			} else {
+				console.log(logMessage);
+			}
+		},
+		milestone: function(name) {
+			var elapsed = (performance.now() - this.startTime).toFixed(2);
+			console.log('%c[WOODS MILESTONE] ' + name + ' at ' + elapsed + 'ms', 'background: #2d5a27; color: #fff; padding: 2px 8px; border-radius: 3px;');
+		},
+		warn: function(section, message, data) {
+			var elapsed = (performance.now() - this.startTime).toFixed(2);
+			var logMessage = '[WOODS ' + elapsed + 'ms] [' + section + '] ⚠️ ' + message;
+			if (data) {
+				console.warn(logMessage, data);
+			} else {
+				console.warn(logMessage);
+			}
+		},
+		error: function(section, message, data) {
+			var elapsed = (performance.now() - this.startTime).toFixed(2);
+			var logMessage = '[WOODS ' + elapsed + 'ms] [' + section + '] ❌ ' + message;
+			if (data) {
+				console.error(logMessage, data);
+			} else {
+				console.error(logMessage);
+			}
+		}
+	};
+
+	var diag = window.WoodsLoadDiagnostics;
+	diag.milestone('jQuery function started');
+	// ========== END DIAGNOSTIC HEADER ==========
+
 	$(document).ready(function() {
 
 		"use strict";
 
+		diag.milestone('document.ready fired');
+		diag.log('INIT', 'Starting main initialization sequence');
+
+		diag.log('INIT', 'Calling PageLoad()');
 		PageLoad();
+		diag.log('INIT', 'Calling ScrollEffects()');
 		ScrollEffects();
+		diag.log('INIT', 'Calling Sliders()');
 		Sliders();
+		diag.log('INIT', 'Calling FirstLoad()');
 		FirstLoad();
+		diag.log('INIT', 'Calling PageLoadActions()');
 		PageLoadActions();
+		diag.log('INIT', 'Calling ShowcasePortfolio()');
 		ShowcasePortfolio();
+		diag.log('INIT', 'Calling ShowcaseHighlights()');
 		ShowcaseHighlights();
+		diag.log('INIT', 'Calling ShowcaseGallery()');
 		ShowcaseGallery();
 		if (typeof ShowcaseSnapSlider === 'function') { ShowcaseSnapSlider(); } else { console.warn('ShowcaseSnapSlider not defined'); }
+		diag.log('INIT', 'Calling ContactForm()');
 		ContactForm();
+		diag.log('INIT', 'Calling ContactMap()');
 		ContactMap();
+		diag.log('INIT', 'Calling CustomFunction()');
 		CustomFunction();
+		diag.log('INIT', 'Calling ShuffleElementsFunction()');
 		ShuffleElementsFunction();
+		diag.log('INIT', 'Calling InitShuffleElements()');
 		InitShuffleElements();
 		// Initialize cursor/core features if available
 		if (typeof Core === 'function') { Core(); } else { console.warn('Core not defined'); }
 		if (typeof MouseCursor === 'function') { MouseCursor(); } else { console.warn('MouseCursor not defined'); }
+
+		diag.milestone('document.ready initialization complete');
 	});
 
 	// Wait for all resources (images, videos, fonts) to load before initializing .has-animation triggers
 	// This prevents race conditions where ScrollTrigger calculates wrong positions due to layout shifts
+	// Also wait for smoothScrollReady to ensure ScrollTrigger has correct scroller proxy
 	$(window).on('load', function() {
-		InitContentAnimations();
+		diag.milestone('window.load fired');
+
+		function callInitContentAnimations() {
+			diag.log('WINDOW_LOAD', 'Calling InitContentAnimations()');
+			InitContentAnimations();
+		}
+
+		// If smoothScrollReady already fired, call immediately
+		if (window.smoothScrollReady) {
+			callInitContentAnimations();
+		} else {
+			// Wait for smoothScrollReady event
+			diag.log('WINDOW_LOAD', 'Waiting for smoothScrollReady before InitContentAnimations');
+			document.addEventListener('smoothScrollReady', function() {
+				diag.log('WINDOW_LOAD', 'smoothScrollReady received, calling InitContentAnimations');
+				callInitContentAnimations();
+			}, { once: true });
+
+			// Fallback timeout in case smoothScrollReady never fires
+			setTimeout(function() {
+				if (!window.smoothScrollReady) {
+					diag.warn('WINDOW_LOAD', 'smoothScrollReady timeout, calling InitContentAnimations anyway');
+					window.smoothScrollReady = true; // Prevent duplicate calls
+					callInitContentAnimations();
+				}
+			}, 2000);
+		}
 	});
 	
 	
@@ -565,78 +650,95 @@ Function Shuffle Elements Function
 Function Page Load
 ---------------------------------------------------*/
 
-	function PageLoad() {		
-		
+	function PageLoad() {
+		var diag = window.WoodsLoadDiagnostics;
+		diag.milestone('PageLoad() started');
+
 		gsap.set($(".menu-timeline .before-span"), {y:"100%", opacity:0});
 		gsap.set($(".clapat-header"), {yPercent:-50, opacity:0});
-		
+
 		// Page Navigation Events
-		$(".preloader-wrap").on('mouseenter', function() {	
-			var $this = $(this);			
+		$(".preloader-wrap").on('mouseenter', function() {
+			var $this = $(this);
 			gsap.to('#ball', {duration: 0.3, borderWidth: '2px', scale: 1.4, borderColor:"rgba(255,255,255,0)", backgroundColor:"rgba(255,255,255,0.1)"});
 			gsap.to('#ball-loader', {duration: 0.2, borderWidth: '2px', top: 2, left: 2});
 			$("#ball").addClass("with-blur");
-			$( "#ball" ).append( '<p class="center-first">' + $this.data("centerline") + '</p>' );				
+			$( "#ball" ).append( '<p class="center-first">' + $this.data("centerline") + '</p>' );
 		});
-							
-		$(".preloader-wrap").on('mouseleave', function() {					
+
+		$(".preloader-wrap").on('mouseleave', function() {
 			gsap.to('#ball', {duration: 0.2, borderWidth: '4px', scale:0.5, borderColor:'#999999', backgroundColor:'transparent'});
 			gsap.to('#ball-loader', {duration: 0.2, borderWidth: '4px', top: 0, left: 0});
 			$("#ball").removeClass("with-blur");
-			$('#ball p').remove();			
-		});		
-		
+			$('#ball p').remove();
+		});
+
+		diag.log('PAGE_LOAD', 'Removing hidden classes from body');
 		$('body').removeClass('hidden').removeClass('hidden-ball');	
 		
 		
 		function initOnFirstLoad() {
-			
-			
-			imagesLoaded('body', function() {
-				
+			diag.milestone('initOnFirstLoad() called');
+			diag.log('INIT_FIRST_LOAD', 'Starting imagesLoaded check for body');
+
+			var contentRevealed = false;
+
+			// Content reveal function - can be called by imagesLoaded or fallback timeout
+			function revealContent(source) {
+				if (contentRevealed) {
+					diag.log('CONTENT_REVEAL', 'Already revealed, skipping (source: ' + source + ')');
+					return;
+				}
+				contentRevealed = true;
+				diag.milestone('Content reveal started (source: ' + source + ')');
+
 				//Animate Preloader
-				
-				
+				diag.log('PRELOADER', 'Starting preloader hide animation');
+
 				gsap.to($(".percentage-intro"), {duration: 0.5, opacity:0, delay:0, ease:Power4.easeInOut});
-				gsap.to($(".preloader-intro span"), {duration: 0.7, opacity:0, xPercent: -101, delay:0.3, ease:Power4.easeOut});				
-				gsap.to($(".trackbar"), {duration: 0.7, clipPath: 'inset(0% 0%)', delay:0.3, ease:Power3.easeOut});										
+				gsap.to($(".preloader-intro span"), {duration: 0.7, opacity:0, xPercent: -101, delay:0.3, ease:Power4.easeOut});
+				gsap.to($(".trackbar"), {duration: 0.7, clipPath: 'inset(0% 0%)', delay:0.3, ease:Power3.easeOut});
 				gsap.to($(".preloader-wrap"), {duration: 0.3, opacity:0, delay:0, ease:Power2.easeInOut});
 				gsap.set($(".preloader-wrap"), {visibility:'hidden', delay:0.3, yPercent: -101});
-				
-				
+
+				diag.log('HERO', 'Starting hero animations');
 				gsap.set($(".hero-title.caption-timeline span"), {yPercent:50, opacity:0});
-				
-				gsap.to($(".hero-title.caption-timeline span"), {duration: 0.5, yPercent:0, opacity:1, stagger:0.05, delay:0.6, ease:Power3.easeOut, onComplete: function() {												
-					gsap.to($(".hero-footer-left, .hero-footer-right"), {duration: 0.3, y:0, opacity:1, ease:Power2.easeOut});					
-					gsap.set($(".page-nav-caption .caption-timeline span"), { yPercent:0, opacity:1});					
+
+				gsap.to($(".hero-title.caption-timeline span"), {duration: 0.5, yPercent:0, opacity:1, stagger:0.05, delay:0.6, ease:Power3.easeOut, onComplete: function() {
+					diag.log('HERO', 'Hero title animation complete');
+					gsap.to($(".hero-footer-left, .hero-footer-right"), {duration: 0.3, y:0, opacity:1, ease:Power2.easeOut});
+					gsap.set($(".page-nav-caption .caption-timeline span"), { yPercent:0, opacity:1});
 					$("#hero-caption").addClass("caption-animated");
 				}});
-				
+
 				if( $('.hero-subtitle').length > 0 ){
 					shuffleSubtitle();
 				}
-				
+
 				if ($('body').hasClass('hero-below-caption')) {
 					var heroTranslate = gsap.getProperty("#hero.has-image", "height");
-					
 				}
-				
+
 				if( $('.hero-video-wrapper').length > 0 ){
+					diag.log('VIDEO', 'Starting hero videos');
 					$('#hero-image-wrapper').find('video').each(function() {
 						$(this).get(0).play();
-					}); 
+					});
 				}
-				
+
+				diag.log('HERO', 'Starting hero background image animation');
 				gsap.set($("#hero-bg-image"), {scale:1.1 , opacity:0});
-				gsap.to($("#hero-bg-image"), {duration: 1, force3D:true, scale:1 , opacity:1, delay:0.8, ease:Power2.easeOut});
-				
+				gsap.to($("#hero-bg-image"), {duration: 1, force3D:true, scale:1 , opacity:1, delay:0.8, ease:Power2.easeOut, onComplete: function() {
+					diag.log('HERO', 'Hero background image fade-in complete');
+				}});
+
 				gsap.utils.toArray('.hero-pixels-cover').forEach((pixelWrapper, index) => {
 					const pixelAnimation = pixelWrapper.querySelectorAll(".pixel");
-				
+
 					gsap.to(pixelAnimation, {
 						duration: 0.2,
 						opacity: 0,
-						delay: function() {						
+						delay: function() {
 							return gsap.utils.random(1, 1.5);
 						},
 						ease: Power4.easeOut,
@@ -646,37 +748,72 @@ Function Page Load
 							});
 						}
 					});
-					
-				});	
-				
-				
+				});
+
 				gsap.to($(".clapat-header"), { duration: 0.45, opacity:1, yPercent:0, delay:0.25, ease: Power2.easeOut, });
-				
+
 				gsap.to($(".hero-footer-left, .hero-footer-right"), {duration: 0.45, y:0, opacity:1, delay:0.25, ease:Power2.easeOut, onComplete: function() {
-					$("#hero-footer.has-border").addClass("visible");																			
+					$("#hero-footer.has-border").addClass("visible");
 				}});
-				
-				gsap.set($("#main-page-content"), {opacity:0});				
-																										
+
+				diag.log('MAIN_CONTENT', 'Setting main-page-content opacity to 0, then fading in');
+				gsap.set($("#main-page-content"), {opacity:0});
+
 				gsap.to($("#main-page-content, #page-nav"), {duration: 1.7, opacity:1, delay:0.5, ease:Power3.easeOut, onComplete: function() {
+					diag.milestone('Main page content fade-in COMPLETE');
 					gsap.set($("#main-page-content"), { clearProps: "y" });
 					gsap.set($(".page-nav-caption .caption-timeline span"), { yPercent:0, opacity:1});
 					gsap.set($(".next-caption .caption-timeline span"), { yPercent:0, opacity:1});
 				}});
-				
+			}
+
+			// Fallback timeout - if imagesLoaded takes too long (e.g., hangs on broken images)
+			var fallbackTimeout = setTimeout(function() {
+				diag.warn('IMAGES', 'Fallback timeout (3s) reached - forcing content reveal');
+				revealContent('fallback-timeout');
+			}, 3000);
+
+			// Track image loading progress
+			var imgLoad = imagesLoaded('body');
+			var totalImages = imgLoad.images.length;
+			diag.log('IMAGES', 'Total images to load: ' + totalImages);
+
+			imgLoad.on('progress', function(instance, image) {
+				var loaded = instance.progressedCount;
+				var isLoaded = image.isLoaded;
+				diag.log('IMAGES', 'Image ' + loaded + '/' + totalImages + ' ' + (isLoaded ? '✓' : '✗') + ': ' + image.img.src.substring(image.img.src.lastIndexOf('/') + 1));
 			});
-				
+
+			imgLoad.on('fail', function(instance) {
+				var failedImages = instance.images.filter(function(img) { return !img.isLoaded; });
+				diag.warn('IMAGES', failedImages.length + ' images failed to load:', failedImages.map(function(img) { return img.img.src; }));
+			});
+
+			// Use 'always' instead of 'done' to ensure content shows even if some images fail
+			imgLoad.on('always', function() {
+				clearTimeout(fallbackTimeout);
+				diag.milestone('imagesLoaded ALWAYS - proceeding with content reveal');
+				revealContent('imagesLoaded-always');
+			});
+
 		}
 		
 		
 		if (!$('body').hasClass("disable-ajaxload")) {
 
+			diag.log('PRELOADER', 'Ajax load enabled, calculating preloader timing');
 
 			var perfData = performance.getEntriesByType('navigation')[0] || performance.timing;
 			var EstimatedTime = -(perfData.loadEventEnd - perfData.startTime);
 			var time = Math.min(Math.max(((EstimatedTime / 100) % 50) * 1000, 5000), 20000);
 			var timeSeconds = time/1000 - 1.5
 			window.preloaderTimeout = time;
+
+			diag.log('PRELOADER', 'Preloader timing calculated', {
+				estimatedTime: EstimatedTime,
+				minWaitTime: time + 'ms (' + (time/1000) + 's)',
+				timeSeconds: timeSeconds
+			});
 
 			var tl = gsap.timeline({
 				paused: true,
@@ -707,12 +844,14 @@ Function Page Load
 
 			// Function to complete the preloader (go from 99 to 100)
 			function completePreloader() {
+				diag.milestone('completePreloader() called');
 				gsap.to($(".percentage, .percentage-first"), {duration: 0.5, opacity: 0, y: - $('.percentage-wrapper').height(),  ease: 'expo.inOut' });
 				gsap.to($(".percentage-last span"), {duration: 1.2, opacity: 1, y: 0,  ease: 'expo.inOut', onComplete: function() {
 					gsap.to($(".percentage-last"), {duration: 0.5, opacity: 0, y:-30});
 				}});
 
 				// Initialize page content
+				diag.log('PRELOADER', 'Scheduling initOnFirstLoad() in 500ms');
 				setTimeout(function(){
 					initOnFirstLoad();
 				}, 500);
@@ -723,23 +862,21 @@ Function Page Load
 			function checkJSReady() {
 				// Use centralized ready state if WoodsAnimations is loaded
 				if (typeof WoodsAnimations !== 'undefined' && WoodsAnimations.ReadyState) {
-					return WoodsAnimations.ReadyState.isAllReady();
+					var ready = WoodsAnimations.ReadyState.isAllReady();
+					diag.log('JS_READY', 'WoodsAnimations.ReadyState check: ' + ready);
+					return ready;
 				}
 
 				// Fallback: check individual scripts
-				var isReady = true;
+				var checks = {
+					gsap: typeof gsap !== 'undefined',
+					ScrollTrigger: typeof ScrollTrigger !== 'undefined',
+					imagesLoaded: typeof imagesLoaded !== 'undefined',
+					portfolioLightboxReady: typeof window.portfolioLightboxReady !== 'undefined'
+				};
 
-				// Check if GSAP is ready
-				if (typeof gsap === 'undefined') isReady = false;
-
-				// Check if ScrollTrigger is ready
-				if (typeof ScrollTrigger === 'undefined') isReady = false;
-
-				// Check if imagesLoaded is ready
-				if (typeof imagesLoaded === 'undefined') isReady = false;
-
-				// Check if infinite scroll is initialized (portfolioModal should exist)
-				if (typeof window.portfolioLightboxReady === 'undefined') isReady = false;
+				var isReady = checks.gsap && checks.ScrollTrigger && checks.imagesLoaded && checks.portfolioLightboxReady;
+				diag.log('JS_READY', 'Fallback check: ' + (isReady ? 'READY' : 'NOT READY'), checks);
 
 				return isReady;
 			}
@@ -749,8 +886,10 @@ Function Page Load
 			var minTimeElapsed = false;
 			var preloaderCompleted = false;
 
+			diag.log('PRELOADER', 'Setting minTimeElapsed timer for ' + time + 'ms');
 			setTimeout(function() {
 				minTimeElapsed = true;
+				diag.log('PRELOADER', 'Minimum time elapsed (' + time + 'ms), now waiting for JS ready');
 			}, time);
 
 			// Use requestAnimationFrame for smoother checking (reduces CPU usage)
@@ -787,6 +926,7 @@ Function Page Load
 			requestAnimationFrame(checkAndComplete);
 
 			// Fallback: complete after max wait time (time + 3 seconds)
+			diag.log('PRELOADER', 'Setting fallback timer for ' + (time + 3000) + 'ms');
 			setTimeout(function() {
 				if (!preloaderCompleted) {
 					preloaderCompleted = true;
@@ -794,16 +934,18 @@ Function Page Load
 						clearInterval(jsReadyCheckInterval);
 						jsReadyCheckInterval = null;
 					}
-					console.warn('Preloader: Force completing after max wait time');
+					diag.warn('PRELOADER', 'Force completing after max wait time (' + (time + 3000) + 'ms)');
 					completePreloader();
 				}
 			}, time + 3000);
 
 		} else {
+			diag.log('PAGE_LOAD', 'Ajax load disabled, calling initOnFirstLoad directly');
 			initOnFirstLoad();
 		}
-		
-		
+
+		diag.log('PAGE_LOAD', 'PageLoad() function setup complete');
+
 	}// End Page Load
 
 	
