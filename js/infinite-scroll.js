@@ -106,13 +106,13 @@ let scrollRightBtn = null;
  */
 function createCard(project) {
     const imageContent = project.image
-        ? `<img src="${project.image}" alt="${project.title}">`
+        ? `<img src="${project.image}" alt="${project.title}" loading="lazy">`
         : '';
 
     const imageClass = project.imageClass || '';
 
     const mockupContent = project.mockupImage
-        ? `<img src="${project.mockupImage}" alt="${project.title} mockup" class="mockup-image">`
+        ? `<img src="${project.mockupImage}" alt="${project.title} mockup" class="mockup-image" loading="lazy">`
         : '<div class="laptop-mockup"></div>';
 
     return `
