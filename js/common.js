@@ -151,13 +151,22 @@ Function Scroll Effects
 			  	}
 			});	
 					
-			scrollbar.addListener(ScrollTrigger.update);			
+			scrollbar.addListener(ScrollTrigger.update);
 			ScrollTrigger.defaults({ scroller: ScrollArea });
-			
-			
+
+			// Signal that Smooth Scrollbar is ready for other scripts
+			window.smoothScrollReady = true;
+			document.dispatchEvent(new CustomEvent('smoothScrollReady'));
+			diag.log('SCROLL_EFFECTS', 'Smooth Scrollbar initialized, dispatched smoothScrollReady event');
+
 		}// End Smooth Scroll
-		
-		
+		else {
+			// Non-smooth-scroll mode (mobile or disabled) - still signal ready
+			window.smoothScrollReady = true;
+			document.dispatchEvent(new CustomEvent('smoothScrollReady'));
+			diag.log('SCROLL_EFFECTS', 'Non-smooth-scroll mode, dispatched smoothScrollReady event');
+		}
+
 		// Anchor Link
 		$( "a[href*='#']" ).on('click', function( e ){			
 			if( e.currentTarget && e.currentTarget.hash ) {				

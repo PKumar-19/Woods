@@ -83,10 +83,35 @@ jQuery(function ($) {
 
 	// Wait for all resources (images, videos, fonts) to load before initializing .has-animation triggers
 	// This prevents race conditions where ScrollTrigger calculates wrong positions due to layout shifts
+	// Also wait for smoothScrollReady to ensure ScrollTrigger has correct scroller proxy
 	$(window).on('load', function() {
 		diag.milestone('window.load fired');
-		diag.log('WINDOW_LOAD', 'Calling InitContentAnimations()');
-		InitContentAnimations();
+
+		function callInitContentAnimations() {
+			diag.log('WINDOW_LOAD', 'Calling InitContentAnimations()');
+			InitContentAnimations();
+		}
+
+		// If smoothScrollReady already fired, call immediately
+		if (window.smoothScrollReady) {
+			callInitContentAnimations();
+		} else {
+			// Wait for smoothScrollReady event
+			diag.log('WINDOW_LOAD', 'Waiting for smoothScrollReady before InitContentAnimations');
+			document.addEventListener('smoothScrollReady', function() {
+				diag.log('WINDOW_LOAD', 'smoothScrollReady received, calling InitContentAnimations');
+				callInitContentAnimations();
+			}, { once: true });
+
+			// Fallback timeout in case smoothScrollReady never fires
+			setTimeout(function() {
+				if (!window.smoothScrollReady) {
+					diag.warn('WINDOW_LOAD', 'smoothScrollReady timeout, calling InitContentAnimations anyway');
+					window.smoothScrollReady = true; // Prevent duplicate calls
+					callInitContentAnimations();
+				}
+			}, 2000);
+		}
 	});
 	
 	

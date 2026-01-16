@@ -15,10 +15,10 @@ function getTourismDiag() {
 var tourismDiag = getTourismDiag();
 tourismDiag.log('TOURISM_SCROLL', 'tourism-scroll.js loaded, waiting for window.load');
 
-// Wait for full load so elements are present and sized correctly
-window.addEventListener("load", () => {
+// Main initialization function - called after both window.load AND smoothScrollReady
+function initTourismScroll() {
   tourismDiag = getTourismDiag(); // Re-get in case scripts.js loaded after us
-  tourismDiag.milestone('tourism-scroll.js window.load fired');
+  tourismDiag.milestone('tourism-scroll.js initialization started');
 
   const texts = Array.from(document.querySelectorAll('.serenity-rotator .serenity-subtext'));
   const imgs = Array.from(document.querySelectorAll('.serenity-image-rotator .rot-image'));
@@ -587,4 +587,45 @@ window.addEventListener("load", () => {
   }, 1500);
 
   tourismDiag.milestone('tourism-scroll.js initialization COMPLETE');
+}
+
+// Wait for both window.load AND smoothScrollReady before initializing
+// This ensures ScrollTrigger has the correct scroller proxy set up
+var windowLoaded = false;
+var smoothScrollInitialized = false;
+
+function checkAndInit() {
+  if (windowLoaded && smoothScrollInitialized) {
+    tourismDiag.log('TOURISM_SCROLL', 'Both window.load and smoothScrollReady fired, initializing');
+    initTourismScroll();
+  }
+}
+
+window.addEventListener("load", () => {
+  tourismDiag.milestone('tourism-scroll.js window.load fired');
+  windowLoaded = true;
+
+  // If smoothScrollReady already fired (or was set), init immediately
+  if (window.smoothScrollReady) {
+    smoothScrollInitialized = true;
+  }
+  checkAndInit();
+});
+
+// Listen for smoothScrollReady event from common.js
+document.addEventListener('smoothScrollReady', () => {
+  tourismDiag.log('TOURISM_SCROLL', 'smoothScrollReady event received');
+  smoothScrollInitialized = true;
+  checkAndInit();
+});
+
+// Fallback: if smoothScrollReady doesn't fire within 2 seconds after load, proceed anyway
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    if (!smoothScrollInitialized) {
+      tourismDiag.warn('TOURISM_SCROLL', 'smoothScrollReady timeout (2s), proceeding anyway');
+      smoothScrollInitialized = true;
+      checkAndInit();
+    }
+  }, 2000);
 });
