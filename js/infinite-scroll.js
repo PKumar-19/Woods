@@ -400,12 +400,12 @@ function initInfiniteScroll() {
 
 // Map imageClass to actual image URLs and titles
 const imageClassToData = {
-    'front-elevation': { url: 'images/Project_Overview/Front-Elevation.png', title: 'Front Elevation' },
-    'rear-elevation': { url: 'images/Project_Overview/Rear-Elevation.png', title: 'Rear Elevation' },
-    'site-layout': { url: 'images/Portfolio_Scroll_Section/Site-Plans.png', title: 'Site Layout' },
-    'ground-floor': { url: 'images/Portfolio_Scroll_Section/Ground-Floor-Plans.png', title: 'Ground Floor Layout' },
-    'first-floor': { url: 'images/Portfolio_Scroll_Section/First-Floor-Plans.png', title: 'First Floor Layout' },
-    'second-floor': { url: 'images/Portfolio_Scroll_Section/Second-Floor-Plans.png', title: 'Second Floor Layout' }
+    'front-elevation': { url: 'images/Project_Overview/Front-Elevation.webp', title: 'Front Elevation' },
+    'rear-elevation': { url: 'images/Project_Overview/Rear-Elevation.webp', title: 'Rear Elevation' },
+    'site-layout': { url: 'images/Portfolio_Scroll_Section/Site-Plans.webp', title: 'Site Layout' },
+    'ground-floor': { url: 'images/Portfolio_Scroll_Section/Ground-Floor-Plans.webp', title: 'Ground Floor Layout' },
+    'first-floor': { url: 'images/Portfolio_Scroll_Section/First-Floor-Plans.webp', title: 'First Floor Layout' },
+    'second-floor': { url: 'images/Portfolio_Scroll_Section/Second-Floor-Plans.webp', title: 'Second Floor Layout' }
 };
 
 // Lightbox elements
