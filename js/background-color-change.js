@@ -271,17 +271,25 @@ class BackgroundColorDetector {
     }
     
     detectAndUpdate(target) {
+        // Skip if target is disabled (e.g., logo in video section)
+        if (target.disabled) {
+            if (this.config.debug) {
+                console.log(`[BG Detector] ${target.selector}: SKIPPED (disabled)`);
+            }
+            return null;
+        }
+
         const { luminance, color, source } = this.sampleBackgroundLuminance(target.element);
         const newMode = luminance > target.threshold ? 'dark' : 'light';
-        
+
         target.lastColor = color;
         target.lastSource = source;
-        
+
         if (newMode !== target.currentMode) {
             target.currentMode = newMode;
             this.applyMode(target, newMode, luminance);
         }
-        
+
         return { luminance, mode: newMode, color, source };
     }
     
@@ -820,7 +828,7 @@ class BackgroundColorDetector {
     }
 }
 
-// Global instance
+// Global instance - exposed on window for other scripts to access
 let bgDetector = null;
 
 /**
@@ -832,6 +840,8 @@ function initBackgroundColorDetector(options = {}) {
     }
     bgDetector = new BackgroundColorDetector(options);
     bgDetector.setThreshold(0.35, '#clapat-logo');
+    // Expose globally for logo-scroll-controller.js and debugging
+    window.bgDetector = bgDetector;
     return bgDetector;
 }
 

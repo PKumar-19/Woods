@@ -1,0 +1,98 @@
+/* ============================================
+   LOGO SCROLL CONTROLLER CSS
+   Controls logo visibility based on scroll position
+   ============================================ */
+
+/* ============================================
+   IN VIDEO SECTION - Force white logo only
+   ============================================ */
+
+/* When in video section, always show white logo */
+#clapat-logo.in-video-section .white-logo,
+#clapat-logo.force-white-logo .white-logo,
+body #clapat-logo.in-video-section .white-logo,
+body #clapat-logo.force-white-logo .white-logo {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+#clapat-logo.in-video-section .black-logo,
+#clapat-logo.force-white-logo .black-logo,
+body #clapat-logo.in-video-section .black-logo,
+body #clapat-logo.force-white-logo .black-logo {
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
+/* Override any detector classes when in video section */
+#clapat-logo.in-video-section.logo-dark .white-logo,
+#clapat-logo.in-video-section.logo-light .white-logo,
+#clapat-logo.force-white-logo.logo-dark .white-logo,
+#clapat-logo.force-white-logo.logo-light .white-logo {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+#clapat-logo.in-video-section.logo-dark .black-logo,
+#clapat-logo.in-video-section.logo-light .black-logo,
+#clapat-logo.force-white-logo.logo-dark .black-logo,
+#clapat-logo.force-white-logo.logo-light .black-logo {
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
+/* ============================================
+   PAST VIDEO SECTION - Enable logo switcher
+   ============================================ */
+
+/* When past video section, the background detector classes work normally */
+#clapat-logo.past-video-section .black-logo,
+body #clapat-logo.past-video-section .black-logo {
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+#clapat-logo.past-video-section .white-logo,
+body #clapat-logo.past-video-section .white-logo {
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Logo dark (light background) - show black logo */
+#clapat-logo.past-video-section.logo-dark .black-logo,
+body #clapat-logo.past-video-section.logo-dark .black-logo {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+#clapat-logo.past-video-section.logo-dark .white-logo,
+body #clapat-logo.past-video-section.logo-dark .white-logo {
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
+/* Logo light (dark background) - show white logo */
+#clapat-logo.past-video-section.logo-light .black-logo,
+body #clapat-logo.past-video-section.logo-light .black-logo {
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
+#clapat-logo.past-video-section.logo-light .white-logo,
+body #clapat-logo.past-video-section.logo-light .white-logo {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* ============================================
+   DEFAULT STATE (before JS initializes)
+   Show white logo by default for hero section
+   ============================================ */
+
+#clapat-logo:not(.past-video-section) .white-logo {
+    opacity: 1;
+    visibility: visible;
+}
+
+#clapat-logo:not(.past-video-section) .black-logo {
+    opacity: 0;
+    visibility: hidden;
+}
