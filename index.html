@@ -40,9 +40,10 @@
     <link href="css/logo-working.css" rel="stylesheet" />
     <link href="css/logo-scroll-controller.css" rel="stylesheet" />
     <link href="css/excellence-section.css" rel="stylesheet" />
+    <link href="css/bento-gallery.css" rel="stylesheet" />
     <link href="css/print.css" rel="stylesheet" media="print" />
     <!-- Preload critical background image for tourism section -->
-    <link rel="preload" href="images/invest-in-kasauli/The-Woods-Kasauli-Image.png" as="image" />
+    <link rel="preload" href="images/invest-in-kasauli/why-kasauli.webp" as="image" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..900&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet"> -->
@@ -240,8 +241,143 @@
                                         <!--/Row -->
 
                                         <!-- Row -->
+                                        <!-- #region Bento Gallery Section -->
+                                        <section class="bento-gallery-section" data-bgcolor="#1a1a1a">
+                                            <div class="bento-gallery-container">
+                                                <div class="bento-grid with-horizontal-rows">
+                                                    <!-- Top Horizontal Row - Video 70% left, Image 30% right -->
+                                                    <div class="bento-horizontal-row top-row">
+                                                        <div class="bento-item video-70">
+                                                            <video autoplay muted loop playsinline preload="metadata">
+                                                                <source src="videos/The Woods Kasauli 01.mp4" type="video/mp4">
+                                                            </video>
+                                                            <div class="bento-video-overlay playing" onclick="this.classList.toggle('playing'); this.previousElementSibling.paused ? this.previousElementSibling.play() : this.previousElementSibling.pause();">
+                                                                <div class="bento-play-icon">
+                                                                    <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"></polygon></svg>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="bento-item image-30">
+                                                            <img src="images/bento-Gallery/Wide Shots/VIllas-HIgh-Render.png" alt="Kasauli" loading="lazy">
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Item 1 - Main large Kasauli image -->
+                                                    <div class="bento-item bento-item-1">
+                                                        <img src="images/bento-Gallery/Front Shots/FRONT-VILLA-v2.jpg" alt="Kasauli Hills" loading="lazy">
+                                                        <div class="bento-overlay">
+                                                            <h2 class="bento-title">Kasauli</h2>
+                                                            <p class="bento-subtitle">Himachal, the Land of Pine and Peace</p>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Item 2 - Text box -->
+                                                    <div class="bento-item bento-item-2">
+                                                        <h3 class="bento-heading">Unleash your adventurous spirit in Kasauli.</h3>
+                                                        <p class="bento-description">Witness the Himalayan sunrise, walk through ancient pine forests, and explore dramatic landscapes sculpted by nature and time.</p>
+                                                    </div>
+
+                                                    <!-- Item 3 - Mountain image -->
+                                                    <div class="bento-item bento-item-3">
+                                                        <img src="images/invest-in-kasauli/Nature.webp" alt="Kasauli Mountains" loading="lazy">
+                                                    </div>
+
+                                                    <!-- Item 4 - Explore text box -->
+                                                    <div class="bento-item bento-item-4">
+                                                        <h4 class="bento-label">Explore</h4>
+                                                        <p class="bento-text">Monkey Point, Christ Church, and panoramic hill trails.</p>
+                                                    </div>
+
+                                                    <!-- Item 5 - Wildlife image -->
+                                                    <div class="bento-item bento-item-5">
+                                                        <video autoplay muted loop playsinline preload="metadata">
+                                                            <source src="videos/The-Woods-Kasauli-01.mp4" type="video/mp4">
+                                                        </video>
+                                                        <div class="bento-video-overlay playing"
+                                                            onclick="this.classList.toggle('playing'); this.previousElementSibling.paused ? this.previousElementSibling.play() : this.previousElementSibling.pause();">
+                                                            <div class="bento-play-icon">
+                                                                <svg viewBox="0 0 24 24">
+                                                                    <polygon points="5,3 19,12 5,21"></polygon>
+                                                                </svg>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Item 6 - Center tall image / Video -->
+                                                    <div class="bento-item bento-item-6">
+                                                        <video autoplay muted loop playsinline preload="metadata">
+                                                            <source src="videos/THE-WOODS-KASAULI-2.mp4" type="video/mp4">
+                                                        </video>
+                                                        <div class="bento-video-overlay playing" onclick="this.classList.toggle('playing'); this.previousElementSibling.paused ? this.previousElementSibling.play() : this.previousElementSibling.pause();">
+                                                            <div class="bento-play-icon">
+                                                                <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"></polygon></svg>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Item 7 - Cuisine text box -->
+                                                    <div class="bento-item bento-item-7">
+                                                        <img src="images/bento-Gallery/Wide Shots/Villas-2.jpeg" alt="Kasauli Mountains" loading="lazy">
+                                                    </div>
+
+                                                    <!-- Item 8 - Food/Villa image -->
+                                                    <div class="bento-item bento-item-8">
+                                                        <video autoplay muted loop playsinline preload="metadata">
+                                                            <source src="videos/The-Woods-Kasauli-03.mp4" type="video/mp4">
+                                                        </video>
+                                                        <div class="bento-video-overlay playing"
+                                                            onclick="this.classList.toggle('playing'); this.previousElementSibling.paused ? this.previousElementSibling.play() : this.previousElementSibling.pause();">
+                                                            <div class="bento-play-icon">
+                                                                <svg viewBox="0 0 24 24">
+                                                                    <polygon points="5,3 19,12 5,21"></polygon>
+                                                                </svg>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Item 9 - Stay text box -->
+                                                    <div class="bento-item bento-item-9">
+                                                        <h4 class="bento-label">Stay</h4>
+                                                        <p class="bento-text">Luxury villas with views of the valley.</p>
+                                                    </div>
+
+                                                    <!-- Item 10 - Villa interior image -->
+                                                    <div class="bento-item bento-item-10">
+                                                        <img src="images/bento-Gallery/Wide Shots/Villas-3.jpeg" alt="Kasauli AQI" loading="lazy">
+                                                    </div>
+
+                                                    <!-- Bottom Horizontal Row - Image 30% left, Video 70% right -->
+                                                    <div class="bento-horizontal-row bottom-row">
+                                                        <div class="bento-item image-30">
+                                                            <img src="images/bento-Gallery/Wide Shots/VIllas-HIgh-Render.png" alt="Kasauli" loading="lazy">
+                                                        </div>
+                                                        <div class="bento-item video-70">
+                                                            <video autoplay muted loop playsinline preload="metadata">
+                                                                <source src="videos/THE-WOODS-KASAULI-2.mp4" type="video/mp4">
+                                                            </video>
+                                                            <div class="bento-video-overlay playing" onclick="this.classList.toggle('playing'); this.previousElementSibling.paused ? this.previousElementSibling.play() : this.previousElementSibling.pause();">
+                                                                <div class="bento-play-icon">
+                                                                    <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"></polygon></svg>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Navigation Controls -->
+                                                <!-- <div class="bento-controls">
+                                                    <button class="bento-btn">Discover More</button>
+                                                    <button class="bento-nav-btn">Previous</button>
+                                                    <button class="bento-nav-btn">Next</button>
+                                                </div> -->
+                                            </div>
+                                        </section>
+                                        <!-- #endregion Bento Gallery Section -->
+                                        <!--/Row -->
+
+                                        <!-- Row -->
                                         <!-- #region Why Kasauli -->
-                                        <div class="content-row full light-section row_padding_top row_padding_bottom"
+                                        <div class="content-row full light-section row_padding_bottom"
                                             data-bgcolor="#f5ede3">
 
                                             <div class="why-kasauli-main-container">
@@ -285,7 +421,7 @@
                                         <!-- Row -->
                                         <!-- #region Tourism Section -->
                                         <div class="tourism-hero-section has-parallax">
-                                            <div class="tourism-parallax-layer" style="background-image: url('images/invest-in-kasauli/The-Woods-Kasauli-Image.webp');" aria-hidden="true"></div>
+                                            <div class="tourism-parallax-layer" style="background-image: url('images/invest-in-kasauli/why-kasauli.webp');" aria-hidden="true"></div>
                                             <!-- <video class="tourism-bg-video" autoplay muted loop playsinline
                                                 preload="auto">
                                                 <source src="gifs/Woods.mp4" type="video/mp4">
@@ -861,9 +997,8 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="faq-card" data-category="pricing">
+                                                <!-- <div class="faq-card" data-category="pricing">
                                                     <div class="faq-card-header">
-                                                        <!-- <span class="faq-number">Q.</span> -->
                                                         <h3 class="faq-question">
                                                             <span>What is the current construction status and expected possession date?</span>
                                                             <span class="faq-icon">+</span>
@@ -874,7 +1009,7 @@
                                                             The project is currently under construction with foundations complete and structural work in progress.
                                                         </p>
                                                     </div>
-                                                </div>
+                                                </div> -->
 
                                                 <div class="faq-card" data-category="support">
                                                     <div class="faq-card-header">
