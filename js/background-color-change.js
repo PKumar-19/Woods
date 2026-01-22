@@ -285,6 +285,23 @@ class BackgroundColorDetector {
         target.lastColor = color;
         target.lastSource = source;
 
+        // Enhanced debug logging for logo detection (reduced frequency, only log changes or every 2 seconds)
+        if (this.config.debug && target.selector === '#clapat-logo') {
+            const shouldLog = newMode !== target.currentMode || Math.random() < 0.05;
+            if (shouldLog) {
+                const rect = target.element.getBoundingClientRect();
+                console.log(`[BG Detector LOGO]`, {
+                    logoY: Math.round(rect.top),
+                    lum: luminance.toFixed(3),
+                    thresh: target.threshold,
+                    mode: newMode,
+                    rgb: `(${color.r},${color.g},${color.b})`,
+                    src: source.substring(0, 50),
+                    change: newMode !== target.currentMode ? '>>> CHANGING! <<<' : 'same'
+                });
+            }
+        }
+
         if (newMode !== target.currentMode) {
             target.currentMode = newMode;
             this.applyMode(target, newMode, luminance);
@@ -351,7 +368,27 @@ class BackgroundColorDetector {
     getColorAtPoint(x, y, targetElement) {
         // Get all elements at this point
         const elements = document.elementsFromPoint(x, y);
-        
+
+        // IMPORTANT: elementsFromPoint() skips elements with pointer-events: none
+        // We need to also check for hidden background layers like .tourism-parallax-layer
+        // Look for elements that might have background images but are hidden from pointer events
+        const pointerEventsNoneElements = this.findPointerEventsNoneBackgrounds(x, y);
+
+        // Debug: Log all elements found at the point for logo detection (reduced frequency)
+        if (this.config.debug && targetElement.id === 'clapat-logo' && Math.random() < 0.1) {
+            const elementInfo = elements.slice(0, 5).map(el => ({
+                tag: el.tagName,
+                id: el.id || '',
+                class: el.className.toString().substring(0, 40),
+                bgColor: getComputedStyle(el).backgroundColor,
+                bgImage: getComputedStyle(el).backgroundImage.substring(0, 50)
+            }));
+            console.log(`[BG Detector] Elements at point (${Math.round(x)}, ${Math.round(y)}):`, elementInfo);
+            if (pointerEventsNoneElements.length > 0) {
+                console.log(`[BG Detector] Found ${pointerEventsNoneElements.length} pointer-events:none elements with backgrounds`);
+            }
+        }
+
         // Filter out the target element and its children
         const backgroundElements = elements.filter(el => {
             if (el === targetElement) return false;
@@ -359,22 +396,69 @@ class BackgroundColorDetector {
             if (el.contains(targetElement)) return true; // Parent elements are valid backgrounds
             return true;
         });
-        
-        // Try each element from top to bottom
+
+        // First, check pointer-events:none elements (like parallax layers) as they visually appear on top
+        for (const element of pointerEventsNoneElements) {
+            const result = this.extractColorFromElement(element, x, y);
+            if (result) {
+                if (this.config.debug && targetElement.id === 'clapat-logo' && Math.random() < 0.05) {
+                    console.log(`[BG Detector] Using pointer-events:none element:`, element.className);
+                }
+                return result;
+            }
+        }
+
+        // Try each regular element from top to bottom
         for (const element of backgroundElements) {
             const result = this.extractColorFromElement(element, x, y);
             if (result) return result;
         }
-        
+
         // Fallback: check body background
         const bodyBg = getComputedStyle(document.body).backgroundColor;
         if (bodyBg && bodyBg !== 'transparent' && bodyBg !== 'rgba(0, 0, 0, 0)') {
             const color = this.parseColor(bodyBg);
             if (color) return { color, source: 'body background-color' };
         }
-        
+
         // Ultimate fallback
         return { color: { r: 255, g: 255, b: 255 }, source: 'fallback white' };
+    }
+
+    /**
+     * Find elements with pointer-events: none that have background images
+     * These are skipped by elementsFromPoint but visually appear as backgrounds
+     */
+    findPointerEventsNoneBackgrounds(x, y) {
+        const results = [];
+
+        // Known selectors for background layers that use pointer-events: none
+        const knownBackgroundSelectors = [
+            '.tourism-parallax-layer',
+            '.parallax-layer',
+            '.bg-layer',
+            '[class*="parallax"]',
+            '[class*="bg-layer"]'
+        ];
+
+        for (const selector of knownBackgroundSelectors) {
+            const elements = document.querySelectorAll(selector);
+            for (const el of elements) {
+                const rect = el.getBoundingClientRect();
+                const style = getComputedStyle(el);
+
+                // Check if the point is within this element's bounds
+                if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
+                    // Check if it has a background image
+                    const bgImage = style.backgroundImage;
+                    if (bgImage && bgImage !== 'none') {
+                        results.push(el);
+                    }
+                }
+            }
+        }
+
+        return results;
     }
     
     extractColorFromElement(element, x, y) {
@@ -585,19 +669,23 @@ class BackgroundColorDetector {
     sampleBackgroundImage(element, bgImage, x, y) {
         const urlMatch = bgImage.match(/url\(["']?([^"')]+)["']?\)/);
         if (!urlMatch) return null;
-        
+
         const imageUrl = urlMatch[1];
         let cachedData = this.mediaCache.get(imageUrl);
-        
+
         if (!cachedData) {
             // Start loading the image
             const img = new Image();
             img.crossOrigin = 'anonymous';
             img.src = imageUrl;
-            
+
             // Mark as loading
             this.mediaCache.set(imageUrl, 'loading');
-            
+
+            if (this.config.debug) {
+                console.log(`[BG Detector] Loading background image: ${imageUrl.substring(imageUrl.lastIndexOf('/') + 1)}`);
+            }
+
             img.onload = () => {
                 const canvas = document.createElement('canvas');
                 canvas.width = img.naturalWidth;
@@ -609,16 +697,32 @@ class BackgroundColorDetector {
                     width: img.naturalWidth,
                     height: img.naturalHeight
                 });
+                if (this.config.debug) {
+                    console.log(`[BG Detector] ✓ Background image loaded: ${imageUrl.substring(imageUrl.lastIndexOf('/') + 1)} (${img.naturalWidth}x${img.naturalHeight})`);
+                }
             };
-            
-            img.onerror = () => {
+
+            img.onerror = (e) => {
                 this.mediaCache.set(imageUrl, 'error');
+                if (this.config.debug) {
+                    console.log(`[BG Detector] ✗ Background image FAILED to load: ${imageUrl.substring(imageUrl.lastIndexOf('/') + 1)}`);
+                }
             };
-            
+
             return null;
         }
-        
-        if (cachedData === 'loading' || cachedData === 'error') {
+
+        if (cachedData === 'loading') {
+            if (this.config.debug && Math.random() < 0.02) {
+                console.log(`[BG Detector] Waiting for image to load: ${imageUrl.substring(imageUrl.lastIndexOf('/') + 1)}`);
+            }
+            return null;
+        }
+
+        if (cachedData === 'error') {
+            if (this.config.debug && Math.random() < 0.02) {
+                console.log(`[BG Detector] Skipping failed image: ${imageUrl.substring(imageUrl.lastIndexOf('/') + 1)}`);
+            }
             return null;
         }
         

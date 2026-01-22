@@ -13,7 +13,7 @@
 (function() {
     'use strict';
 
-    const DEBUG = false; // Set to false to disable debug logs
+    const DEBUG = false; // Set to true to enable debug logs
 
     function log(...args) {
         if (DEBUG) {
@@ -198,12 +198,15 @@
             // Add a small offset (50px) to ensure smooth transition
             this.isInVideoSection = scrollY < (this.videoSectionBottom - 50);
 
-            // Log scroll position periodically for debugging
-            if (DEBUG && Math.random() < 0.05) { // Log ~5% of scroll events to avoid spam
+            // Log scroll position more frequently for debugging the Why Kasauli section
+            if (DEBUG && Math.random() < 0.15) { // Log ~15% of scroll events for better visibility
+                const logoEl = document.getElementById('clapat-logo');
                 log('Scroll check:', {
                     scrollY: Math.round(scrollY),
                     threshold: this.videoSectionBottom - 50,
-                    isInVideoSection: this.isInVideoSection
+                    isInVideoSection: this.isInVideoSection,
+                    logoClasses: logoEl ? logoEl.className : 'not found',
+                    bgDetectorEnabled: window.bgDetector ? !window.bgDetector.targets.find(t => t.selector === '#clapat-logo')?.disabled : 'no detector'
                 });
             }
 
