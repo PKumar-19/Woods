@@ -28,6 +28,9 @@
 
 .bento-item img,
 .bento-item video {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -226,6 +229,7 @@
 
 .bento-horizontal-row .bento-item {
     flex-shrink: 0;
+    min-height: 350px;
 }
 
 .bento-horizontal-row .bento-item.video-70 {
@@ -383,6 +387,10 @@
     .bento-horizontal-row {
         grid-column: 1 / 7;
         gap: 15px;
+        min-height: 220px;
+    }
+
+    .bento-horizontal-row .bento-item {
         min-height: 220px;
     }
 

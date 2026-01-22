@@ -275,9 +275,16 @@
                 const logoTarget = window.bgDetector.targets.find(t => t.selector === '#clapat-logo');
                 if (logoTarget) {
                     logoTarget.disabled = false;
+
+                    // CRITICAL FIX: Reset currentMode to force detectAndUpdate to apply the class
+                    // Without this, if the detected mode matches the old currentMode,
+                    // no class would be applied (since detectAndUpdate only updates on change)
+                    log('Resetting currentMode from:', logoTarget.currentMode, 'to null');
+                    logoTarget.currentMode = null;
+
                     // Force an immediate update
                     window.bgDetector.detectAndUpdate(logoTarget);
-                    log('Background detector ENABLED for logo');
+                    log('Background detector ENABLED for logo, new mode:', logoTarget.currentMode);
                 }
             }
         }
