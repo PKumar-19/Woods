@@ -72,7 +72,7 @@ const projects = [
  * Configuration
  */
 const CONFIG = {
-    normalSpeed: 50,        // pixels per second (normal scroll)
+    normalSpeed: 120,        // pixels per second (normal scroll)
     boostMultiplier: 4,     // speed multiplier when boosted
     boostDuration: 800,     // how long boost lasts (ms) on click
     holdBoostDelay: 200,    // delay before returning to normal after release

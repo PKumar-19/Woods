@@ -60,7 +60,7 @@
 }
 
 .bento-item-1 .bento-title {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 3rem;
     font-weight: 400;
     color: #fff;
@@ -87,7 +87,7 @@
 }
 
 .bento-item-2 .bento-heading {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 1.6rem;
     font-weight: 400;
     color: #fff;
@@ -120,7 +120,7 @@
 }
 
 .bento-item-4 .bento-label {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 1.5rem;
     font-weight: 400;
     color: #fff;
@@ -158,7 +158,7 @@
 }
 
 .bento-item-7 .bento-label {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 1.5rem;
     font-weight: 400;
     color: #fff;
@@ -190,7 +190,7 @@
 }
 
 .bento-item-9 .bento-label {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 1.5rem;
     font-weight: 400;
     color: #fff;
@@ -495,12 +495,12 @@
     }
 
     .bento-horizontal-row .bento-item.video-70 {
-        margin: -6px -20px;
-        border-radius: 0 !important;
+        margin: 0;
+        border-radius: 16px;
     }
 
     .bento-horizontal-row .bento-item.video-70 video {
-        border-radius: 0;
+        border-radius: 16px;
     }
 
     .bento-item-1 {
@@ -596,9 +596,16 @@
     }
 
     .bento-horizontal-row .bento-item.video-70 {
-        margin-left: -15px;
-        margin-right: -15px;
-        border-radius: 0;
+        margin: 0;
+        border-radius: 16px;
+    }
+
+    #y-margin-remove video {
+        transform: scale(1.35);
+    }
+
+    .bento-horizontal-row .bento-item.video-70 video {
+        transform: scale(1.35);
     }
 
     .bento-item-1,
