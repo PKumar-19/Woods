@@ -494,6 +494,15 @@
         min-height: 180px;
     }
 
+    .bento-horizontal-row .bento-item.video-70 {
+        margin: -6px -20px;
+        border-radius: 0 !important;
+    }
+
+    .bento-horizontal-row .bento-item.video-70 video {
+        border-radius: 0;
+    }
+
     .bento-item-1 {
         grid-column: 1 / 3;
         grid-row: 1 / 2;
@@ -586,6 +595,12 @@
         min-height: 150px;
     }
 
+    .bento-horizontal-row .bento-item.video-70 {
+        margin-left: -15px;
+        margin-right: -15px;
+        border-radius: 0;
+    }
+
     .bento-item-1,
     .bento-item-2,
     .bento-item-3,
@@ -598,6 +613,10 @@
     .bento-item-10 {
         grid-column: 1 / 2;
         grid-row: auto;
+    }
+
+    .bento-item-7 {
+        height: 150px;
     }
 
     .bento-item-1 {
