@@ -2,6 +2,9 @@
 <html lang="en">
 
 <head>
+    <!-- PAGE LOAD DEBUGGER - Add this FIRST to capture all timings -->
+    <script src="js/page-load-debugger.js"></script>
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script>
         (function (i, s, o, g, r, a, m) {
@@ -35,10 +38,12 @@
     <link href="css/infinite-scroll.css" rel="stylesheet" />
     <link href="css/background-color-switch.css" rel="stylesheet" />
     <link href="css/logo-working.css" rel="stylesheet" />
+    <link href="css/logo-scroll-controller.css" rel="stylesheet" />
     <link href="css/excellence-section.css" rel="stylesheet" />
+    <link href="css/bento-gallery.css" rel="stylesheet" />
     <link href="css/print.css" rel="stylesheet" media="print" />
     <!-- Preload critical background image for tourism section -->
-    <link rel="preload" href="images/invest-in-kasauli/The-Woods-Kasauli-Image.png" as="image" />
+    <link rel="preload" href="images/invest-in-kasauli/why-kasauli.webp" as="image" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..900&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet"> -->
@@ -227,8 +232,8 @@
 
                                             <div class="two_fifth last">
                                                 <div class="img-wrapper has-animation">
-                                                    <img src="images/The-Woods-Kasauli-Image-02.png"
-                                                        alt="Featured Project" class="item-image-woods">
+                                                    <img src="images/The-Woods-Kasauli-Image-02.webp"
+                                                        alt="Featured Project" class="item-image-woods" loading="lazy">
                                                 </div>
                                             </div>
 
@@ -237,7 +242,7 @@
 
                                         <!-- Row -->
                                         <!-- #region Why Kasauli -->
-                                        <div class="content-row full light-section row_padding_top row_padding_bottom"
+                                        <div class="content-row full light-section  row_padding_top row_padding_bottom"
                                             data-bgcolor="#f5ede3">
 
                                             <div class="why-kasauli-main-container">
@@ -279,9 +284,143 @@
                                         <!--/Row -->
 
                                         <!-- Row -->
+                                        <!-- #region Bento Gallery Section -->
+                                        <section class="bento-gallery-section" data-bgcolor="#1a1a1a">
+                                            <div class="bento-gallery-container">
+                                                <div class="bento-grid with-horizontal-rows">
+                                                    <!-- Top Horizontal Row - Video 70% left, Image 30% right -->
+                                                    <div class="bento-horizontal-row top-row">
+                                                        <div class="bento-item video-70">
+                                                            <video autoplay muted loop playsinline preload="metadata">
+                                                                <source src="videos/The-Woods-Kasauli-01.mp4" type="video/mp4">
+                                                            </video>
+                                                            <div class="bento-video-overlay playing" onclick="this.classList.toggle('playing'); this.previousElementSibling.paused ? this.previousElementSibling.play() : this.previousElementSibling.pause();">
+                                                                <div class="bento-play-icon">
+                                                                    <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"></polygon></svg>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="bento-item image-30">
+                                                            <img src="images/bento-Gallery/Wide Shots/Villas-1.jpeg" alt="Kasauli" loading="lazy">
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Item 1 - Main large Kasauli image -->
+                                                    <div class="bento-item bento-item-1">
+                                                        <img src="images/bento-Gallery/Front Shots/FRONT-VILLA-v2.jpg" alt="Kasauli Hills" loading="lazy">
+                                                        <div class="bento-overlay">
+                                                            <h2 class="bento-title">Kasauli</h2>
+                                                            <p class="bento-subtitle">Himachal, the Land of Pine and Peace</p>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Item 2 - Text box -->
+                                                    <div class="bento-item bento-item-2">
+                                                        <h3 class="bento-heading">Unleash your adventurous spirit in Kasauli.</h3>
+                                                        <p class="bento-description">Witness the Himalayan sunrise, walk through ancient pine forests, and explore dramatic landscapes sculpted by nature and time.</p>
+                                                    </div>
+
+                                                    <!-- Item 3 - Mountain image -->
+                                                    <div class="bento-item bento-item-3">
+                                                        <img src="images/invest-in-kasauli/Nature.webp" alt="Kasauli Mountains" loading="lazy">
+                                                    </div>
+
+                                                    <!-- Item 4 - Explore text box -->
+                                                    <div class="bento-item bento-item-4">
+                                                        <img src="images/bento-Gallery/Wide Shots/Wide-Shot.jpeg" alt="Kasauli AQI" loading="lazy">
+                                                    </div>
+
+                                                    <!-- Item 5 - Wildlife image -->
+                                                    <div class="bento-item bento-item-5" id="y-margin-remove">
+                                                        <video autoplay muted loop playsinline preload="metadata">
+                                                            <source src="videos/The-Woods-Kasauli-01.mp4" type="video/mp4">
+                                                        </video>
+                                                        <div class="bento-video-overlay playing"
+                                                            onclick="this.classList.toggle('playing'); this.previousElementSibling.paused ? this.previousElementSibling.play() : this.previousElementSibling.pause();">
+                                                            <div class="bento-play-icon">
+                                                                <svg viewBox="0 0 24 24">
+                                                                    <polygon points="5,3 19,12 5,21"></polygon>
+                                                                </svg>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Item 6 - Center tall image / Video -->
+                                                    <div class="bento-item bento-item-6">
+                                                        <video autoplay muted loop playsinline preload="metadata">
+                                                            <source src="videos/THE-WOODS-KASAULI-2.mp4" type="video/mp4">
+                                                        </video>
+                                                        <div class="bento-video-overlay playing" onclick="this.classList.toggle('playing'); this.previousElementSibling.paused ? this.previousElementSibling.play() : this.previousElementSibling.pause();">
+                                                            <div class="bento-play-icon">
+                                                                <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"></polygon></svg>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Item 7 - Cuisine text box -->
+                                                    <div class="bento-item bento-item-7">
+                                                        <img src="images/bento-Gallery/Wide Shots/Villas-2.jpeg" alt="Kasauli Mountains" loading="lazy">
+                                                    </div>
+
+                                                    <!-- Item 8 - Food/Villa image -->
+                                                    <div class="bento-item bento-item-8">
+                                                        <video autoplay muted loop playsinline preload="metadata">
+                                                            <source src="videos/The-Woods-Kasauli-03.mp4" type="video/mp4">
+                                                        </video>
+                                                        <div class="bento-video-overlay playing"
+                                                            onclick="this.classList.toggle('playing'); this.previousElementSibling.paused ? this.previousElementSibling.play() : this.previousElementSibling.pause();">
+                                                            <div class="bento-play-icon">
+                                                                <svg viewBox="0 0 24 24">
+                                                                    <polygon points="5,3 19,12 5,21"></polygon>
+                                                                </svg>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Item 9 - Stay text box -->
+                                                    <div class="bento-item bento-item-9">
+                                                        <h4 class="bento-label">Stay</h4>
+                                                        <p class="bento-text">Luxury villas with panoramic views of the valley. Wake up to misty mornings, pine-scented air, and the serenity of the Himalayas right at your doorstep.</p>
+                                                    </div>
+
+                                                    <!-- Item 10 - Villa interior image -->
+                                                    <div class="bento-item bento-item-10">
+                                                        <img src="images/bento-Gallery/Wide Shots/Villas-3.jpeg" alt="Kasauli AQI" loading="lazy">
+                                                    </div>
+
+                                                    <!-- Bottom Horizontal Row - Image 30% left, Video 70% right -->
+                                                    <div class="bento-horizontal-row bottom-row">
+                                                        <div class="bento-item image-30">
+                                                            <img src="images/bento-Gallery/Wide Shots/VIllas-HIgh-Render.webp" alt="Kasauli" loading="lazy">
+                                                        </div>
+                                                        <div class="bento-item video-70">
+                                                            <video autoplay muted loop playsinline preload="metadata">
+                                                                <source src="videos/THE-WOODS-KASAULI-2.mp4" type="video/mp4">
+                                                            </video>
+                                                            <div class="bento-video-overlay playing" onclick="this.classList.toggle('playing'); this.previousElementSibling.paused ? this.previousElementSibling.play() : this.previousElementSibling.pause();">
+                                                                <div class="bento-play-icon">
+                                                                    <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"></polygon></svg>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Navigation Controls -->
+                                                <!-- <div class="bento-controls">
+                                                    <button class="bento-btn">Discover More</button>
+                                                    <button class="bento-nav-btn">Previous</button>
+                                                    <button class="bento-nav-btn">Next</button>
+                                                </div> -->
+                                            </div>
+                                        </section>
+                                        <!-- #endregion Bento Gallery Section -->
+                                        <!--/Row -->
+
+                                        <!-- Row -->
                                         <!-- #region Tourism Section -->
                                         <div class="tourism-hero-section has-parallax">
-                                            <div class="tourism-parallax-layer" style="background-image: url('images/invest-in-kasauli/The-Woods-Kasauli-Image.png');" aria-hidden="true"></div>
+                                            <div class="tourism-parallax-layer" style="background-image: url('images/invest-in-kasauli/why-kasauli.webp');" aria-hidden="true"></div>
                                             <!-- <video class="tourism-bg-video" autoplay muted loop playsinline
                                                 preload="auto">
                                                 <source src="gifs/Woods.mp4" type="video/mp4">
@@ -313,10 +452,10 @@
                                                         </div>
                                                         <div class="serenity-image-box">
                                                             <div class="serenity-image-rotator" aria-hidden="true">
-                                                                <img src="images/invest-in-kasauli/Serenity.png" alt="Serenity" class="serenity-image rot-image active">
-                                                                <img src="images/invest-in-kasauli/Nature.png" alt="Nature" class="serenity-image rot-image">
-                                                                <img src="images/invest-in-kasauli/Wilderness.png" alt="Wilderness" class="serenity-image rot-image">
-                                                                <img src="images/invest-in-kasauli/AQI.png" alt="AQI" class="serenity-image rot-image">
+                                                                <img src="images/invest-in-kasauli/Serenity.webp" alt="Serenity" class="serenity-image rot-image active" loading="lazy">
+                                                                <img src="images/invest-in-kasauli/Nature.webp" alt="Nature" class="serenity-image rot-image" loading="lazy">
+                                                                <img src="images/invest-in-kasauli/Wilderness.webp" alt="Wilderness" class="serenity-image rot-image" loading="lazy">
+                                                                <img src="images/invest-in-kasauli/AQI.webp" alt="AQI" class="serenity-image rot-image" loading="lazy">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -379,9 +518,9 @@
 
                                             <!-- Landscape Image Above Scroll -->
                                             <div class="landscape-image-container">
-                                                <img src="images/Portfolio_Scroll_Section/Landscape-Image-Villas-Low-Res.png"
+                                                <img src="images/Portfolio_Scroll_Section/Landscape-Image-Villas-Low-Res.webp"
                                                      alt="Villas Landscape"
-                                                     class="landscape-image">
+                                                     class="landscape-image" loading="lazy">
                                             </div>
 
                                             <section class="scroll-wrapper">
@@ -442,55 +581,55 @@
                                                             <h2 class="slide-amenities-title">Amenities</h2>
                                                             <div class="img-mask">
                                                                 <div class="section-image trigger-item-link">
-                                                                    <img src="images/Amenities/Gym.png"
-                                                                        class="item-image grid__item-img" alt="">
+                                                                    <img src="images/Amenities/Gym.webp"
+                                                                        class="item-image grid__item-img" alt="" loading="lazy">
                                                                 </div>
-                                                                <img src="images/Amenities/Gym.png"
-                                                                    class="grid__item-img grid__item-img--large" alt="">
+                                                                <img src="images/Amenities/Gym.webp"
+                                                                    class="grid__item-img grid__item-img--large" alt="" loading="lazy">
                                                             </div>
                                                         </div>
 
                                                         <div class="snap-slide trigger-item change-header-color">
                                                             <div class="img-mask">
                                                                 <div class="section-image trigger-item-link">
-                                                                    <img src="images/Amenities/Club House.png"
-                                                                        class="item-image grid__item-img" alt="">
+                                                                    <img src="images/Amenities/Club House.webp"
+                                                                        class="item-image grid__item-img" alt="" loading="lazy">
                                                                 </div>
-                                                                <img src="images/Amenities/Club House.png"
-                                                                    class="grid__item-img grid__item-img--large" alt="">
+                                                                <img src="images/Amenities/Club House.webp"
+                                                                    class="grid__item-img grid__item-img--large" alt="" loading="lazy">
                                                             </div>
                                                         </div>
 
                                                         <div class="snap-slide trigger-item change-header-color">
                                                             <div class="img-mask">
                                                                 <div class="section-image trigger-item-link">
-                                                                    <img src="images/Amenities/Natural Trail.png"
-                                                                        class="item-image grid__item-img" alt="">
+                                                                    <img src="images/Amenities/Natural Trail.webp"
+                                                                        class="item-image grid__item-img" alt="" loading="lazy">
                                                                 </div>
-                                                                <img src="images/Amenities/Natural Trail.png"
-                                                                    class="grid__item-img grid__item-img--large" alt="">
+                                                                <img src="images/Amenities/Natural Trail.webp"
+                                                                    class="grid__item-img grid__item-img--large" alt="" loading="lazy">
                                                             </div>
                                                         </div>
 
                                                         <div class="snap-slide trigger-item change-header-color">
                                                             <div class="img-mask">
                                                                 <div class="section-image trigger-item-link">
-                                                                    <img src="images/Amenities/Parking.png"
-                                                                        class="item-image grid__item-img" alt="">
+                                                                    <img src="images/Amenities/Parking.webp"
+                                                                        class="item-image grid__item-img" alt="" loading="lazy">
                                                                 </div>
-                                                                <img src="images/Amenities/Parking.png"
-                                                                    class="grid__item-img grid__item-img--large" alt="">
+                                                                <img src="images/Amenities/Parking.webp"
+                                                                    class="grid__item-img grid__item-img--large" alt="" loading="lazy">
                                                             </div>
                                                         </div>
 
                                                         <div class="snap-slide trigger-item change-header-color">
                                                             <div class="img-mask">
                                                                 <div class="section-image trigger-item-link">
-                                                                    <img src="images/Amenities/Architecture.png"
-                                                                        class="item-image grid__item-img" alt="">
+                                                                    <img src="images/Amenities/Architecture.webp"
+                                                                        class="item-image grid__item-img" alt="" loading="lazy">
                                                                 </div>
-                                                                <img src="images/Amenities/Architecture.png"
-                                                                    class="grid__item-img grid__item-img--large" alt="">
+                                                                <img src="images/Amenities/Architecture.webp"
+                                                                    class="grid__item-img grid__item-img--large" alt="" loading="lazy">
                                                             </div>
                                                         </div>
 
@@ -518,8 +657,8 @@
                                                         <!-- Slider Items center thumbnails -->
                                                         <div class="thumb-slide" data-centerLine="OPEN">
                                                             <div class="thumb-slide-img">
-                                                                <img src="images/Amenities/GYM .5.png"
-                                                                    class="item-image grid__item-img" alt="">
+                                                                <img src="images/Amenities/GYM .5.webp"
+                                                                    class="item-image grid__item-img" alt="" loading="lazy">
                                                             </div>
                                                             <a class="slide-link" data-type="page-transition"
                                                                 href=""></a>
@@ -527,8 +666,8 @@
 
                                                         <div class="thumb-slide" data-centerLine="OPEN">
                                                             <div class="thumb-slide-img">
-                                                                <img src="images/Amenities/Clubhouse .5.png"
-                                                                    class="item-image grid__item-img" alt="">
+                                                                <img src="images/Amenities/Clubhouse .5.webp"
+                                                                    class="item-image grid__item-img" alt="" loading="lazy">
                                                             </div>
                                                             <a class="slide-link" data-type="page-transition"
                                                                 href=""></a>
@@ -536,8 +675,8 @@
 
                                                         <div class="thumb-slide" data-centerLine="OPEN">
                                                             <div class="thumb-slide-img">
-                                                                <img src="images/Amenities/Natural Trail .5.png"
-                                                                    class="item-image grid__item-img" alt="">
+                                                                <img src="images/Amenities/Natural Trail .5.webp"
+                                                                    class="item-image grid__item-img" alt="" loading="lazy">
                                                             </div>
                                                             <a class="slide-link" data-type="page-transition"
                                                                 href=""></a>
@@ -545,8 +684,8 @@
 
                                                         <div class="thumb-slide" data-centerLine="OPEN">
                                                             <div class="thumb-slide-img">
-                                                                <img src="images/Amenities/Parking .5.png"
-                                                                    class="item-image grid__item-img" alt="">
+                                                                <img src="images/Amenities/Parking .5.webp"
+                                                                    class="item-image grid__item-img" alt="" loading="lazy">
                                                             </div>
                                                             <a class="slide-link" data-type="page-transition"
                                                                 href=""></a>
@@ -554,8 +693,8 @@
 
                                                         <div class="thumb-slide" data-centerLine="OPEN">
                                                             <div class="thumb-slide-img">
-                                                                <img src="images/Amenities/Architecture .5.png"
-                                                                    class="item-image grid__item-img" alt="">
+                                                                <img src="images/Amenities/Architecture .5.webp"
+                                                                    class="item-image grid__item-img" alt="" loading="lazy">
                                                             </div>
                                                             <a class="slide-link" data-type="page-transition"
                                                                 href=""></a>
@@ -626,7 +765,7 @@
                                             <div class="excellence-container">
                                                 <!-- Left: Large Image -->
                                                 <div class="excellence-image-wrapper">
-                                                    <img src="images/Excellence-in-construction/FRONT-FINAL-SHOT.png" alt="Excellence Under Construction" class="excellence-main-image">
+                                                    <img src="images/Excellence-in-construction/FRONT-FINAL-SHOT.png" alt="Excellence Under Construction" class="excellence-main-image" loading="lazy">
                                                 </div>
 
                                                 <!-- Right: 3x3 Grid -->
@@ -634,7 +773,7 @@
                                                     <!-- Row 1 -->
                                                     <div class="excellence-cell">
                                                         <div class="excellence-cell-header">
-                                                            <img src="images/Excellence-in-construction/Earthquake-Resistant.png" alt="Earthquake Resistant" class="excellence-logo">
+                                                            <img src="images/Excellence-in-construction/Earthquake-Resistant.png" alt="Earthquake Resistant" class="excellence-logo" loading="lazy">
                                                             <span class="excellence-cell-title">Earthquake Resistant</span>
                                                         </div>
                                                         <p class="excellence-cell-desc">
@@ -643,7 +782,7 @@
                                                     </div>
                                                     <div class="excellence-cell">
                                                         <div class="excellence-cell-header">
-                                                            <img src="images/Excellence-in-construction/Electrical-Works.png" alt="Flooring" class="excellence-logo">
+                                                            <img src="images/Excellence-in-construction/Electrical-Works.png" alt="Flooring" class="excellence-logo" loading="lazy">
                                                             <span class="excellence-cell-title">Electrical Works</span>
                                                         </div>
                                                         <p class="excellence-cell-desc">
@@ -652,7 +791,7 @@
                                                     </div>
                                                     <div class="excellence-cell">
                                                         <div class="excellence-cell-header">
-                                                            <img src="images/Excellence-in-construction/Windows-And-Doors.png" alt="Windows & Doors" class="excellence-logo">
+                                                            <img src="images/Excellence-in-construction/Windows-And-Doors.png" alt="Windows & Doors" class="excellence-logo" loading="lazy">
                                                             <span class="excellence-cell-title">Windows & Doors</span>
                                                         </div>
                                                         <p class="excellence-cell-desc">
@@ -663,7 +802,7 @@
                                                     <!-- Row 2 -->
                                                     <div class="excellence-cell">
                                                         <div class="excellence-cell-header">
-                                                            <img src="images/Excellence-in-construction/Internal-Finishes.png" alt="Kitchen" class="excellence-logo">
+                                                            <img src="images/Excellence-in-construction/Internal-Finishes.png" alt="Kitchen" class="excellence-logo" loading="lazy">
                                                             <span class="excellence-cell-title">Internal Finishes</span>
                                                         </div>
                                                         <p class="excellence-cell-desc">
@@ -672,7 +811,7 @@
                                                     </div>
                                                     <div class="excellence-cell">
                                                         <div class="excellence-cell-header">
-                                                            <img src="images/Excellence-in-construction/Hardware.png" alt="Hardware" class="excellence-logo">
+                                                            <img src="images/Excellence-in-construction/Hardware.png" alt="Hardware" class="excellence-logo" loading="lazy">
                                                             <span class="excellence-cell-title">Hardware</span>
                                                         </div>
                                                         <p class="excellence-cell-desc">
@@ -681,7 +820,7 @@
                                                     </div>
                                                     <div class="excellence-cell">
                                                         <div class="excellence-cell-header">
-                                                            <img src="images/Excellence-in-construction/Flooring.png" alt="Flooring" class="excellence-logo">
+                                                            <img src="images/Excellence-in-construction/Flooring.png" alt="Flooring" class="excellence-logo" loading="lazy">
                                                             <span class="excellence-cell-title">Flooring</span>
                                                         </div>
                                                         <p class="excellence-cell-desc">
@@ -692,7 +831,7 @@
                                                     <!-- Row 3 -->
                                                     <div class="excellence-cell">
                                                         <div class="excellence-cell-header">
-                                                            <img src="images/Excellence-in-construction/Cupboards.png" alt="Cupboards" class="excellence-logo">
+                                                            <img src="images/Excellence-in-construction/Cupboards.png" alt="Cupboards" class="excellence-logo" loading="lazy">
                                                             <span class="excellence-cell-title">Built-in Cupboards</span>
                                                         </div>
                                                         <p class="excellence-cell-desc">
@@ -701,7 +840,7 @@
                                                     </div>
                                                     <div class="excellence-cell">
                                                         <div class="excellence-cell-header">
-                                                            <img src="images/Excellence-in-construction/Kitchen.png" alt="Kitchen" class="excellence-logo">
+                                                            <img src="images/Excellence-in-construction/Kitchen.png" alt="Kitchen" class="excellence-logo" loading="lazy">
                                                             <span class="excellence-cell-title">Kitchen</span>
                                                         </div>
                                                         <p class="excellence-cell-desc">
@@ -710,7 +849,7 @@
                                                     </div>
                                                     <div class="excellence-cell">
                                                         <div class="excellence-cell-header">
-                                                            <img src="images/Excellence-in-construction/Toilets.png" alt="Premium Fixtures" class="excellence-logo">
+                                                            <img src="images/Excellence-in-construction/Toilets.png" alt="Premium Fixtures" class="excellence-logo" loading="lazy">
                                                             <span class="excellence-cell-title">Premium Fixtures</span>
                                                         </div>
                                                         <p class="excellence-cell-desc">
@@ -732,7 +871,7 @@
                                                     <div class="beronet-est-text">Est. 2025</div> -->
                                         
                                                     <div class="beronet-image-wrapper beronet-card-wrapper">
-                                                        <img src="images/Locational_Advantage/Airport.png" alt="Card" class="beronet-card-image">
+                                                        <img src="images/Locational_Advantage/Airport.webp" alt="Card" class="beronet-card-image" loading="lazy">
                                                         <div class="beronet-image-label">
                                                             Chandigarh Airport<br>
                                                             <span class="beronet-image-sublabel">60 km • Global connectivity</span>
@@ -740,7 +879,7 @@
                                                     </div>
                                         
                                                     <div class="beronet-image-wrapper beronet-laptop-wrapper">
-                                                        <img src="images/Locational_Advantage/Timber Trail.png" alt="Laptop" class="beronet-laptop-image">
+                                                        <img src="images/Locational_Advantage/Timber Trail.webp" alt="Laptop" class="beronet-laptop-image" loading="lazy">
                                                         <div class="beronet-image-label">
                                                             Timber Trail Parwanoo<br>
                                                             <span class="beronet-image-sublabel">22 km • Ropeway</span>
@@ -748,7 +887,7 @@
                                                     </div>
                                         
                                                     <div class="beronet-image-wrapper beronet-photo-top-wrapper">
-                                                        <img src="images/Locational_Advantage/Monkey Point.png" alt="Photo" class="beronet-photo-top-image">
+                                                        <img src="images/Locational_Advantage/Monkey Point.webp" alt="Photo" class="beronet-photo-top-image" loading="lazy">
                                                         <div class="beronet-image-label">
                                                             Monkey Point<br>
                                                             <span class="beronet-image-sublabel">15 km • Highest viewpoint</span>
@@ -756,7 +895,7 @@
                                                     </div>
                                         
                                                     <div class="beronet-image-wrapper beronet-mug-wrapper">
-                                                        <img src="images/Locational_Advantage/Dharampur Railway.png" alt="Mug" class="beronet-mug-image">
+                                                        <img src="images/Locational_Advantage/Dharampur Railway.webp" alt="Mug" class="beronet-mug-image" loading="lazy">
                                                         <div class="beronet-image-label">
                                                             Dharampur Station<br>
                                                             <span class="beronet-image-sublabel">10 km • Heritage site</span>
@@ -857,9 +996,8 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="faq-card" data-category="pricing">
+                                                <!-- <div class="faq-card" data-category="pricing">
                                                     <div class="faq-card-header">
-                                                        <!-- <span class="faq-number">Q.</span> -->
                                                         <h3 class="faq-question">
                                                             <span>What is the current construction status and expected possession date?</span>
                                                             <span class="faq-icon">+</span>
@@ -870,7 +1008,7 @@
                                                             The project is currently under construction with foundations complete and structural work in progress.
                                                         </p>
                                                     </div>
-                                                </div>
+                                                </div> -->
 
                                                 <div class="faq-card" data-category="support">
                                                     <div class="faq-card-header">
@@ -1237,7 +1375,11 @@
                                                             All rights reserved.
                                                         </div>
                                                     </div>
-                                        
+
+                                                    <div class="footer-right-link">
+                                                        <a href="privacy-policy.html" style="color: #fff !important;">Privacy Policy</a>
+                                                    </div>
+
                                                     <!-- href="https://www.twitter.com/clapatdesign" style="color: #fff !important;" -->
                                                     <!-- <a class="parallax-element" style="color: #fff !important;"
                                                                         href="https://www.instagram.com/clapat.themes/"> -->
@@ -1331,7 +1473,7 @@
     </div>
     <div id="rotate-device"></div>
 
-    <!-- Portfolio Image Lightbox Modal (Amazon-style zoom) -->
+    <!-- Portfolio Image Lightbox Modal (Click to enlarge) -->
     <div class="portfolio-lightbox-modal" id="portfolioLightboxModal" aria-hidden="true">
         <div class="portfolio-lightbox-overlay"></div>
         <div class="portfolio-lightbox-dialog">
@@ -1342,21 +1484,10 @@
                 </svg>
             </button>
             <div class="portfolio-lightbox-content">
-                <!-- Left side: Thumbnail image with hover lens -->
-                <div class="lightbox-left">
-                    <div class="lightbox-thumbnail-wrapper" id="lightboxThumbnailWrapper">
-                        <img alt="Thumbnail view" class="lightbox-thumbnail" id="lightboxThumbnail">
-                        <!-- Zoom lens that follows cursor -->
-                        <div class="zoom-lens" id="zoomLens"></div>
-                    </div>
-                </div>
-                <!-- Right side: Title and enlarged zoom area -->
-                <div class="lightbox-right">
-                    <div class="lightbox-title" id="lightboxTitle">Floor Plan</div>
-                    <div class="lightbox-zoom-container" id="lightboxZoomContainer">
-                        <!-- Zoomed image shown here -->
-                        <div class="lightbox-zoom-result" id="lightboxZoomResult"></div>
-                    </div>
+                <div class="lightbox-title" id="lightboxTitle">Floor Plan</div>
+                <div class="lightbox-image-wrapper" id="lightboxImageWrapper">
+                    <img alt="Floor plan view" class="lightbox-image" id="lightboxImage">
+                    <span class="lightbox-hint">Click image to enlarge</span>
                 </div>
             </div>
         </div>
@@ -1385,6 +1516,7 @@
     <script src="js/brochure-download.js"></script>
     <script src="js/infinite-scroll.js"></script>
     <script src="js/background-color-change.js"></script>
+    <script src="js/logo-scroll-controller.js"></script>
     <script src="js/bg-video-detector-fix.js"></script>
     <script src="js/animation-fallback.js"></script>
 

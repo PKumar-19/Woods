@@ -42,7 +42,7 @@
   }
 
   // Google Apps Script Web App URL
-  var GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxVnTBqnGyz9Rb7zGxXdbTPPhtYzrOwllzvCpdThmBEC_ndt7M51r0pEXHLjgS8INte6g/exec';
+  var GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzvPF_AXd4aXTCDYly4RZe_QVYKCc90RJ4rdtTyya05nJ7Gx6LVnM0hgkfAr_Sj2pMzTw/exec';
 
   // POST to Google Apps Script
   function postToGoogleScript(data, statusEl, isModal){

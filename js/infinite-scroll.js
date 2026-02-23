@@ -72,7 +72,7 @@ const projects = [
  * Configuration
  */
 const CONFIG = {
-    normalSpeed: 50,        // pixels per second (normal scroll)
+    normalSpeed: 120,        // pixels per second (normal scroll)
     boostMultiplier: 4,     // speed multiplier when boosted
     boostDuration: 800,     // how long boost lasts (ms) on click
     holdBoostDelay: 200,    // delay before returning to normal after release
@@ -106,13 +106,13 @@ let scrollRightBtn = null;
  */
 function createCard(project) {
     const imageContent = project.image
-        ? `<img src="${project.image}" alt="${project.title}">`
+        ? `<img src="${project.image}" alt="${project.title}" loading="lazy">`
         : '';
 
     const imageClass = project.imageClass || '';
 
     const mockupContent = project.mockupImage
-        ? `<img src="${project.mockupImage}" alt="${project.title} mockup" class="mockup-image">`
+        ? `<img src="${project.mockupImage}" alt="${project.title} mockup" class="mockup-image" loading="lazy">`
         : '<div class="laptop-mockup"></div>';
 
     return `
@@ -400,57 +400,42 @@ function initInfiniteScroll() {
 
 // Map imageClass to actual image URLs and titles
 const imageClassToData = {
-    'front-elevation': { url: 'images/Project_Overview/Front-Elevation.png', title: 'Front Elevation' },
-    'rear-elevation': { url: 'images/Project_Overview/Rear-Elevation.png', title: 'Rear Elevation' },
-    'site-layout': { url: 'images/Portfolio_Scroll_Section/Site-Plans.png', title: 'Site Layout' },
-    'ground-floor': { url: 'images/Portfolio_Scroll_Section/Ground-Floor-Plans.png', title: 'Ground Floor Layout' },
-    'first-floor': { url: 'images/Portfolio_Scroll_Section/First-Floor-Plans.png', title: 'First Floor Layout' },
-    'second-floor': { url: 'images/Portfolio_Scroll_Section/Second-Floor-Plans.png', title: 'Second Floor Layout' }
+    'front-elevation': { url: 'images/Project_Overview/Front-Elevation.webp', title: 'Front Elevation' },
+    'rear-elevation': { url: 'images/Project_Overview/Rear-Elevation.webp', title: 'Rear Elevation' },
+    'site-layout': { url: 'images/Portfolio_Scroll_Section/Site-Plans.webp', title: 'Site Layout' },
+    'ground-floor': { url: 'images/Portfolio_Scroll_Section/Ground-Floor-Plans.webp', title: 'Ground Floor Layout' },
+    'first-floor': { url: 'images/Portfolio_Scroll_Section/First-Floor-Plans.webp', title: 'First Floor Layout' },
+    'second-floor': { url: 'images/Portfolio_Scroll_Section/Second-Floor-Plans.webp', title: 'Second Floor Layout' }
 };
 
 // Lightbox elements
 let portfolioModal = null;
 let portfolioModalOverlay = null;
 let portfolioModalClose = null;
-let lightboxThumbnail = null;
-let lightboxThumbnailWrapper = null;
+let lightboxImage = null;
+let lightboxImageWrapper = null;
 let lightboxTitle = null;
-let lightboxZoomResult = null;
-let zoomLens = null;
-
-// Zoom configuration
-const ZOOM_LEVEL = 2.5; // How much to magnify
-
-// Store current image URL for zoom
-let currentImageUrl = '';
+let lightboxDialog = null;
 
 /**
  * Open portfolio lightbox modal with specified image and title
  */
 function openPortfolioModal(imageUrl, title = 'Floor Plan') {
-    if (!portfolioModal || !lightboxThumbnail) return;
+    if (!portfolioModal || !lightboxImage) return;
 
     // Stop the scroller completely
     state.isPaused = true;
     state.lightboxOpen = true;
 
-    // Store the image URL for zoom functionality
-    currentImageUrl = imageUrl;
-
     // Set the image source and title
-    lightboxThumbnail.src = imageUrl;
+    lightboxImage.src = imageUrl;
     if (lightboxTitle) {
         lightboxTitle.textContent = title;
     }
 
-    // Preload image for zoom (but don't set background yet - wait for hover)
-    const img = new Image();
-    img.src = imageUrl;
-
-    // Clear any previous zoom state
-    if (lightboxZoomResult) {
-        lightboxZoomResult.style.backgroundImage = '';
-        lightboxZoomResult.classList.remove('active');
+    // Reset enlarged state
+    if (lightboxDialog) {
+        lightboxDialog.classList.remove('enlarged');
     }
 
     // Show the modal
@@ -475,17 +460,12 @@ function closePortfolioModal() {
         portfolioModal.classList.remove('show', 'closing');
         portfolioModal.setAttribute('aria-hidden', 'true');
 
-        // Clear the image source and zoom
-        currentImageUrl = '';
-        if (lightboxThumbnail) {
-            lightboxThumbnail.src = '';
+        // Clear the image source and reset enlarged state
+        if (lightboxImage) {
+            lightboxImage.src = '';
         }
-        if (lightboxZoomResult) {
-            lightboxZoomResult.style.backgroundImage = '';
-            lightboxZoomResult.classList.remove('active');
-        }
-        if (lightboxThumbnailWrapper) {
-            lightboxThumbnailWrapper.classList.remove('active');
+        if (lightboxDialog) {
+            lightboxDialog.classList.remove('enlarged');
         }
 
         // Restore body scroll
@@ -553,82 +533,11 @@ function getImageDataFromCard(cardImage) {
 }
 
 /**
- * Handle mouse move for zoom effect
+ * Toggle enlarged state of the lightbox image
  */
-function handleZoomMove(e) {
-    if (!lightboxThumbnail || !zoomLens || !lightboxZoomResult) return;
-
-    const img = lightboxThumbnail;
-    const imgRect = img.getBoundingClientRect();
-
-    // Calculate cursor position relative to image
-    let x = e.clientX - imgRect.left;
-    let y = e.clientY - imgRect.top;
-
-    // Get lens dimensions
-    const lensWidth = zoomLens.offsetWidth;
-    const lensHeight = zoomLens.offsetHeight;
-
-    // Constrain lens position within image bounds
-    let lensX = x - lensWidth / 2;
-    let lensY = y - lensHeight / 2;
-
-    // Keep lens within image boundaries
-    lensX = Math.max(0, Math.min(lensX, imgRect.width - lensWidth));
-    lensY = Math.max(0, Math.min(lensY, imgRect.height - lensHeight));
-
-    // Position the lens
-    zoomLens.style.left = lensX + 'px';
-    zoomLens.style.top = lensY + 'px';
-
-    // Calculate zoom result dimensions
-    const zoomContainer = lightboxZoomResult.parentElement;
-    const resultWidth = zoomContainer.offsetWidth;
-    const resultHeight = zoomContainer.offsetHeight;
-
-    // Calculate the ratio between the zoom result and lens
-    const ratioX = resultWidth / lensWidth;
-    const ratioY = resultHeight / lensHeight;
-
-    // Calculate background size (zoomed image)
-    const bgWidth = imgRect.width * ratioX;
-    const bgHeight = imgRect.height * ratioY;
-
-    // Calculate background position
-    const bgX = -lensX * ratioX;
-    const bgY = -lensY * ratioY;
-
-    // Apply zoom to result area
-    lightboxZoomResult.style.backgroundSize = `${bgWidth}px ${bgHeight}px`;
-    lightboxZoomResult.style.backgroundPosition = `${bgX}px ${bgY}px`;
-}
-
-/**
- * Handle mouse enter on thumbnail
- */
-function handleZoomEnter() {
-    if (lightboxThumbnailWrapper) {
-        lightboxThumbnailWrapper.classList.add('active');
-    }
-    if (lightboxZoomResult && currentImageUrl) {
-        // Set the background image when hover starts
-        lightboxZoomResult.style.backgroundImage = `url('${currentImageUrl}')`;
-        lightboxZoomResult.classList.add('active');
-    }
-}
-
-/**
- * Handle mouse leave on thumbnail
- */
-function handleZoomLeave() {
-    if (lightboxThumbnailWrapper) {
-        lightboxThumbnailWrapper.classList.remove('active');
-    }
-    if (lightboxZoomResult) {
-        lightboxZoomResult.classList.remove('active');
-        // Clear the background image to show placeholder text
-        lightboxZoomResult.style.backgroundImage = '';
-    }
+function toggleEnlarge() {
+    if (!lightboxDialog) return;
+    lightboxDialog.classList.toggle('enlarged');
 }
 
 /**
@@ -638,13 +547,12 @@ function initLightbox() {
     portfolioModal = document.getElementById('portfolioLightboxModal');
     portfolioModalOverlay = document.querySelector('.portfolio-lightbox-overlay');
     portfolioModalClose = document.getElementById('portfolioLightboxClose');
-    lightboxThumbnail = document.getElementById('lightboxThumbnail');
-    lightboxThumbnailWrapper = document.getElementById('lightboxThumbnailWrapper');
+    lightboxImage = document.getElementById('lightboxImage');
+    lightboxImageWrapper = document.getElementById('lightboxImageWrapper');
     lightboxTitle = document.getElementById('lightboxTitle');
-    lightboxZoomResult = document.getElementById('lightboxZoomResult');
-    zoomLens = document.getElementById('zoomLens');
+    lightboxDialog = document.querySelector('.portfolio-lightbox-dialog');
 
-    if (!portfolioModal || !lightboxThumbnail) {
+    if (!portfolioModal || !lightboxImage) {
         console.warn('Portfolio lightbox modal elements not found');
         return;
     }
@@ -671,20 +579,12 @@ function initLightbox() {
         }
     });
 
-    // Set up zoom functionality on thumbnail
-    if (lightboxThumbnailWrapper) {
-        lightboxThumbnailWrapper.addEventListener('mousemove', handleZoomMove);
-        lightboxThumbnailWrapper.addEventListener('mouseenter', handleZoomEnter);
-        lightboxThumbnailWrapper.addEventListener('mouseleave', handleZoomLeave);
-
-        // Touch support for mobile
-        lightboxThumbnailWrapper.addEventListener('touchmove', (e) => {
-            e.preventDefault();
-            const touch = e.touches[0];
-            handleZoomMove(touch);
-        }, { passive: false });
-        lightboxThumbnailWrapper.addEventListener('touchstart', handleZoomEnter);
-        lightboxThumbnailWrapper.addEventListener('touchend', handleZoomLeave);
+    // Click on image wrapper to toggle enlarge
+    if (lightboxImageWrapper) {
+        lightboxImageWrapper.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleEnlarge();
+        });
     }
 
     // Add click listeners to card images (use event delegation on scroll track)
