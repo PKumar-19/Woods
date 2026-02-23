@@ -1,0 +1,51 @@
+/* Privacy Policy link - right side of footer */
+.footer-right-link {
+    position: relative;
+    float: right;
+    height: 40px;
+    line-height: 40px;
+    top: 20px;
+    pointer-events: initial;
+}
+
+.footer-right-link a {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #fff;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: opacity 0.2s ease;
+}
+
+.footer-right-link a:hover {
+    opacity: 0.7;
+    text-decoration: underline;
+}
+
+/* Tablet */
+@media only screen and (max-width: 1024px) {
+    .footer-right-link {
+        float: none;
+        width: 100%;
+        text-align: center;
+        height: auto;
+        line-height: 1.3;
+        top: 0;
+        margin-top: 10px;
+    }
+}
+
+/* Mobile */
+@media only screen and (max-width: 480px) {
+    .footer-right-link {
+        order: 2;
+        width: 100%;
+        text-align: center;
+        margin-top: 4px;
+    }
+
+    .footer-right-link a {
+        font-size: 12px;
+    }
+}
